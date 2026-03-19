@@ -44,7 +44,7 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           source: "backend/deploy/*"
-          target: "/var/www/backend"
+          target: "/var/www/insyrge/backend"
           strip_components: 0
 
       # 6️⃣ Install prod deps & restart PM2
@@ -55,7 +55,7 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            cd /var/www/backend
+            cd /var/www/insyrge/backend
 
             echo "📦 Installing production dependencies"
             npm ci --omit=dev
