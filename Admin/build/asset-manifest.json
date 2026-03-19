@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.933cdc98.css",
+    "main.js": "/static/js/main.966f43d4.js",
+    "static/js/453.8df7b97c.chunk.js": "/static/js/453.8df7b97c.chunk.js",
+    "static/media/404notFound2.png": "/static/media/404notFound2.86d2c58c8f7a4a88d002.png",
+    "static/media/Phrase_box_Logo.jpg": "/static/media/Phrase_box_Logo.8ba470d77f9524695dff.jpg",
+    "static/media/phraselogo.png": "/static/media/phraselogo.a1f0080e5efb2d2c7f89.png",
+    "static/media/blank.png": "/static/media/blank.afe07f57979e2bba2183.png",
+    "index.html": "/index.html",
+    "static/media/edit_profile.svg": "/static/media/edit_profile.2fa874816d2ddd4b09a654675adce923.svg",
+    "static/media/logImage.svg": "/static/media/logImage.9f576ad9ba94333208b136e736b0547e.svg",
+    "static/media/del.svg": "/static/media/del.199398e59bf01299b1a217f0ac18fae4.svg",
+    "main.933cdc98.css.map": "/static/css/main.933cdc98.css.map",
+    "main.966f43d4.js.map": "/static/js/main.966f43d4.js.map",
+    "453.8df7b97c.chunk.js.map": "/static/js/453.8df7b97c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.933cdc98.css",
+    "static/js/main.966f43d4.js"
+  ]
+}

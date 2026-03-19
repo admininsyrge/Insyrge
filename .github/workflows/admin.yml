@@ -1,0 +1,32 @@
+name: Admin Deploy
+
+on:
+  push:
+    paths: ["admin/**"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build Admin
+        run: |
+          cd admin
+          npm install
+          CI=false npm run build
+
+      - name: Upload admin build to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          source: "admin/build"
+          target: "/var/www/admin"
+          strip_components: 1

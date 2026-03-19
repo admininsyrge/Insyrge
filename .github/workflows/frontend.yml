@@ -1,0 +1,71 @@
+name: Frontend Deploy
+
+on:
+  push:
+    paths:
+      - "frontend/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 3️⃣ Install & Build Frontend (CI ONLY)
+      - name: Install & Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      # 4️⃣ Prepare production bundle
+      - name: Prepare frontend bundle
+        run: |
+          cd frontend
+          rm -rf deploy
+          mkdir deploy
+          cp -r .next public package.json package-lock.json deploy/
+
+      # 5️⃣ Upload build to server
+      - name: Upload frontend build
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          source: "frontend/deploy/*"
+          target: "/var/www/frontend"
+          strip_components: 0
+
+      # 6️⃣ Install prod deps & restart PM2
+      - name: Restart frontend with PM2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /var/www/frontend
+
+            echo "📦 Installing production dependencies"
+            npm ci --omit=dev
+
+            echo "♻️ Restarting frontend"
+            pm2 reload frontend || true
+
+            pm2 start npm \
+              --name frontend \
+              -- start -- -p 3000
+
+            pm2 save
+
+            echo "✅ Frontend deployed successfully"
