@@ -61,7 +61,8 @@ jobs:
             npm ci --omit=dev
 
             echo "♻️ Restarting backend"
-            pm2 reload backend || true
+            # pm2 reload backend || true
+            pm2 start index.js --name backend || pm2 restart backend
 
             pm2 start build/config/server.js \
               --name backend \
