@@ -4,6 +4,7 @@
   "description": "Insyrge Backend",
   "main": "server.ts",
   "scripts": {
+    "build": "tsc",
     "start": "ts-node src/config/server.ts",
     "dev": "nodemon src/config/server.ts"
   },
