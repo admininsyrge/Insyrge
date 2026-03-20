@@ -55,19 +55,17 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            cd /var/www/insyrge/backend
+            cd /var/www/insyrge/backend/deploy
 
             echo "📦 Installing production dependencies"
-            npm ci --omit=dev
+            npm install --omit=dev
 
-            echo "♻️ Restarting backend"
-            # pm2 reload backend || true
-            pm2 start index.js --name backend || pm2 restart backend
+            echo "🚀 Starting backend"
 
-            pm2 start build/config/server.js \
+            pm2 start build/src/config/server.js \
               --name backend \
               --max-memory-restart 300M \
-              --time
+              --time || pm2 restart backend
 
             pm2 save
 
