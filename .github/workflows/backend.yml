@@ -2,6 +2,8 @@ name: Backend Deploy
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "backend/**"
 
@@ -19,20 +21,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: "npm"
 
-      # 3️⃣ Install deps & build (CI ONLY)
+      # 3️⃣ Install deps & build
       - name: Install & Build Backend
         run: |
           cd backend
-          npm install 
+          npm ci
           npm run build
 
-      # 4️⃣ Prepare production package (ONLY REQUIRED FILES)
+      # 4️⃣ Prepare production bundle
       - name: Prepare production bundle
         run: |
           cd backend
           rm -rf deploy
           mkdir deploy
+
           cp -r build deploy/
           cp package.json package-lock.json deploy/
 
@@ -44,28 +48,41 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           source: "backend/deploy/"
-          target: "/var/www/insyrge"
+          target: "/var/www/insyrge/backend"
           strip_components: 1
 
-      # 6️⃣ Install prod deps & restart PM2
-      - name: Restart backend with PM2
+      # 6️⃣ Deploy & Restart with PM2
+      - name: Deploy and Restart Backend
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            cd /var/www/insyrge/backend/deploy
+            set -e
+
+            echo "📂 Moving to backend directory"
+            cd /var/www/insyrge/backend
+
+            echo "🧹 Cleaning old deploy"
+            rm -rf deploy
+
+            echo "📦 Renaming uploaded folder"
+            mv backend/deploy ./deploy 2>/dev/null || true
+
+            cd deploy
 
             echo "📦 Installing production dependencies"
             npm install --omit=dev
 
-            echo "🚀 Starting backend"
+            echo "🚀 Restarting backend with PM2"
 
-            pm2 start build/src/config/server.js \
-              --name backend \
-              --max-memory-restart 300M \
-              --time || pm2 restart backend
+            pm2 describe backend > /dev/null \
+              && pm2 restart backend \
+              || pm2 start build/src/config/server.js \
+                   --name backend \
+                   --max-memory-restart 300M \
+                   --time
 
             pm2 save
 
