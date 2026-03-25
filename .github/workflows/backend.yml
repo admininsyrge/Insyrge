@@ -24,7 +24,7 @@ jobs:
       - name: Install & Build Backend
         run: |
           cd backend
-          npm install
+          npm ci
           npm run build
 
       # 4️⃣ Prepare production package (ONLY REQUIRED FILES)
