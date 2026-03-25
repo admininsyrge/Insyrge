@@ -10,26 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout code
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # 1️⃣ Checkout
+      - uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      # 2️⃣ Node setup
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # 3️⃣ Install deps & build (CI ONLY)
-      - name: Install & Build Backend
+      # 3️⃣ Install & Build
+      - name: Build Backend
         run: |
           cd backend
-          npm install
-          rm -rf node_modules
           npm ci
           npm run build
 
-      # 4️⃣ Prepare production package (ONLY REQUIRED FILES)
+      # 4️⃣ Prepare bundle
       - name: Prepare production bundle
         run: |
           cd backend
@@ -38,7 +34,7 @@ jobs:
           cp -r build deploy/
           cp package.json package-lock.json deploy/
 
-      # 5️⃣ Upload build to server
+      # 5️⃣ Upload
       - name: Upload backend build
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -47,9 +43,8 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           source: "backend/deploy/*"
           target: "/var/www/insyrge/backend"
-          strip_components: 0
 
-      # 6️⃣ Install prod deps & restart PM2
+      # 6️⃣ Deploy on server
       - name: Restart backend with PM2
         uses: appleboy/ssh-action@v1
         with:
@@ -59,16 +54,20 @@ jobs:
           script: |
             cd /var/www/insyrge/backend
 
+            echo "🧹 Cleaning old files"
+            rm -rf node_modules
+
             echo "📦 Installing production dependencies"
             npm ci --omit=dev
 
-            echo "♻️ Restarting backend"
-            pm2 delete backend || true
+            echo "🚀 Starting/Restarting backend"
 
-            pm2 start build/config/server.js \
-              --name backend \
-              --max-memory-restart 300M \
-              --time
+            pm2 describe backend > /dev/null
+            if [ $? -eq 0 ]; then
+              pm2 restart backend
+            else
+              pm2 start build/config/server.js --name backend --time
+            fi
 
             pm2 save
 
