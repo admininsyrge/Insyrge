@@ -41,8 +41,9 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          source: "backend/deploy/*"
+          source: "backend/deploy"
           target: "/var/www/insyrge/backend"
+          strip_components: 2
 
       # 6️⃣ Deploy on server
       - name: Restart backend with PM2
