@@ -24,7 +24,8 @@ jobs:
       - name: Install & Build Backend
         run: |
           cd backend
-          node --version
+          npm install
+          rm -rf node_modules
           npm ci
           npm run build
 
