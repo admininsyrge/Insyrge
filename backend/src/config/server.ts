@@ -14,6 +14,11 @@ import { Server as HTTPSServer } from "https";
 
 const app = express();
 
+import dotenv from "dotenv";
+dotenv.config({
+  path: process.env.ENV_FILE || path.join(__dirname, "../../shared/backend.env"),
+}); // ✅ load .env first
+
 const env = process.env.ENVIRONMENT as string;
 const cert: string = process.env.SSL_CERT as string;
 const priv_key: string = process.env.SSL_PRIV_KEY as string;
@@ -98,7 +103,7 @@ function onError(error: NodeJS.ErrnoException) {
 }
 
 function onListening() {
-  const addr = server.address();
+  const addr: any = server.address();
   const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   console.log("Listening on " + bind);
 }
