@@ -67,7 +67,7 @@ jobs:
             if [ $? -eq 0 ]; then
               pm2 restart backend
             else
-              pm2 start build/config/server.js --name backend --time
+              pm2 start build/src/config/server.js --name backend --time
             fi
 
             pm2 save
