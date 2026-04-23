@@ -63,11 +63,11 @@ jobs:
 
             echo "🚀 Starting/Restarting backend"
 
-            pm2 describe backend > /dev/null
+            pm2 describe insyrge-backend > /dev/null
             if [ $? -eq 0 ]; then
-              pm2 restart backend
+              pm2 restart insyrge-backend
             else
-              pm2 start build/src/config/server.js --name backend --time
+              pm2 start build/src/config/server.js --name insyrge-backend --time
             fi
 
             pm2 save
