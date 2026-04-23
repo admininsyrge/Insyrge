@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 25
 
       # 3️⃣ Install & Build Frontend (CI ONLY)
       - name: Install & Build Frontend
@@ -60,11 +60,14 @@ jobs:
             npm ci --omit=dev
 
             echo "♻️ Restarting frontend"
-            pm2 reload insyrge-frontend || true
+            # pm2 reload insyrge-frontend || true
 
-            # pm2 start npm \
-            #   --name insyrge-frontend \
-            #   -- start -- -p 3000
+            pm2 describe insyrge-frontend > /dev/null
+            if [ $? -eq 5 ]; then
+              pm2 restart insyrge-frontend
+            else
+              pm2 start npm --name "insyrge-frontend" -- start
+            fi
 
             pm2 save
 
