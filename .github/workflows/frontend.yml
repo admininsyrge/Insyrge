@@ -63,7 +63,7 @@ jobs:
             # pm2 reload insyrge-frontend || true
 
             pm2 describe insyrge-frontend > /dev/null
-            if [ $? -eq 5 ]; then
+            if [ $? -eq 0 ]; then
               pm2 restart insyrge-frontend
             else
               pm2 start npm --name "insyrge-frontend" -- start
