@@ -24,7 +24,7 @@ jobs:
       - name: Install & Build Frontend
         run: |
           cd frontend
-          npm install
+          npm ci
           npm run build
 
       # 4️⃣ Prepare production bundle
@@ -44,7 +44,7 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           source: "frontend/deploy/*"
           target: "/var/www/insyrge/frontend"
-          strip_components: 0
+          strip_components: 2
 
       # 6️⃣ Install prod deps & restart PM2
       - name: Restart frontend with PM2
