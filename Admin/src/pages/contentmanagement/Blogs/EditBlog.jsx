@@ -234,7 +234,7 @@ const EditBlog = () => {
                           <div>
                             <p className="mb-1">Existing Image:</p>
                             <img
-                              src={`${BASE_URL_ADMIN}${existingImage}`}
+                              src={existingImage.url}
                               alt="Existing"
                               className="img-thumbnail"
                               width="200"

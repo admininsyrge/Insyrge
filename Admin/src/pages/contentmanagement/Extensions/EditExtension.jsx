@@ -72,7 +72,7 @@ const EditExtension = () => {
           `${BASE_URL_ADMIN}${GET_EXTENSION_BY_ID(id)}`,
           {
             headers: { Token: token },
-          }
+          },
         );
 
         const ext = res.data?.data;
@@ -248,7 +248,7 @@ const EditExtension = () => {
                         <div>
                           <p className="mb-1">Existing Image:</p>
                           <img
-                            src={`${BASE_URL}/uploads/${existingImage}`}
+                            src={existingImage.url}
                             alt="Existing"
                             className="img-thumbnail"
                             width="200"

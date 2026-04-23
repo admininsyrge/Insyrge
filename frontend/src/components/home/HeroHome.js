@@ -37,7 +37,7 @@ const HeroHome = ({ data }) => {
             <div className="relative w-full h-full">
               {/* Background Image */}
               <Image
-                src={`${BASE_URL}/uploads/${src.image}`}
+                src={src.image.url}
                 alt={`Slide ${i + 1}`}
                 fill
                 className="object-cover transition-transform duration-1000 ease-in-out scale-105 hover:scale-110"

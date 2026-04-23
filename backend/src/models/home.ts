@@ -1,12 +1,26 @@
 import { Schema, model, Document } from "mongoose";
 
+
+export interface IImage {
+    url: string;
+    public_id: string;
+}
+
+const imageSchema = new Schema<IImage>(
+    {
+        url: { type: String, required: true },
+        public_id: { type: String, required: true },
+    },
+    { _id: false }
+);
+
 // 🧩 Interfaces
 export interface ISlider {
-    image: string;
+    image: IImage;
 }
 
 export interface IPartnerLogo {
-    image: string;
+    image: IImage;
 }
 
 export interface IContentItem {
@@ -33,7 +47,7 @@ export interface IHome extends Document {
         buttonText: string;
         sliderImages: ISlider[];
     };
-    
+
     partners: IPartnerLogo[];
     contentHighlights: IContentItem[];
     caseStudies: ICaseStudy[];
@@ -45,14 +59,14 @@ export interface IHome extends Document {
 // 🧱 Sub-Schemas
 const sliderSchema = new Schema<ISlider>(
     {
-        image: { type: String, required: true, trim: true },
+        image: { type: imageSchema, required: true, trim: true },
     },
     { _id: false }
 );
 
 const partnerSchema = new Schema<IPartnerLogo>(
     {
-        image: { type: String, required: true, trim: true },
+        image: { type: imageSchema, required: true, trim: true },
     },
     { _id: false }
 );

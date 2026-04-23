@@ -36,29 +36,34 @@ const UpdateHome = () => {
     highlights: [""],
   });
 
-  // 🔹 Fetch Home Data
+  // ==========================
+  // 🔹 Fetch Data (Sanitized)
+  // ==========================
   useEffect(() => {
     (async () => {
       try {
         const res = await axios.get(`${BASE_URL_ADMIN}${GET_HOME}`, {
           headers: { Token: localStorage.getItem("token") },
         });
+
         const home = res.data?.data;
 
         if (home) {
           setHero({
-            title: home.hero.title,
-            subtitle: home.hero.subtitle,
-            buttonText: home.hero.buttonText,
+            title: home.hero?.title || "",
+            subtitle: home.hero?.subtitle || "",
+            buttonText: home.hero?.buttonText || "",
             newImages: [],
             previews: [],
-            existing: home.hero.sliderImages || [],
+            existing: (home.hero?.sliderImages || []).filter(Boolean),
           });
+
           setPartners({
             newFiles: [],
             previews: [],
-            existing: home.partners || [],
+            existing: (home.partners || []).filter(Boolean),
           });
+
           setContentHighlights(home.contentHighlights || []);
           setContact(home.contact || { title: "", highlights: [""] });
         }
@@ -68,7 +73,9 @@ const UpdateHome = () => {
     })();
   }, []);
 
-  // 🔹 Delete Image Handler
+  // ==========================
+  // 🔹 Delete Image
+  // ==========================
   const deleteExistingImage = async (section, imagePath) => {
     try {
       await axios.delete(`${BASE_URL_ADMIN}/home/delete-image`, {
@@ -81,12 +88,23 @@ const UpdateHome = () => {
     }
   };
 
-  // 🔹 Hero Image Handlers
+  // ==========================
+  // 🔹 Image Handlers
+  // ==========================
   const handleHeroImages = (e) => {
     const files = Array.from(e.target.files);
     setHero((prev) => ({
       ...prev,
       newImages: [...prev.newImages, ...files],
+      previews: [...prev.previews, ...files.map((f) => URL.createObjectURL(f))],
+    }));
+  };
+
+  const handlePartnerLogos = (e) => {
+    const files = Array.from(e.target.files);
+    setPartners((prev) => ({
+      ...prev,
+      newFiles: [...prev.newFiles, ...files],
       previews: [...prev.previews, ...files.map((f) => URL.createObjectURL(f))],
     }));
   };
@@ -107,16 +125,6 @@ const UpdateHome = () => {
     }
   };
 
-  // 🔹 Partner Image Handlers
-  const handlePartnerLogos = (e) => {
-    const files = Array.from(e.target.files);
-    setPartners((prev) => ({
-      ...prev,
-      newFiles: [...prev.newFiles, ...files],
-      previews: [...prev.previews, ...files.map((f) => URL.createObjectURL(f))],
-    }));
-  };
-
   const removePartnerLogo = (index, existing) => {
     if (existing) {
       deleteExistingImage("partners", existing.image);
@@ -133,56 +141,43 @@ const UpdateHome = () => {
     }
   };
 
-  // 🔹 Content Highlights
-  const handleHighlightChange = (i, field, value) => {
-    const updated = [...contentHighlights];
-    updated[i][field] = value;
-    setContentHighlights(updated);
+  // ==========================
+  // 🔹 Helpers (SAFE IMAGE SRC)
+  // ==========================
+  const getImageSrc = (img) => {
+    if (!img) return "";
+    if (typeof img === "string") return img;
+    if (img?.image) return `${BASE_URL}/uploads/${img.image}`;
+    return "";
   };
 
-  const addHighlight = () =>
-    setContentHighlights([
-      ...contentHighlights,
-      { icon: "", title: "", desc: "" },
-    ]);
-
-  const removeHighlight = (i) =>
-    setContentHighlights(contentHighlights.filter((_, idx) => i !== idx));
-
-  // 🔹 Contact Section
-  const handleContactHighlight = (index, value) => {
-    const updated = [...contact.highlights];
-    updated[index] = value;
-    setContact({ ...contact, highlights: updated });
+  const isExistingImage = (img) => {
+    return img && typeof img === "object" && img.image;
   };
 
-  const addContactHighlight = () =>
-    setContact({ ...contact, highlights: [...contact.highlights, ""] });
-
-  const removeContactHighlight = (index) =>
-    setContact({
-      ...contact,
-      highlights: contact.highlights.filter((_, i) => i !== index),
-    });
-
-  // 🔹 Submit Handler
+  // ==========================
+  // 🔹 Submit
+  // ==========================
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
 
       const formData = new FormData();
+
       formData.append("hero[title]", hero.title);
       formData.append("hero[subtitle]", hero.subtitle);
       formData.append("hero[buttonText]", hero.buttonText);
 
       hero.newImages.forEach((file) => formData.append("heroSlider", file));
+
       partners.newFiles.forEach((file) => formData.append("partnerLogo", file));
 
       formData.append("contentHighlights", JSON.stringify(contentHighlights));
+
       formData.append("contact[title]", contact.title);
       contact.highlights.forEach((h) =>
-        formData.append("contact[highlights][]", h)
+        formData.append("contact[highlights][]", h),
       );
 
       await axios.put(`${BASE_URL_ADMIN}${UPDATE_HOME}`, formData, {
@@ -194,7 +189,7 @@ const UpdateHome = () => {
 
       toast.success("Home Page Updated Successfully!");
       navigate("/update-home");
-    } catch (err) {
+    } catch {
       toast.error("Failed to update Home Page!");
     } finally {
       setLoading(false);
@@ -209,6 +204,7 @@ const UpdateHome = () => {
       <Header />
       <div className="row">
         <Sidebar />
+
         <div className="col-9 main-dash-left">
           <Breadcrumb className="cstm_bredcrumb">
             <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/projects" }}>
@@ -217,252 +213,111 @@ const UpdateHome = () => {
             <Breadcrumb.Item active>Update Home Page</Breadcrumb.Item>
           </Breadcrumb>
 
-          <section>
-            <div className="col-12">
-              <div className="comn-back-white p-4 rounded-4 shadow-sm">
-                <h3 className="heading-view-med mb-4 text-primary">
-                  Update Home Page
-                </h3>
+          <div className="comn-back-white p-4 rounded-4 shadow-sm">
+            <h3 className="mb-4 text-primary">Update Home Page</h3>
 
-                <form onSubmit={handleSubmit}>
-                  {/* HERO SECTION */}
-                  <h5 className="text-decoration-underline mb-3">
-                    Hero Section
-                  </h5>
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Title *</Form.Label>
-                    <Form.Control
-                      value={hero.title}
-                      onChange={(e) =>
-                        setHero({ ...hero, title: e.target.value })
-                      }
-                      required
-                    />
-                  </Form.Group>
+            <form onSubmit={handleSubmit}>
+              {/* HERO */}
+              <h5>Hero Section</h5>
 
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Subtitle *</Form.Label>
-                    <Form.Control
-                      value={hero.subtitle}
-                      onChange={(e) =>
-                        setHero({ ...hero, subtitle: e.target.value })
-                      }
-                      required
-                    />
-                  </Form.Group>
+              <Form.Control
+                value={hero.title}
+                placeholder="Title"
+                onChange={(e) => setHero({ ...hero, title: e.target.value })}
+              />
 
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Button Text *</Form.Label>
-                    <Form.Control
-                      value={hero.buttonText}
-                      onChange={(e) =>
-                        setHero({ ...hero, buttonText: e.target.value })
-                      }
-                      required
-                    />
-                  </Form.Group>
+              <Form.Control
+                className="mt-2"
+                value={hero.subtitle}
+                placeholder="Subtitle"
+                onChange={(e) => setHero({ ...hero, subtitle: e.target.value })}
+              />
 
-                  {/* Hero Images */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Hero Images</Form.Label>
-                    <Form.Control
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      onChange={handleHeroImages}
-                    />
-                    <div className="d-flex flex-wrap gap-3 mt-3">
-                      {[...hero.existing, ...hero.previews].map((img, i) => {
-                        const src =
-                          typeof img === "string"
-                            ? img
-                            : img.image
-                            ? `${BASE_URL}/uploads/${img.image}`
-                            : img;
-                        return (
-                          <div key={i} className="position-relative">
-                            <img
-                              src={src}
-                              alt=""
-                              className="img-thumbnail"
-                              width="160"
-                            />
-                            <Button
-                              size="sm"
-                              variant="danger"
-                              className="position-absolute top-0 end-0 m-1"
-                              onClick={() =>
-                                removeHeroImage(
-                                  i,
-                                  typeof img === "object" ? img : null
-                                )
-                              }
-                            >
-                              ×
-                            </Button>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </Form.Group>
+              <Form.Control
+                className="mt-2"
+                value={hero.buttonText}
+                placeholder="Button Text"
+                onChange={(e) =>
+                  setHero({ ...hero, buttonText: e.target.value })
+                }
+              />
 
-                  {/* PARTNERS */}
-                  <h5 className="text-decoration-underline mt-4 mb-3">
-                    Partner Logos
-                  </h5>
-                  <Form.Control
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={handlePartnerLogos}
-                  />
-                  <div className="d-flex flex-wrap gap-3 mt-3">
-                    {[...partners.existing, ...partners.previews].map(
-                      (img, i) => {
-                        const src =
-                          typeof img === "string"
-                            ? img
-                            : img.image
-                            ? `${BASE_URL}/uploads/${img.image}`
-                            : img;
-                        return (
-                          <div key={i} className="position-relative">
-                            <img
-                              src={src}
-                              alt=""
-                              className="img-thumbnail"
-                              width="130"
-                            />
-                            <Button
-                              size="sm"
-                              variant="danger"
-                              className="position-absolute top-0 end-0 m-1"
-                              onClick={() =>
-                                removePartnerLogo(
-                                  i,
-                                  typeof img === "object" ? img : null
-                                )
-                              }
-                            >
-                              ×
-                            </Button>
-                          </div>
-                        );
-                      }
-                    )}
-                  </div>
+              <Form.Control
+                type="file"
+                multiple
+                className="mt-2"
+                onChange={handleHeroImages}
+              />
 
-                  {/* CONTENT HIGHLIGHTS */}
-                  <h5 className="text-decoration-underline mt-4 mb-3">
-                    Content Highlights
-                  </h5>
-                  {contentHighlights.map((item, i) => (
-                    <div key={i} className="border p-3 rounded-3 mb-3">
-                      <Form.Group className="mb-2">
-                        <Form.Label>Icon</Form.Label>
-                        <Form.Control
-                          value={item.icon}
-                          onChange={(e) =>
-                            handleHighlightChange(i, "icon", e.target.value)
-                          }
-                        />
-                      </Form.Group>
-
-                      <Form.Group className="mb-2">
-                        <Form.Label>Title</Form.Label>
-                        <Form.Control
-                          value={item.title}
-                          onChange={(e) =>
-                            handleHighlightChange(i, "title", e.target.value)
-                          }
-                        />
-                      </Form.Group>
-
-                      <Form.Group>
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          rows={2}
-                          value={item.desc}
-                          onChange={(e) =>
-                            handleHighlightChange(i, "desc", e.target.value)
-                          }
-                        />
-                      </Form.Group>
-
-                      {i > 0 && (
-                        <Button
-                          variant="danger"
-                          size="sm"
-                          className="mt-2"
-                          onClick={() => removeHighlight(i)}
-                        >
-                          Remove
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                  <Button variant="secondary" size="sm" onClick={addHighlight}>
-                    + Add Content Block
-                  </Button>
-
-                  {/* CONTACT SECTION */}
-                  <h5 className="text-decoration-underline mt-4 mb-3">
-                    Contact Section
-                  </h5>
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Contact Title *</Form.Label>
-                    <Form.Control
-                      value={contact.title}
-                      onChange={(e) =>
-                        setContact({ ...contact, title: e.target.value })
-                      }
-                      required
-                    />
-                  </Form.Group>
-
-                  {contact.highlights.map((h, i) => (
-                    <div key={i} className="d-flex gap-2 mb-2">
-                      <Form.Control
-                        type="text"
-                        value={h}
-                        onChange={(e) =>
-                          handleContactHighlight(i, e.target.value)
-                        }
+              <div className="d-flex gap-3 mt-3 flex-wrap">
+                {[...hero.existing, ...hero.previews]
+                  .filter(Boolean)
+                  .map((img, i) => (
+                    <div key={i} className="position-relative">
+                      <img
+                        src={getImageSrc(img)}
+                        width="150"
+                        alt=""
+                        className="img-thumbnail"
                       />
-                      {i > 0 && (
-                        <Button
-                          variant="danger"
-                          size="sm"
-                          onClick={() => removeContactHighlight(i)}
-                        >
-                          Remove
-                        </Button>
-                      )}
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        className="position-absolute top-0 end-0"
+                        onClick={() =>
+                          removeHeroImage(i, isExistingImage(img) ? img : null)
+                        }
+                      >
+                        ×
+                      </Button>
                     </div>
                   ))}
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={addContactHighlight}
-                  >
-                    + Add Highlight
-                  </Button>
-
-                  {/* Submit Button */}
-                  <div className="text-center mt-4">
-                    <Button
-                      className="comn-btn-pair"
-                      type="submit"
-                      disabled={loading}
-                    >
-                      {loading ? "Updating..." : "Update Home Page"}
-                    </Button>
-                  </div>
-                </form>
               </div>
-            </div>
-          </section>
+
+              {/* PARTNERS */}
+              <h5 className="mt-4">Partners</h5>
+
+              <Form.Control
+                type="file"
+                multiple
+                onChange={handlePartnerLogos}
+              />
+
+              <div className="d-flex gap-3 mt-3 flex-wrap">
+                {[...partners.existing, ...partners.previews]
+                  .filter(Boolean)
+                  .map((img, i) => (
+                    <div key={i} className="position-relative">
+                      <img
+                        src={getImageSrc(img)}
+                        width="120"
+                        alt=""
+                        className="img-thumbnail"
+                      />
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        className="position-absolute top-0 end-0"
+                        onClick={() =>
+                          removePartnerLogo(
+                            i,
+                            isExistingImage(img) ? img : null,
+                          )
+                        }
+                      >
+                        ×
+                      </Button>
+                    </div>
+                  ))}
+              </div>
+
+              <div className="text-center mt-4">
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Updating..." : "Update"}
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

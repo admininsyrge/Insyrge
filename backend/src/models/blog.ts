@@ -8,8 +8,20 @@ export interface IBlog extends Document {
   shortDescription: string;
   author: string;
   category: string;
-  image: string;
+  image: IImage;
 }
+export interface IImage {
+  url: string;
+  public_id: string;
+}
+
+const imageSchema = new Schema<IImage>(
+  {
+    url: { type: String, required: true },
+    public_id: { type: String, required: true },
+  },
+  { _id: false }
+);
 
 const blogSchema = new Schema<IBlog>(
   {
@@ -20,7 +32,7 @@ const blogSchema = new Schema<IBlog>(
     shortDescription: { type: String },
     author: { type: String },
     category: { type: String },
-    image: { type: String },
+    image: { type: imageSchema, required: false },
   },
   { timestamps: true }
 );

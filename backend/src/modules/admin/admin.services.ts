@@ -5,6 +5,7 @@ const admin_scope = app_constant.scope.admin;
 import { generate_token, handleCustomError, helpers } from '../../middlewares/index';
 import path from 'path';
 import fs from "fs";
+import cloudinary from '../../config/cloudinary';
 import { IHome } from '../../models/home';
 
 
@@ -99,96 +100,68 @@ class adminServices {
         }
     }
 
-    // static async uploadFile(file: any, uploadPath: string) {
-    //     try {
-    //         if (!file || !file.file) {
-    //             handleCustomError("FILE_NOT_UPLOAD", 'ENGLISH');
-    //         }
+    // =================== Cloudinary helpers ===================
 
-    //         const uploadedFile = file.file;
-    //         const uploadDir = path.join(__dirname, '../../public/' + uploadPath);
-
-    //         if (!fs.existsSync(uploadDir)) {
-    //             fs.mkdirSync(uploadDir, { recursive: true });
-    //         }
-
-    //         const uniqueFileName = `${Date.now()}_${uploadedFile.name}`;
-    //         const finalPath = path.join(uploadDir, uniqueFileName);
-
-    //         await new Promise<void>((resolve, reject) => {
-    //             uploadedFile.mv(finalPath, (err) => {
-    //                 if (err) {
-    //                     reject(err);
-    //                 } else {
-    //                     resolve();
-    //                 }
-    //             });
-    //         });
-
-    //         const imagePath = path.join(uploadPath, uniqueFileName);
-    //         return imagePath;
-    //     } catch (err) {
-    //         throw err;
-    //     }
-    // }
-
-    // static async uploadFile(file: any, uploadPath: string) {
-    //     try {
-    //         const uploadedFile = file.image || file.file;
-    //         if (!uploadedFile) throw await handleCustomError("FILE_NOT_UPLOAD", "ENGLISH");
-
-    //         const uploadDir = path.join(__dirname, "../../uploads", uploadPath);
-    //         if (!fs.existsSync(uploadDir)) {
-    //             fs.mkdirSync(uploadDir, { recursive: true });
-    //         }
-
-    //         const uniqueFileName = `${Date.now()}_${uploadedFile.name}`;
-    //         const finalPath = path.join(uploadDir, uniqueFileName);
-
-    //         await uploadedFile.mv(finalPath);
-
-    //         const relativePath = path.join(uploadPath, uniqueFileName).replace(/\\/g, "/");
-    //         return relativePath;
-    //     }
-    //     catch (err) {
-    //         throw err;
-    //     }
-    // }
-
-    static async uploadFile(file: any, uploadPath: any) {
+    static async uploadFile(file: any, folder: string) {
         try {
-            // Check if files exist
+            // support shape: file.image || file.file || file || Multer file/object
             const uploadedFiles = file?.image || file?.file || file;
-            if (!uploadedFiles)
-                throw await handleCustomError("FILE_NOT_UPLOAD", "ENGLISH");
+            if (!uploadedFiles) throw await handleCustomError("FILE_NOT_UPLOAD", "ENGLISH");
 
-            const uploadDir = path.join(__dirname, "../../uploads", uploadPath);
-            if (!fs.existsSync(uploadDir)) {
-                fs.mkdirSync(uploadDir, { recursive: true });
-            }
+            const uploadSingle = async (fileItem: any) => {
+                // express-fileupload with useTempFiles:true -> fileItem.tempFilePath
+                // multer -> fileItem.path
+                // other libs -> fileItem.tempFilePath or fileItem.path
+                const filePath = fileItem?.tempFilePath || null;
 
-            // Helper to upload a single file
-            const moveFile = async (fileItem: any): Promise<any> => {
-                const uniqueFileName = `${Date.now()}_${fileItem.name.replace(/\s+/g, "_")}`;
-                const finalPath = path.join(uploadDir, uniqueFileName);
-                await fileItem.mv(finalPath);
-                return path.join(uploadPath, uniqueFileName).replace(/\\/g, "/");
+                if (!filePath && fileItem?.data) {
+                    // if buffer is present, upload as data uri
+                    const dataUri = `data:${fileItem.mimetype || 'application/octet-stream'};base64,${fileItem.data.toString('base64')}`;
+                    const res = await cloudinary.uploader.upload(dataUri, { folder, resource_type: 'auto' });
+                    return { url: res.secure_url, public_id: res.public_id };
+                }
+
+                if (!filePath) throw await handleCustomError("FILE_NOT_UPLOAD", "ENGLISH");
+
+                const res = await cloudinary.uploader.upload(filePath, { folder, resource_type: 'auto' });
+                return { url: res.secure_url, public_id: res.public_id };
             };
 
-            // If multiple files (array)
             if (Array.isArray(uploadedFiles)) {
-                const uploadedPaths: any[] = [];
-                for (const fileItem of uploadedFiles) {
-                    const relativePath = await moveFile(fileItem);
-                    uploadedPaths.push(relativePath);
+                const results: any[] = [];
+                for (const f of uploadedFiles) {
+                    const uploaded = await uploadSingle(f);
+                    results.push(uploaded);
                 }
-                return uploadedPaths; // return array
+                return results;
             }
 
-            // If single file
-            const relativePath = await moveFile(uploadedFiles);
-            return relativePath; // return string
+            const single = await uploadSingle(uploadedFiles);
+            return single;
         } catch (err) {
+            console.error('❌ Cloudinary upload error:', err);
+            throw err;
+        }
+    }
+
+    static async deleteFile(public_id: string) {
+        try {
+            if (!public_id) return;
+            const result = await cloudinary.uploader.destroy(public_id, { resource_type: 'image' });
+            return result;
+        } catch (err) {
+            console.error('❌ Cloudinary delete error:', err);
+            throw err;
+        }
+    }
+
+    static async deleteMultipleFiles(public_ids: string[]) {
+        try {
+            if (!public_ids?.length) return;
+            const result = await cloudinary.api.delete_resources(public_ids, { resource_type: 'image' });
+            return result;
+        } catch (err) {
+            console.error('❌ Cloudinary bulk delete error:', err);
             throw err;
         }
     }
@@ -257,9 +230,17 @@ class adminServices {
         try {
             const { slug, title, category, client, description, features, gallery, language = "ENGLISH" } = payload;
 
-            let imagePath = "";
+            let imageData: any = null;
+
             if (file) {
-                imagePath = await this.uploadFile(file, "uploads/projects/image");
+                const uploaded = await this.uploadFile(file, "projects");
+
+                // handle both single & multiple (safe)
+                if (Array.isArray(uploaded)) {
+                    imageData = uploaded[0]; // take first image
+                } else {
+                    imageData = uploaded;
+                }
             }
 
             const setData = {
@@ -268,13 +249,20 @@ class adminServices {
                 category,
                 client,
                 description,
-                image: imagePath,
+
+                // ✅ store clean structure
+                image: {
+                    url: imageData.url,
+                    public_id: imageData.public_id,
+                },
+
                 features,
                 gallery,
             };
 
             const response = await DAO.saveData(Models.Project, setData);
             return response;
+
         } catch (err) {
             throw err;
         }
@@ -323,13 +311,12 @@ class adminServices {
             const existing = await DAO.getSingleData(Models.Project, { _id: id });
             if (!existing) throw await handleCustomError("NO_DATA_FOUND", language);
 
-            // ✅ FEATURES (always flat)
+            // ✅ FEATURES
             let parsedFeatures: string[] = [];
 
             if (payload.features) {
-                // Case 1: Already array
                 if (Array.isArray(payload.features)) {
-                    parsedFeatures = payload.features.flat(); // flatten if nested
+                    parsedFeatures = payload.features.flat();
                 } else if (typeof payload.features === "string") {
                     try {
                         const json = JSON.parse(payload.features);
@@ -339,48 +326,77 @@ class adminServices {
                     }
                 }
             } else {
-                // Case 2: FormData with features[0], features[1]...
                 const keys = Object.keys(payload).filter((k) => k.startsWith("features["));
                 parsedFeatures = keys.map((k) => payload[k]).flat();
             }
 
-            // ✅ GALLERY
-            let galleryPaths = existing.gallery || [];
+            // ✅ GALLERY (Cloudinary structured)
+            let galleryData = existing.gallery || [];
 
             if (files?.gallery) {
                 const galleryFiles = Array.isArray(files.gallery)
                     ? files.gallery
                     : [files.gallery];
-                const uploadedGallery = await Promise.all(
-                    galleryFiles.map((f) =>
-                        this.uploadFile(f, "uploads/projects/gallery")
-                    )
-                );
-                galleryPaths = [...galleryPaths, ...uploadedGallery];
+
+                const uploadedGallery = [];
+
+                for (const f of galleryFiles) {
+                    const uploaded = await this.uploadFile(f, "projects/gallery");
+
+                    if (Array.isArray(uploaded)) {
+                        uploadedGallery.push(...uploaded);
+                    } else {
+                        uploadedGallery.push(uploaded);
+                    }
+                }
+
+                // merge old + new
+                galleryData = [
+                    ...galleryData,
+                    ...uploadedGallery.map((g: any) => ({
+                        url: g.url,
+                        public_id: g.public_id
+                    }))
+                ];
             } else if (payload.gallery) {
                 try {
                     const parsed = JSON.parse(payload.gallery);
-                    galleryPaths = Array.isArray(parsed) ? parsed : [parsed];
+                    galleryData = parsed;
                 } catch {
-                    galleryPaths = [payload.gallery];
+                    galleryData = [payload.gallery];
                 }
             }
 
-            // ✅ MAIN IMAGE
-            let imagePath = existing.image;
+            // ✅ MAIN IMAGE (replace + delete old)
+
+
+            let image = existing.image;
+
             if (files?.image) {
-                imagePath = await this.uploadFile(files.image, "uploads/projects/image");
+                // 🔥 delete old image
+                if (existing.image_public_id) {
+                    await this.deleteFile(existing.image_public_id);
+                }
+
+                const uploaded = await this.uploadFile(files.image, "projects");
+
+                const img = Array.isArray(uploaded) ? uploaded[0] : uploaded;
+
+                image = {
+                    url: img.url,
+                    public_id: img.public_id,
+                };
             }
 
-            // ✅ FINAL DATA
+            // ✅ FINAL UPDATE DATA
             const updateData = {
                 title,
                 category,
                 client,
                 description,
-                features: parsedFeatures, // ✅ always array of strings
-                gallery: galleryPaths,
-                image: imagePath,
+                features: parsedFeatures,
+                gallery: galleryData,
+                image,
             };
 
             const response = await DAO.findAndUpdate(
@@ -391,6 +407,7 @@ class adminServices {
             );
 
             return response;
+
         } catch (err) {
             console.error("❌ Error updating project:", err);
             throw err;
@@ -425,9 +442,18 @@ class adminServices {
                 language = "ENGLISH",
             } = payload;
 
-            let imagePath = "";
+            let image = null;
+            let image_public_id = null;
+
             if (file) {
-                imagePath = await this.uploadFile(file, "uploads/blogs/image");
+                const uploaded = await this.uploadFile(file, "blogs");
+
+                const img = Array.isArray(uploaded) ? uploaded[0] : uploaded;
+
+                image = {
+                    url: img.url,
+                    public_id: img.public_id,
+                };
             }
 
             const data = {
@@ -438,11 +464,14 @@ class adminServices {
                 shortDescription,
                 author,
                 category,
-                image: imagePath,
+
+                // ✅ clean structure
+                image,
             };
 
             const response = await DAO.saveData(Models.Blog, data);
             return response;
+
         } catch (err) {
             throw err;
         }
@@ -497,8 +526,16 @@ class adminServices {
                 language = "ENGLISH",
             } = payload;
 
-            const check: any = await DAO.getData(Models.Blog, { _id: id }, {}, { lean: true });
+            const check: any = await DAO.getData(
+                Models.Blog,
+                { _id: id },
+                {},
+                { lean: true }
+            );
+
             if (!check.length) throw await handleCustomError("NO_DATA_FOUND", language);
+
+            const existing = check[0];
 
             const data: any = {
                 title,
@@ -510,13 +547,32 @@ class adminServices {
                 category,
             };
 
+            // ✅ IMAGE UPDATE (replace + delete old)
             if (file) {
-                const imagePath = await this.uploadFile(file, "uploads/blogs/image");
-                data.image = imagePath;
+                // 🔥 delete old image first
+                if (existing.image_public_id) {
+                    await this.deleteFile(existing.image_public_id);
+                }
+
+                const uploaded = await this.uploadFile(file, "blogs");
+
+                const img = Array.isArray(uploaded) ? uploaded[0] : uploaded;
+
+                data.image = {
+                    url: img.url,
+                    public_id: img.public_id,
+                };
             }
 
-            const response = await DAO.findAndUpdate(Models.Blog, { _id: id }, data, { new: true });
+            const response = await DAO.findAndUpdate(
+                Models.Blog,
+                { _id: id },
+                data,
+                { new: true }
+            );
+
             return response;
+
         } catch (err) {
             throw err;
         }
@@ -539,7 +595,7 @@ class adminServices {
         try {
             const { title, description, button, url, slug, language = "ENGLISH" } = payload;
 
-            // ✅ Points parsing (same as your logic)
+            // ✅ Points parsing
             let points: string[] = [];
 
             if (Array.isArray(payload.points)) {
@@ -564,14 +620,16 @@ class adminServices {
                 throw await handleCustomError("POINTS_REQUIRED", language);
             }
 
-            // ✅ Image is REQUIRED as per schema
+            // ✅ Image REQUIRED
             if (!file) {
                 throw await handleCustomError("IMAGE_REQUIRED", language);
             }
 
-            const imagePath = await this.uploadFile(file, "uploads/core-services/image");
+            // ✅ Upload to Cloudinary
+            const uploaded = await this.uploadFile(file, "core-services");
+            const img = Array.isArray(uploaded) ? uploaded[0] : uploaded;
 
-            // ✅ Slug must be unique
+            // ✅ Slug uniqueness
             const slugCheck = await DAO.getSingleData(
                 Models.CoreService,
                 { slug },
@@ -586,11 +644,16 @@ class adminServices {
             const setData = {
                 title,
                 description,
-                slug,      // ✅ REQUIRED
+                slug,
                 url,
-                points,    // ✅ ARRAY
+                points,
                 button,
-                image: imagePath, // ✅ REQUIRED
+
+                // ✅ clean storage
+                image: {
+                    url: img.url,
+                    public_id: img.public_id,
+                },
             };
 
             const response = await DAO.saveData(Models.CoreService, setData);
@@ -654,7 +717,7 @@ class adminServices {
                 throw await handleCustomError("NO_DATA_FOUND", language);
             }
 
-            // ✅ Points parsing again (same logic as create)
+            // ✅ Points parsing
             let parsedPoints = check.points;
 
             if (Array.isArray(points)) {
@@ -691,10 +754,20 @@ class adminServices {
                 data.slug = slug;
             }
 
-            // ✅ Optional Image Update
+            // ✅ IMAGE UPDATE (replace + delete old)
             if (file) {
-                const imagePath = await this.uploadFile(file, "uploads/core-services/image");
-                data.image = imagePath;
+                // 🔥 delete old image
+                if (check.image_public_id) {
+                    await this.deleteFile(check.image_public_id);
+                }
+
+                const uploaded = await this.uploadFile(file, "core-services");
+                const img = Array.isArray(uploaded) ? uploaded[0] : uploaded;
+
+                data.image = {
+                    url: img.url,
+                    public_id: img.public_id,
+                };
             }
 
             const response = await DAO.findAndUpdate(
@@ -729,17 +802,22 @@ class adminServices {
         try {
             const { slug, title, description, longDescription, link, features, benefits } = payload;
 
-            let imagePath = "";
-            if (file) {
-                imagePath = await this.uploadFile(file, "uploads/extensions/image");
-            }
+            let image = null;
 
-            // console.log(file)
-            console.log(imagePath)
+            if (file) {
+                const uploaded = await this.uploadFile(file, "extensions");
+                const img = Array.isArray(uploaded) ? uploaded[0] : uploaded;
+
+                image = {
+                    url: img.url,
+                    public_id: img.public_id,
+                };
+            }
 
             // ✅ Parse features & benefits safely
             const parseArray = (input: any, keyPrefix: string) => {
                 if (Array.isArray(input)) return input;
+
                 if (typeof input === "string") {
                     try {
                         return JSON.parse(input);
@@ -747,10 +825,12 @@ class adminServices {
                         return [input];
                     }
                 }
+
                 const extracted = Object.keys(payload)
                     .filter((key) => key.startsWith(`${keyPrefix}[`))
                     .map((key) => payload[key])
                     .filter(Boolean);
+
                 return extracted;
             };
 
@@ -765,11 +845,12 @@ class adminServices {
                 link,
                 features: parsedFeatures,
                 benefits: parsedBenefits,
-                image: imagePath,
+                image,
             };
 
             const response = await DAO.saveData(Models.Extension, setData);
             return response;
+
         } catch (error) {
             console.error("❌ Error creating extension:", error);
             throw error;
@@ -777,7 +858,9 @@ class adminServices {
     }
 
     static async getAllExtensions() {
-        return await DAO.getData(Models.Extension, {}, {}, { createdAt: -1 });
+        const projection = { __v: 0 };
+        const options = { lean: true, sort: { createdAt: -1 } };
+        return await DAO.getData(Models.Extension, {}, projection, options);
     }
 
     static async getExtensionById(id: string) {
@@ -808,22 +891,33 @@ class adminServices {
                 benefits,
             } = payload;
 
-            console.log("📦 Incoming file:", file ? file.originalname : "No new file");
-
-            // ✅ Step 1: Get existing extension from DB
+            // ✅ Step 1: Get existing data
             const existingData = await DAO.getSingleData(Models.Extension, { _id: id });
             if (!existingData) throw new Error("Extension not found");
 
-            // ✅ Step 2: Handle image logic
-            let imagePath = existingData.image; // default: keep old image
+            let image = existingData.image;
+            let image_public_id = existingData.image_public_id;
+
+            // ✅ Step 2: Image replace + delete old
             if (file) {
-                // upload new file and replace image path
-                imagePath = await this.uploadFile(file, "uploads/extensions/image");
+                // delete old image
+                if (existingData.image?.public_id) {
+                    await this.deleteFile(existingData.image.public_id);
+                }
+
+                const uploaded = await this.uploadFile(file, "extensions");
+                const img = Array.isArray(uploaded) ? uploaded[0] : uploaded;
+
+                image = {
+                    url: img.url,
+                    public_id: img.public_id,
+                };
             }
 
-            // ✅ Step 3: Parse features & benefits safely
+            // ✅ Step 3: Parse features & benefits
             const parseArray = (input: any, keyPrefix: string) => {
                 if (Array.isArray(input)) return input;
+
                 if (typeof input === "string") {
                     try {
                         return JSON.parse(input);
@@ -852,10 +946,10 @@ class adminServices {
                 link,
                 features: parsedFeatures,
                 benefits: parsedBenefits,
-                image: imagePath,
+                image,
             };
 
-            // ✅ Step 5: Update document
+            // ✅ Step 5: Update
             const response = await DAO.findAndUpdate(
                 Models.Extension,
                 { _id: id },
@@ -864,6 +958,7 @@ class adminServices {
             );
 
             return response;
+
         } catch (error) {
             console.error("❌ Error updating extension:", error);
             throw error;
@@ -900,8 +995,6 @@ class adminServices {
             throw err;
         }
     }
-
-
     //====================Home Page =======================
 
     static async createHome(data: Partial<IHome>) {

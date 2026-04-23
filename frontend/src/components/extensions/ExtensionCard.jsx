@@ -38,7 +38,7 @@ export default function ExtensionCard({ extension }) {
           "
         >
           <Image
-            src={`${BASE_URL}/uploads/${extension.image}`}
+            src={extension.image.url}
             alt={extension.title}
             fill
             priority

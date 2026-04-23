@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { UserProvider } from "@/context/UserContext"; // ✅ import context provider
 import ZohoChat from "@/components/ZohoChat";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,6 +46,24 @@ export default function RootLayout({ children }) {
 
         <Footer />
         <ZohoChat />
+
+        {/* ✅ Zoho PageSense Script */}
+        <Script
+          id="zoho-pagesense"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+        (function(w,s){
+          var e=document.createElement("script");
+          e.type="text/javascript";
+          e.async=true;
+          e.src="https://cdn.pagesense.io/js/851039329/fe82d17f52e84f93bcbfafeffc63b037.js";
+          var x=document.getElementsByTagName("script")[0];
+          x.parentNode.insertBefore(e,x);
+        })(window,"script");
+      `,
+          }}
+        />
       </body>
     </html>
   );

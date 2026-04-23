@@ -81,7 +81,7 @@ export default function BlogDetailsPage() {
       {post.image && (
         <div className="relative w-full max-w-5xl mx-auto h-72 md:h-[480px] rounded-2xl overflow-hidden mb-12">
           <Image
-            src={`${BASE_URL}/uploads/${post.image}`}
+            src={post.image.url}
             alt={post.title}
             fill
             className="object-cover"

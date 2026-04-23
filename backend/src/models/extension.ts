@@ -10,10 +10,23 @@ export interface IBenefit {
   description: string;
 }
 
+export interface IImage {
+  url: string;
+  public_id: string;
+}
+
+const imageSchema = new Schema<IImage>(
+  {
+    url: { type: String, required: true },
+    public_id: { type: String, required: true },
+  },
+  { _id: false }
+);
+
 export interface IExtension extends Document {
   slug: string;
   title: string;
-  image: string;
+  image: IImage;
   description: string;
   longDescription: string;
   link: string;
@@ -60,7 +73,7 @@ const extensionSchema = new Schema<IExtension>(
       trim: true,
     },
     image: {
-      type: String,
+      type: imageSchema,
       required: [true, "Image is required!"],
       trim: true,
     },

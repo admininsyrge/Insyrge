@@ -9,7 +9,7 @@ const BlogCard = ({ post }) => (
       {/* === Image Section === */}
       <div className="relative w-full h-52 overflow-hidden shrink-0">
         <Image
-          src={`${BASE_URL}/uploads/${post.image}`}
+          src={post.image.url}
           alt={post.title}
           fill
           className="object-cover"

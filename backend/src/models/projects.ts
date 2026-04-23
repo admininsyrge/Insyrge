@@ -5,13 +5,27 @@ export interface IProject extends Document {
   title: string;
   category: string;
   client: string;
-  image: string;
+  image: IImage;
   description: string;
   features: string[];
   gallery: string[];
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface IImage {
+  url: string;
+  public_id: string;
+}
+
+const imageSchema = new Schema<IImage>(
+  {
+    url: { type: String, required: true },
+    public_id: { type: String, required: true },
+  },
+  { _id: false }
+);
+
 
 const projectSchema = new Schema<IProject>(
   {
@@ -37,7 +51,7 @@ const projectSchema = new Schema<IProject>(
       trim: true,
     },
     image: {
-      type: String,
+      type: imageSchema,
       required: [true, "Project main image is required!"],
       trim: true,
     },

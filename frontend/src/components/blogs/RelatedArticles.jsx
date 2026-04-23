@@ -20,7 +20,7 @@ const RelatedArticles = ({ related }) => (
           >
             <div className="relative aspect-video">
               <Image
-                src={r.image}
+                src={r.image.url}
                 alt={r.title}
                 fill
                 className="object-cover"

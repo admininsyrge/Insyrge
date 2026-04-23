@@ -14,10 +14,10 @@ import { Server as HTTPSServer } from "https";
 
 const app = express();
 
-import dotenv from "dotenv";
-dotenv.config({
-  path: process.env.ENV_FILE || path.join(__dirname, "../../shared/backend.env"),
-}); // ✅ load .env first
+// import dotenv from "dotenv";
+// dotenv.config({
+//   path: process.env.ENV_FILE || path.join(__dirname, "../../shared/backend.env"),
+// }); // ✅ load .env first
 
 const env = process.env.ENVIRONMENT as string;
 const cert: string = process.env.SSL_CERT as string;
@@ -26,7 +26,7 @@ const port: number =
   env === "PROD"
     ? parseInt(process.env.PROD_PORT as string, 10)
     : parseInt(process.env.LOCAL_PORT as string, 10);
-// const host: string = process.env.HOST;
+const host: any = process.env.HOST;
 
 console.log("PORT---", port);
 
@@ -77,7 +77,7 @@ if (process.env.SSL === "true") {
   }
 } else {
   server = http.createServer(app);
-  server.listen(port, () => {
+  server.listen(port, host, () => {
     console.log(`🎊 Server is running Hurrayyyy`);
   });
 }

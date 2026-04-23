@@ -217,7 +217,7 @@ function BlogsList() {
                 {selectedData.image && (
                   <div className="mb-3">
                     <img
-                      src={`${BASE_URL_USER}${selectedData.image}`}
+                      src={selectedData.image.url}
                       alt={selectedData.title}
                       className="img-fluid rounded"
                       style={{ maxHeight: "300px", objectFit: "cover" }}

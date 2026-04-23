@@ -68,7 +68,7 @@ export default function ExtensionDetails({ extension }) {
         >
           <div className="relative w-full h-[230px] sm:h-[320px] md:h-[530px]">
             <Image
-              src={`${BASE_URL}/uploads/${extension.image}`}
+              src={extension.image.url}
               alt={extension.title}
               fill
               priority

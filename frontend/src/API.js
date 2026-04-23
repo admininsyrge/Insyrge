@@ -1,4 +1,4 @@
-// export const BASE_URL = "http://192.168.1.4:4000";
+// export const BASE_URL = "http://localhost:4000";
 export const BASE_URL = "https://api.insyrge.com";
 // export const BASE_URL_ADMIN = `${BASE_URL}/Admin/api`;
 export const BASE_URL_USER = `${BASE_URL}/User/api`;

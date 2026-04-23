@@ -6,11 +6,24 @@ export interface ICoreService extends Document {
     slug: string
     points: string[];
     button: string;
-    image: string;
+    image: IImage;
     url: string;
     createdAt?: Date;
     updatedAt?: Date;
 }
+
+export interface IImage {
+    url: string;
+    public_id: string;
+}
+
+const imageSchema = new Schema<IImage>(
+    {
+        url: { type: String, required: true },
+        public_id: { type: String, required: true },
+    },
+    { _id: false }
+);
 
 const coreServiceSchema = new Schema<ICoreService>(
     {
@@ -20,7 +33,7 @@ const coreServiceSchema = new Schema<ICoreService>(
         url: { type: String, required: true, trim: true },
         points: [{ type: String, required: true }],
         button: { type: String, required: true, trim: true },
-        image: { type: String, required: true, trim: true },
+        image: { type: imageSchema, required: true, trim: true },
     },
     { timestamps: true }
 );

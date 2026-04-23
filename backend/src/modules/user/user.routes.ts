@@ -23,11 +23,11 @@ router.get("/blog/:id", adminController.getBlogById);
 router.get("/blog/slug/:slug", adminController.getBlogBySlug);
 
 router.get("/services-all", adminController.getAllServices);
-router.get("/service/:id", adminController.getServiceById);
+// router.get("/service/:id", adminController.getServiceById);
 router.get("/service/slug/:slug", adminController.getServiceBySlug);
 
 router.get("/extension-all", adminController.getAllExtension);
-router.get("/extension/:id", adminController.getExtensionById);
+// router.get("/extension/:id", adminController.getExtensionById);
 router.get("/extension/slug/:slug", adminController.getExtensionBySlug);
 
 router.get("/home", adminController.getHome);

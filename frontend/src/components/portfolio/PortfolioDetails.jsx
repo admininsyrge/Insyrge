@@ -94,7 +94,7 @@ export default function PortfolioDetails({ project }) {
                   className="relative w-full h-52 rounded-xl overflow-hidden border border-[#1A2C55]"
                 >
                   <Image
-                    src={`${BASE_URL}/uploads/${img}`}
+                    src={img.image.url}
                     alt={`Screenshot ${index + 1}`}
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-500"

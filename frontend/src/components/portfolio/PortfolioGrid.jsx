@@ -16,7 +16,7 @@ export default function PortfolioGrid({ projects }) {
           {/* Project Image */}
           <div className="relative w-full h-56 overflow-hidden">
             <Image
-              src={`${BASE_URL}/uploads/${project.image}`}
+              src={project.image.url}
               alt={project.title}
               fill
               className="object-cover group-hover:scale-110 transition-transform duration-500"

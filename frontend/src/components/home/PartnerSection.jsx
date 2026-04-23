@@ -56,7 +56,7 @@ export default function PartnerSection({ data }) {
                 className="w-32 md:w-36 h-24 md:h-28 bg-white/10 border border-[#1A2C55] backdrop-blur-sm rounded-2xl flex justify-center items-center"
               >
                 <motion.img
-                  src={`${BASE_URL}/uploads/${logo.image}`}
+                  src={logo.image.url}
                   alt={`Client Logo ${index + 1}`}
                   className="max-h-[60%] max-w-[70%] object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]"
                 />
