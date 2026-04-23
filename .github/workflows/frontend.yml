@@ -62,9 +62,9 @@ jobs:
             echo "♻️ Restarting frontend"
             pm2 reload insyrge-frontend || true
 
-            pm2 start npm \
-              --name insyrge-frontend \
-              -- start -- -p 3000
+            # pm2 start npm \
+            #   --name insyrge-frontend \
+            #   -- start -- -p 3000
 
             pm2 save
 
