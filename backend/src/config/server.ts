@@ -14,10 +14,10 @@ import { Server as HTTPSServer } from "https";
 
 const app = express();
 
-// import dotenv from "dotenv";
-// dotenv.config({
-//   path: process.env.ENV_FILE || path.join(__dirname, "../../shared/backend.env"),
-// }); // ✅ load .env first
+import dotenv from "dotenv";
+dotenv.config({
+  path: process.env.ENV_FILE || path.join(__dirname, "../../shared/backend.env"),
+}); // ✅ load .env first
 
 const env = process.env.ENVIRONMENT as string;
 const cert: string = process.env.SSL_CERT as string;
