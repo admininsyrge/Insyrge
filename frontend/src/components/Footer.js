@@ -161,6 +161,15 @@ const Footer = () => {
           >
             Book Consultation
           </Link>
+          <div className="my-4" />
+         <Link
+  href="https://support.insyrge.com/"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-block font-semibold px-6 py-3 rounded-full text-[#081b33] bg-[#08e5c0] hover:bg-[#00e6a8] transition-all duration-300 shadow-[0_0_20px_#08e5c060] hover:shadow-[0_0_30px_#08e5c090]"
+>
+  Help Desk Portal
+</Link>
         </div>
       </div>
 
