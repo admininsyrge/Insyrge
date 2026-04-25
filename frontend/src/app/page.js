@@ -34,11 +34,7 @@ export default function Home() {
     );
   }
 
-  <Script
-    id="zoho-pagesense"
-    src="https://cdn.pagesense.io/js/851039329/fe82d17f52e84f93bcbfafeffc63b037.js"
-    strategy="afterInteractive"
-  />;
+
 
   // === Render Home Page ===
   return (

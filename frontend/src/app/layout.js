@@ -5,7 +5,6 @@ import Footer from "@/components/Footer";
 import { UserProvider } from "@/context/UserContext"; // ✅ import context provider
 import ZohoChat from "@/components/ZohoChat";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,7 +31,6 @@ export default function RootLayout({ children }) {
           name="google-site-verification"
           content="m2zFuQ1KJU1S3PDupioeQvzXHc77eICXja6GJtrqBA4"
         />
-
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -40,13 +38,17 @@ export default function RootLayout({ children }) {
         <header className="relative">
           <Header />
         </header>
-
         <UserProvider>
           <main>{children}</main>
         </UserProvider>
-
         <Footer />
         <ZohoChat />
+        <Script
+          id="zoho-pagesense"
+          src="https://cdn.pagesense.io/js/851039329/fe82d17f52e84f93bcbfafeffc63b037.js"
+          strategy="afterInteractive"
+        />
+        ;
       </body>
     </html>
   );
