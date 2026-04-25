@@ -11,6 +11,7 @@ import { useUser } from "@/context/UserContext";
 import CoreServices from "@/components/services/CoreServices";
 import GuaranteeSection from "@/components/services/GuaranteeSection";
 import { guarantees } from "@/data/servicesData";
+import Script from "next/script";
 
 export default function Home() {
   const { homeData, coreServices, loading, error } = useUser();
@@ -32,6 +33,12 @@ export default function Home() {
       </div>
     );
   }
+
+  <Script
+    id="zoho-pagesense"
+    src="https://cdn.pagesense.io/js/851039329/fe82d17f52e84f93bcbfafeffc63b037.js"
+    strategy="afterInteractive"
+  />;
 
   // === Render Home Page ===
   return (

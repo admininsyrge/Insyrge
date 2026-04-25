@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { UserProvider } from "@/context/UserContext"; // ✅ import context provider
 import ZohoChat from "@/components/ZohoChat";
-import Script from "next/script";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,10 +33,6 @@ export default function RootLayout({ children }) {
           content="m2zFuQ1KJU1S3PDupioeQvzXHc77eICXja6GJtrqBA4"
         />
 
-        <Script
-          src="https://cdn.pagesense.io/js/851039329/fe82d17f52e84f93bcbfafeffc63b037.js"
-          strategy="afterInteractive"
-        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
