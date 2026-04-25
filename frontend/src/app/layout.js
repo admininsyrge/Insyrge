@@ -32,6 +32,11 @@ export default function RootLayout({ children }) {
           name="google-site-verification"
           content="m2zFuQ1KJU1S3PDupioeQvzXHc77eICXja6GJtrqBA4"
         />
+
+        <Script
+          src="https://cdn.pagesense.io/js/851039329/fe82d17f52e84f93bcbfafeffc63b037.js"
+          strategy="afterInteractive"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -46,11 +51,6 @@ export default function RootLayout({ children }) {
 
         <Footer />
         <ZohoChat />
-
-        <Script
-          src="https://cdn.pagesense.io/js/851039329/fe82d17f52e84f93bcbfafeffc63b037.js"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );
