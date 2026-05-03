@@ -30,7 +30,8 @@ async function getExtensionsList() {
 }
 
 export default async function HelpPage({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
+  console.log(slug);
 
   const [data, extensions] = await Promise.all([
     getHelpPage(slug),
@@ -49,6 +50,18 @@ export default async function HelpPage({ params }) {
     <main className="min-h-screen bg-[#0B1C3D] text-white py-20 px-6 md:px-10">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
         {/* SIDEBAR */}
+
+        {/* MAIN CONTENT */}
+        <section className="md:col-span-3">
+          <h1 className="text-4xl font-bold text-[#08e5c0] mb-8">
+            {data.title}
+          </h1>
+
+          <div
+            className="text-gray-300 mb-10 max-w-3xl leading-relaxed prose prose-invert"
+            dangerouslySetInnerHTML={{ __html: data.content }}
+          />
+        </section>
         <aside className="md:col-span-1 bg-[#101F44]/60 border border-[#1A2C55] rounded-xl p-6 h-fit sticky top-20">
           <h3 className="text-xl font-semibold text-[#08e5c0] mb-4">
             Extensions
@@ -71,18 +84,6 @@ export default async function HelpPage({ params }) {
             ))}
           </ul>
         </aside>
-
-        {/* MAIN CONTENT */}
-        <section className="md:col-span-3">
-          <h1 className="text-4xl font-bold text-[#08e5c0] mb-8">
-            Help Page: {data.title}
-          </h1>
-
-          <div
-            className="text-gray-300 mb-10 max-w-3xl leading-relaxed prose prose-invert"
-            dangerouslySetInnerHTML={{ __html: data.content }}
-          />
-        </section>
       </div>
     </main>
   );

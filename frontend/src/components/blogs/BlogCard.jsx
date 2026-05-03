@@ -8,12 +8,19 @@ const BlogCard = ({ post }) => (
     <div className="relative flex flex-col bg-[#0E1E44]/90 backdrop-blur-xl rounded-2xl border border-[#08e5c0]/20 overflow-hidden group h-full cursor-pointer">
       {/* === Image Section === */}
       <div className="relative w-full h-52 overflow-hidden shrink-0">
-        <Image
-          src={post.image.url}
-          alt={post.title}
-          fill
-          className="object-cover"
-        />
+        {post.image?.url ? (
+          <Image
+            src={post.image.url}
+            alt={post.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full text-gray-500 text-sm">
+            No Image Available
+          </div>
+        )}
 
         {/* Category Tag */}
         <div className="absolute top-3 left-3 bg-[#08e5c0]/20 border border-[#08e5c0]/40 text-[#08e5c0] text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-md">
