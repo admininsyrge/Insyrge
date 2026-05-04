@@ -5,31 +5,49 @@ import React from "react";
 const GuaranteeSection = ({ data, title }) => {
   return (
     <section className="relative bg-[#081b33] text-white py-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 text-center">
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="text-3xl md:text-5xl font-bold mb-16 text-[#08e5c0]"
-        >
-          {title}
-          
-        </motion.h2>
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="w-[35%] h-[40%] bg-[#08e5c010] blur-[200px] rounded-full absolute bottom-0 left-[30%]" />
+      </div>
 
-        <div className="grid md:grid-cols-3 gap-10">
+      <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-[#08e5c0] bg-[#08e5c0]/10 border border-[#08e5c0]/20 mb-4">
+            Our Promise
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold">
+            {title || "Why Companies Choose"}{" "}
+            <span className="bg-gradient-to-r from-[#08e5c0] to-[#4dffe4] bg-clip-text text-transparent">
+              INSYRGE
+            </span>
+          </h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-8">
           {data.map((item, i) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.2, duration: 0.6 }}
-              className="bg-[#0c2344] border border-[#08e5c033] rounded-2xl p-8 hover:shadow-[0_0_25px_#08e5c033] transition-all"
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15, duration: 0.5 }}
+              className="glass-card glass-card-hover p-8 text-center group"
             >
-              <div className="text-[#08e5c0] text-4xl mb-4">{item.icon}</div>
-              <h3 className="text-xl font-semibold text-[#08e5c0] mb-2">
+              <div className="w-16 h-16 rounded-2xl bg-[#08e5c0]/10 border border-[#08e5c0]/20 flex items-center justify-center mx-auto mb-5 group-hover:bg-[#08e5c0]/20 transition-colors duration-300">
+                <span className="text-3xl">{item.icon}</span>
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-[#08e5c0] transition-colors">
                 {item.title}
               </h3>
-              <p className="text-gray-400 text-sm">{item.description}</p>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                {item.description}
+              </p>
             </motion.div>
           ))}
         </div>

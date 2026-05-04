@@ -17,9 +17,13 @@ const BlogCard = ({ post }) => (
             className="object-cover"
           />
         ) : (
-          <div className="flex items-center justify-center h-full text-gray-500 text-sm">
-            No Image Available
-          </div>
+          <Image
+            src={"https://placehold.net/default.png"}
+            alt={post.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+          />
         )}
 
         {/* Category Tag */}

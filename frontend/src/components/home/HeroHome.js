@@ -3,96 +3,130 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+import { Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/pagination";
-import { BASE_URL } from "@/API";
+import "swiper/css/effect-fade";
 
 const HeroHome = ({ data }) => {
   const sliderImages = data.sliderImages;
 
   return (
     <section className="relative w-full h-screen text-white overflow-hidden bg-[#081b33]">
-      {/* === Futuristic Background Layer === */}
-      <div className="absolute inset-0 bg-linear-to-b from-[#081b33] via-[#0a2642] to-[#081b33]" />
-      <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_20%_30%,#08e5c033,transparent_60%),radial-gradient(circle_at_80%_70%,#00e0ff33,transparent_60%)]" />
-      {/* Moving Light Beam */}
-      <motion.div
-        className="absolute inset-0 bg-linear-to-r from-transparent via-[#08e5c033] to-transparent"
-        animate={{ x: ["-150%", "150%"] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-      />
+      {/* === Background === */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#081b33] via-[#0a2642] to-[#081b33]" />
+      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_20%_30%,#08e5c025,transparent_50%),radial-gradient(circle_at_80%_70%,#00e0ff20,transparent_50%)]" />
 
       {/* === Slider (Full Screen) === */}
       <Swiper
-        modules={[Autoplay, Pagination]}
-        autoplay={{ delay: 4000, disableOnInteraction: false }}
-        pagination={{ clickable: true }}
+        modules={[Autoplay, EffectFade]}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        effect="fade"
+        fadeEffect={{ crossFade: true }}
         loop
-        speed={900}
+        speed={1200}
         className="w-full h-full"
       >
         {sliderImages.map((src, i) => (
           <SwiperSlide key={i}>
             <div className="relative w-full h-full">
-              {/* Background Image */}
               <Image
                 src={src.image.url}
                 alt={`Slide ${i + 1}`}
                 fill
-                className="object-cover transition-transform duration-1000 ease-in-out scale-105 hover:scale-110"
+                sizes="100vw"
+                className="object-cover"
                 priority={i === 0}
               />
 
-              {/* Overlay Tint */}
-              <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]" />
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-b from-[#081b33]/70 via-black/50 to-[#081b33]/80" />
 
-              {/* Futuristic Glow Circles */}
-              <div className="absolute top-[20%] left-[10%] w-64 h-64 bg-[#08e5c0]/20 rounded-full blur-[120px]" />
-              <div className="absolute bottom-[15%] right-[10%] w-64 h-64 bg-[#00e0ff]/20 rounded-full blur-[120px]" />
-
-              {/* Text Overlay */}
-              <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6">
-                <motion.h1
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                  className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight"
-                >
-                  {data.title}{" "}
-                  <span className="text-[#08e5c0] drop-shadow-[0_0_12px_#08e5c0]">
-                    Insyrge
-                  </span>
-                </motion.h1>
-
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1, delay: 0.2 }}
-                  className="max-w-2xl text-gray-300 mb-8 text-lg"
-                >
-                  {data.subtitle}
-                </motion.p>
-
-                <motion.a
-                  href="/services"
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: "0 0 25px rgba(8,229,192,0.7)",
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  className="inline-block bg-[#08e5c0] text-[#081b33] px-10 py-3 rounded-full font-semibold shadow-lg transition-all hover:bg-[#06d8b2]"
-                >
-                  {data.buttonText}
-                </motion.a>
-              </div>
+              {/* Glow accents */}
+              <div className="absolute top-[15%] left-[5%] w-80 h-80 bg-[#08e5c0]/10 rounded-full blur-[150px]" />
+              <div className="absolute bottom-[10%] right-[5%] w-80 h-80 bg-[#00e0ff]/10 rounded-full blur-[150px]" />
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
 
-      {/* === Optional: Bottom Subtle Glow Bar === */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-linear-to-r from-[#08e5c0] via-[#00e0ff] to-transparent opacity-60" />
+      {/* === Text Content (overlaid on slider) === */}
+      <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center px-6">
+        {/* Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-6"
+        >
+          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium bg-[#08e5c0]/10 text-[#08e5c0] border border-[#08e5c0]/20 backdrop-blur-sm">
+            <span className="w-2 h-2 rounded-full bg-[#08e5c0] animate-pulseGlow" />
+            Zoho Premium Partner
+          </span>
+        </motion.div>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-5 leading-[1.1] max-w-5xl"
+        >
+          {data.title}{" "}
+          <span className="bg-gradient-to-r from-[#08e5c0] to-[#4dffe4] bg-clip-text text-transparent">
+            Insyrge
+          </span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="max-w-2xl text-gray-300/90 mb-10 text-base sm:text-lg leading-relaxed"
+        >
+          {data.subtitle}
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.45 }}
+          className="flex flex-col sm:flex-row gap-4"
+        >
+          <a
+            href="/services"
+            className="inline-block bg-[#08e5c0] text-[#081b33] px-10 py-3.5 rounded-full font-semibold text-base shadow-lg animate-ctaPulse hover:scale-105 transition-transform duration-300"
+          >
+            {data.buttonText || "Explore Services"}
+          </a>
+          <a
+            href="https://insyrge.zohobookings.com/#/4623360000000149002"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block border border-[#08e5c0]/40 text-[#08e5c0] px-10 py-3.5 rounded-full font-semibold text-base backdrop-blur-sm hover:bg-[#08e5c0]/10 hover:border-[#08e5c0]/60 transition-all duration-300"
+          >
+            Book Free Consultation
+          </a>
+        </motion.div>
+      </div>
+
+      {/* === Scroll indicator === */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+      >
+        <span className="text-gray-400 text-xs tracking-widest uppercase">Scroll</span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+          className="w-5 h-8 rounded-full border-2 border-gray-500 flex items-start justify-center p-1"
+        >
+          <div className="w-1 h-2 bg-[#08e5c0] rounded-full" />
+        </motion.div>
+      </motion.div>
+
+      {/* === Bottom accent === */}
+      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#08e5c0]/50 to-transparent z-10" />
     </section>
   );
 };

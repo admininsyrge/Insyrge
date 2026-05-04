@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { BASE_URL, BASE_URL_USER } from "@/API";
+import { BASE_URL_USER } from "@/API";
 import ExtensionDetails from "@/components/extensions/ExtensionDetails";
 
 export default function ExtensionSlugPage() {
@@ -37,8 +37,13 @@ export default function ExtensionSlugPage() {
   // === Loading State ===
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[#0B1C3D] text-gray-400 text-xl animate-pulse">
-        Loading extension details...
+      <div className="skeleton-content py-8">
+        <div className="skeleton skeleton-title mb-6"></div>
+        <div className="skeleton skeleton-block mb-4"></div>
+        <div className="skeleton skeleton-line mb-3"></div>
+        <div className="skeleton skeleton-line mb-3"></div>
+        <div className="skeleton skeleton-line-short mb-3"></div>
+        <div className="skeleton skeleton-block mt-6"></div>
       </div>
     );
   }
@@ -46,8 +51,10 @@ export default function ExtensionSlugPage() {
   // === Error or Not Found ===
   if (error || !extension) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[#0B1C3D] text-white text-2xl">
-        {error || "Extension not found ⚡"}
+      <div className="text-center py-16">
+        <h2 className="text-2xl font-semibold text-gray-400 mb-4">
+          {error || "Extension not found ⚡"}
+        </h2>
       </div>
     );
   }

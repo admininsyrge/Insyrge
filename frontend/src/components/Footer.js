@@ -21,9 +21,12 @@ const Footer = () => {
 
   return (
     <footer className="relative bg-[#081b33] text-gray-300 py-16 px-6 sm:px-10 overflow-hidden">
+      {/* === Decorative Top Border === */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#08e5c0]/50 to-transparent" />
+
       {/* === Background Glow Effects === */}
-      <div className="absolute -top-20 -right-20 w-72 h-72 bg-[#08e5c025] blur-[160px] rounded-full opacity-30" />
-      <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-[#08e5c020] blur-[160px] rounded-full opacity-20" />
+      <div className="absolute -top-20 -right-20 w-72 h-72 bg-[#08e5c020] blur-[180px] rounded-full opacity-25" />
+      <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-[#08e5c015] blur-[180px] rounded-full opacity-20" />
 
       {/* === Main Footer Content === */}
       <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">

@@ -26,7 +26,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         <meta
           name="google-site-verification"
@@ -49,7 +49,6 @@ export default function RootLayout({ children }) {
           src="https://cdn.pagesense.io/js/851039329/fe82d17f52e84f93bcbfafeffc63b037.js"
           strategy="afterInteractive"
         />
-        ;
       </body>
     </html>
   );
