@@ -31,7 +31,7 @@ async function getExtensionsList() {
 }
 
 export default async function OverviewPage({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
 
   // Fetch overview + sidebar extensions in parallel
   const [data, extensions] = await Promise.all([

@@ -30,7 +30,7 @@ async function getExtensionsList() {
 }
 
 export default async function CaseStudyPage({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const [data, extensions] = await Promise.all([
     getCaseStudy(slug),

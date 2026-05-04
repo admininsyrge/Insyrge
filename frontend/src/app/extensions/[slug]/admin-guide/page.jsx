@@ -31,7 +31,7 @@ async function getExtensionsList() {
 }
 
 export default async function AdminGuidePage({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const [data, extensions] = await Promise.all([
     getAdminGuide(slug),
