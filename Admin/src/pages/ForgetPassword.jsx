@@ -1,24 +1,13 @@
 import { useState } from "react";
-import Form from "react-bootstrap/esm/Form";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/esm/Button";
-import Col from "react-bootstrap/esm/Col";
-import Row from "react-bootstrap/esm/Row";
-import loginimg from "../Assets/Images/Phrase_box_Logo.jpg";
-import logo from "../Assets/Images/Logos/png/phraselogo.png";
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BASE_URL_ADMIN, FORGOT_PASSWORD } from "../API";
 import Loader from "../components/Loader";
 
 function ForgetPassword() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,13 +20,8 @@ function ForgetPassword() {
         navigate("/login");
       }
     } catch (error) {
-      if (error.response && error.response.data) {
-        const errorMessage =
-          error.response.data.error_description || "An error occurred";
-        toast.error(errorMessage);
-      } else {
-        toast.error("An error occurred");
-      }
+      const errorMessage = error.response?.data?.error_description || "An error occurred";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -46,64 +30,38 @@ function ForgetPassword() {
   return (
     <>
       <Loader isLoading={isLoading} />
-      <section className="login-section">
-        <div className="container-fluid g-0">
-          <Row className="row-min-h">
-            <Col lg={6} className="img-n">
-              <div className="upper-fig-main-login">
-                <figure className="login-img-main">
-                  <img src={loginimg} alt="" />
-                </figure>
-              </div>
-            </Col>
-            <Col lg={6}>
-              <div className="inner-login-mian">
-                <div className="loginupper-right">
-                  <figure
-                    className="creden_page_logo"
-                    onClick={() => navigate("/")}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <img src={logo} alt="" className="img-fluid" />
-                  </figure>
-                  <h2>Forgot Password</h2>
-                  <p className="forg-pass-text">
-                    Don’t worry we will help you to recover your password
-                  </p>
-                  <Form onSubmit={handleSubmit(submitHandler)}>
-                    <Row>
-                      <Col md={12}>
-                        <Form.Group
-                          controlId="formGridEmail"
-                          className="comn-class-inputs"
-                        >
-                          <Form.Label>email address</Form.Label>
-                          <Form.Control
-                            type="email"
-                            placeholder="Enter Your Email Address"
-                            {...register("email", { required: true })}
-                          />
-                          {errors.email && (
-                            <span className="error">E-mail is required</span>
-                          )}
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                    <Button className="login-btn" type="submit">
-                      Reset Password
-                    </Button>
-                    <div className="text-center mt-3">
-                      <Link to="/" className="link_back_btn">
-                        Back to Login
-                      </Link>
-                    </div>
-                  </Form>
-                </div>
-              </div>
-            </Col>
-          </Row>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black p-6">
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 lg:p-10">
+          <div className="text-center mb-8">
+            <img src="/logo.png" alt="Insyrge" className="h-12 mx-auto mb-6 cursor-pointer" onClick={() => navigate("/")} />
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Forgot Password</h2>
+            <p className="text-gray-500 text-sm">Don't worry, we'll help you recover your password</p>
+          </div>
+
+          <form onSubmit={handleSubmit(submitHandler)} className="space-y-5">
+            <div>
+              <label className="form-label">Email Address</label>
+              <input
+                type="email"
+                className="form-input"
+                placeholder="Enter Your Email Address"
+                {...register("email", { required: true })}
+              />
+              {errors.email && <span className="error-text">E-mail is required</span>}
+            </div>
+
+            <button type="submit" className="w-full py-3 bg-brand-900 text-white rounded-xl font-semibold hover:bg-black transition-colors">
+              Reset Password
+            </button>
+
+            <div className="text-center">
+              <Link to="/" className="text-sm text-gray-500 hover:text-brand-900 transition-colors">
+                ← Back to Login
+              </Link>
+            </div>
+          </form>
         </div>
-      </section>
+      </div>
     </>
   );
 }

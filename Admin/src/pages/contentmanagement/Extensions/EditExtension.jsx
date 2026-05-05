@@ -143,7 +143,7 @@ const EditExtension = () => {
   // ✅ UI
   return (
     <>
-      <Breadcrumb className="cstm_bredcrumb">
+      <Breadcrumb className="mb-5">
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/extensions" }}>
           Extensions Management
         </Breadcrumb.Item>
@@ -152,12 +152,12 @@ const EditExtension = () => {
 
       <section>
         <div className="col-12">
-          <div className="comn-back-white">
-            <h3 className="heading-view-med">Edit Extension</h3>
+          <div className="card">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Edit Extension</h3>
 
             <Form onSubmit={handleSubmit(onSubmit)}>
               {/* Title */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Title *</Form.Label>
                 <Form.Control
                   type="text"
@@ -170,13 +170,13 @@ const EditExtension = () => {
               </Form.Group>
 
               {/* Slug */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Slug</Form.Label>
                 <Form.Control type="text" {...register("slug")} readOnly />
               </Form.Group>
 
               {/* Description */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Short Description *</Form.Label>
                 <Form.Control
                   type="text"
@@ -193,7 +193,7 @@ const EditExtension = () => {
               </Form.Group>
 
               {/* Long Description */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Long Description *</Form.Label>
                 <Controller
                   name="longDescription"
@@ -216,7 +216,7 @@ const EditExtension = () => {
               </Form.Group>
 
               {/* Link */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Extension Link *</Form.Label>
                 <Form.Control
                   type="text"
@@ -229,7 +229,7 @@ const EditExtension = () => {
               </Form.Group>
 
               {/* Image */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Upload New Image (optional)</Form.Label>
                 <Form.Control
                   type="file"
@@ -244,7 +244,7 @@ const EditExtension = () => {
                       <img
                         src={getImageUrl(existingImage)}
                         alt="Existing"
-                        className="img-thumbnail"
+                        className="rounded-lg border border-gray-200 object-cover"
                         width="200"
                       />
                     </div>
@@ -255,7 +255,7 @@ const EditExtension = () => {
                       <img
                         src={URL.createObjectURL(watch("image")[0])}
                         alt="Preview"
-                        className="img-thumbnail"
+                        className="rounded-lg border border-gray-200 object-cover"
                         width="200"
                       />
                     </div>
@@ -264,7 +264,7 @@ const EditExtension = () => {
               </Form.Group>
 
               {/* Features */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Features *</Form.Label>
                 {featureFields.map((item, index) => (
                   <div
@@ -309,7 +309,7 @@ const EditExtension = () => {
               </Form.Group>
 
               {/* Benefits */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Benefits *</Form.Label>
                 {benefitFields.map((item, index) => (
                   <div
@@ -355,7 +355,7 @@ const EditExtension = () => {
 
               {/* Submit */}
               <Button
-                className="comn-btn-pair mt-3"
+                className="btn-primary mt-4"
                 type="submit"
                 disabled={loading || isSubmitting}
               >

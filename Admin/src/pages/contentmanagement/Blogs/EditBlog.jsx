@@ -114,7 +114,7 @@ const EditBlog = () => {
   return (
     <>
       <Breadcrumb
-        className="cstm_bredcrumb"
+        className="mb-5"
         listProps={{ className: "breadcrumb-custom-separator" }}
       >
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/blogs" }}>
@@ -126,12 +126,12 @@ const EditBlog = () => {
       <section>
         <div className="row">
           <div className="col-12">
-            <div className="comn-back-white">
-              <h3 className="heading-view-med">Edit Blog</h3>
+            <div className="card">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">Edit Blog</h3>
 
               <form onSubmit={handleSubmit}>
                 {/* Title */}
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Blog Title *</Form.Label>
                   <Form.Control
                     type="text"
@@ -143,7 +143,7 @@ const EditBlog = () => {
                 </Form.Group>
 
                 {/* Slug (Auto-generated, editable if needed) */}
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Slug</Form.Label>
                   <Form.Control
                     type="text"
@@ -158,7 +158,7 @@ const EditBlog = () => {
                 </Form.Group>
 
                 {/* SubTitle */}
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Sub Title *</Form.Label>
                   <Form.Control
                     type="text"
@@ -170,7 +170,7 @@ const EditBlog = () => {
                 </Form.Group>
 
                 {/* Author */}
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Author</Form.Label>
                   <Form.Control
                     type="text"
@@ -181,7 +181,7 @@ const EditBlog = () => {
                 </Form.Group>
 
                 {/* Category */}
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Category</Form.Label>
                   <Form.Control
                     type="text"
@@ -192,7 +192,7 @@ const EditBlog = () => {
                 </Form.Group>
 
                 {/* Short Description */}
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Short Description</Form.Label>
                   <Form.Control
                     as="textarea"
@@ -204,7 +204,7 @@ const EditBlog = () => {
                 </Form.Group>
 
                 {/* Description */}
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Blog Description *</Form.Label>
                   <RichTextEditor
                     value={description}
@@ -215,7 +215,7 @@ const EditBlog = () => {
                 </Form.Group>
 
                 {/* Image Section */}
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Upload Cover Image</Form.Label>
                   <Form.Control
                     type="file"
@@ -230,7 +230,7 @@ const EditBlog = () => {
                         <img
                           src={getImageUrl(existingImage)}
                           alt="Existing"
-                          className="img-thumbnail"
+                          className="rounded-lg border border-gray-200 object-cover"
                           width="200"
                           onError={handleImageError}
                         />
@@ -243,7 +243,7 @@ const EditBlog = () => {
                         <img
                           src={URL.createObjectURL(image)}
                           alt="Preview"
-                          className="img-thumbnail"
+                          className="rounded-lg border border-gray-200 object-cover"
                           width="200"
                         />
                       </div>
@@ -253,7 +253,7 @@ const EditBlog = () => {
 
                 {/* Submit */}
                 <Button
-                  className="comn-btn-pair mt-3"
+                  className="btn-primary mt-4"
                   type="submit"
                   disabled={loading}
                 >

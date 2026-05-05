@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Form from "react-bootstrap/esm/Form";
-import Col from "react-bootstrap/esm/Col";
-import Row from "react-bootstrap/esm/Row";
-import prescript from "../Assets/Images/blank.png";
-import editProfile from "../Assets/Images/edit_profile.svg";
 import { BASE_URL_ADMIN, UPLOAD_IMAGE, USER_DETAILS } from "../API";
 import { useDispatch } from "react-redux";
 import axios from "axios";
@@ -12,6 +7,7 @@ import { toast } from "react-toastify";
 import { setUser } from "../redux/slices/AdminDetails";
 import Loader from "../components/Loader";
 import { getImageUrl, handleImageError } from "../utils/imageUtils";
+import { Camera, Pencil, Lock } from "lucide-react";
 
 function Profile() {
   const token = localStorage.getItem("token");
@@ -28,9 +24,7 @@ function Profile() {
     setIsLoading(true);
     try {
       const headers = { token: token };
-      const response = await axios.get(BASE_URL_ADMIN + USER_DETAILS, {
-        headers,
-      });
+      const response = await axios.get(BASE_URL_ADMIN + USER_DETAILS, { headers });
       if (response.status === 200 && response.data.code === 200) {
         setUserDetail(response.data.data[0]);
         dispatch(setUser(response.data.data[0]));
@@ -51,7 +45,7 @@ function Profile() {
     }
     const file = e.target.files[0];
     if (!allowedTypes.includes(file.type)) {
-      toast.error("Only JPG, and PNG files are allowed.");
+      toast.error("Only JPG and PNG files are allowed.");
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
@@ -67,18 +61,13 @@ function Profile() {
       const headers = { token: token, "Content-Type": "multipart/form-data" };
       const formdata = new FormData();
       formdata.append("file", file);
-      const response = await axios.post(
-        BASE_URL_ADMIN + UPLOAD_IMAGE,
-        formdata,
-        { headers },
-      );
+      const response = await axios.post(BASE_URL_ADMIN + UPLOAD_IMAGE, formdata, { headers });
       if (response.data.code === 200 && response.data.status === true) {
         toast.success(response?.data?.message);
         getUserDetail();
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error_description || "An error occurred";
+      const errorMessage = error.response?.data?.error_description || "An error occurred";
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -88,103 +77,66 @@ function Profile() {
   return (
     <>
       <Loader isLoading={isLoading} />
-      <section>
-        <div className="comn-back-white">
-          <h3 className="heading-view-med">My Profile</h3>
-          <div className="comm_form_border_box mt-4">
-            <section className="back-comn-img">
-              <div className="custm-container">
-                <div className="profile_main_page edit-profile-amin">
-                  <Form>
-                    <div className="my-profile-left d-flex employer_logo_edit">
-                      <div className="profile-pic">
-                        <label className="label" htmlFor="file">
-                          <span className="glyphicon glyphicon-camera">
-                            <img
-                              src={editProfile}
-                              alt=""
-                              className="img-fluid"
-                            />
-                          </span>
-                        </label>
-                        <Form.Control
-                          id="file"
-                          type="file"
-                          name="profile_picture"
-                          onChange={uploadImage}
-                          accept="image/png, image/jpg, image/jpeg"
-                        />
-                        <figure className="profile-img-edit">
-                          <img
-                            src={getImageUrl(userDetail?.image)}
-                            alt="Profile"
-                            className="img-fluid"
-                            onError={handleImageError}
-                          />
-                        </figure>
-                      </div>
-                      <div className="pair-btns-comn d-flex align-items-center gap-3">
-                        <div
-                          onClick={() =>
-                            navigate("/edit-profile", {
-                              state: { ...userDetail },
-                            })
-                          }
-                        >
-                          <Link className="comn-btn-pair btn btn-primary">
-                            Edit Profile
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                    <Row>
-                      <Col md={12}>
-                        <Form.Group
-                          controlId="formGridPassword"
-                          className="comn-class-inputs"
-                        >
-                          <Form.Label>Full Name</Form.Label>
-                          <Form.Control
-                            type="text"
-                            placeholder="Enter Your Full Name"
-                            defaultValue={userDetail?.name}
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
-                      <Col md={12}>
-                        <Form.Group
-                          controlId="formGridEmail"
-                          className="comn-class-inputs"
-                        >
-                          <Form.Label>Email Address</Form.Label>
-                          <Form.Control
-                            type="email"
-                            placeholder="Enter Your Email Address"
-                            defaultValue={userDetail?.email}
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                    <div className="profile_main_btm_sec">
-                      <div className="d-flex cmm_prf_btm_row profile_auto_pay_row">
-                        <h6>Do you want to update your password?</h6>
-                        <Link
-                          className="comn-btn-pair btn btn-primary"
-                          to="/change-password"
-                        >
-                          Change Password
-                        </Link>
-                      </div>
-                    </div>
-                  </Form>
-                </div>
-              </div>
-            </section>
+
+      {/* Profile Header Card */}
+      <div className="card mb-6">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+          {/* Avatar with upload */}
+          <div className="relative group shrink-0">
+            <img
+              src={getImageUrl(userDetail?.image)}
+              alt="Profile"
+              className="w-28 h-28 rounded-full object-cover ring-4 ring-gray-100"
+              onError={handleImageError}
+            />
+            <label
+              htmlFor="profile-upload"
+              className="absolute bottom-1 right-1 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-emerald-600 transition-colors shadow-lg ring-2 ring-white"
+            >
+              <Camera size={14} className="text-white" />
+            </label>
+            <input
+              id="profile-upload"
+              type="file"
+              className="hidden"
+              onChange={uploadImage}
+              accept="image/png, image/jpg, image/jpeg"
+            />
+          </div>
+
+          {/* Info + Actions */}
+          <div className="flex-1 text-center sm:text-left">
+            <h3 className="text-2xl font-bold text-gray-900">{userDetail?.name || "—"}</h3>
+            <p className="text-gray-500 mt-1">{userDetail?.email || "—"}</p>
+            <div className="flex flex-wrap gap-3 mt-4 justify-center sm:justify-start">
+              <button
+                onClick={() => navigate("/edit-profile", { state: { ...userDetail } })}
+                className="btn-primary text-sm"
+              >
+                <Pencil size={14} className="mr-2" /> Edit Profile
+              </button>
+              <Link to="/change-password" className="btn-secondary text-sm">
+                <Lock size={14} className="mr-2" /> Change Password
+              </Link>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* Profile Details Card */}
+      <div className="card">
+        <h4 className="text-lg font-semibold text-gray-800 mb-5">Account Information</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="bg-gray-50 rounded-xl p-4">
+            <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Full Name</p>
+            <p className="text-base font-semibold text-gray-800">{userDetail?.name || "—"}</p>
+          </div>
+          <div className="bg-gray-50 rounded-xl p-4">
+            <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Email Address</p>
+            <p className="text-base font-semibold text-gray-800">{userDetail?.email || "—"}</p>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

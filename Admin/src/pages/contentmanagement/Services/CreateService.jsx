@@ -99,7 +99,7 @@ const CreateService = () => {
 
   return (
     <>
-      <Breadcrumb className="cstm_bredcrumb">
+      <Breadcrumb className="mb-5">
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/services" }}>
           Services Management
         </Breadcrumb.Item>
@@ -108,12 +108,12 @@ const CreateService = () => {
 
       <section>
         <div className="col-12">
-          <div className="comn-back-white">
-            <h3 className="heading-view-med">Create New Service</h3>
+          <div className="card">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Create New Service</h3>
 
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* Title */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Title *</Form.Label>
                 <Form.Control
                   type="text"
@@ -127,7 +127,7 @@ const CreateService = () => {
               </Form.Group>
 
               {/* Slug */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Slug *</Form.Label>
                 <Form.Control
                   type="text"
@@ -146,7 +146,7 @@ const CreateService = () => {
               </Form.Group>
 
               {/* Description */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Description *</Form.Label>
                 <Controller
                   name="description"
@@ -169,7 +169,7 @@ const CreateService = () => {
               </Form.Group>
 
               {/* Points */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Points *</Form.Label>
                 {fields.map((item, index) => (
                   <div key={item.id} className="d-flex align-items-center mb-2">
@@ -196,7 +196,7 @@ const CreateService = () => {
                 ))}
 
                 <Button
-                  className="comn-btn-pair mt-3"
+                  className="btn-primary mt-4"
                   size="sm"
                   type="button"
                   onClick={() => append({ value: "" })}
@@ -212,7 +212,7 @@ const CreateService = () => {
               </Form.Group>
 
               {/* URL */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>URL *</Form.Label>
                 <Form.Control
                   type="text"
@@ -225,7 +225,7 @@ const CreateService = () => {
               </Form.Group>
 
               {/* Button Text */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Button Text *</Form.Label>
                 <Form.Control
                   type="text"
@@ -240,7 +240,7 @@ const CreateService = () => {
               </Form.Group>
 
               {/* Image */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Upload Image *</Form.Label>
                 <Form.Control
                   type="file"
@@ -261,7 +261,7 @@ const CreateService = () => {
                     <img
                       src={imagePreview}
                       alt="Preview"
-                      className="img-thumbnail"
+                      className="rounded-lg border border-gray-200 object-cover"
                       width="200"
                     />
                   </div>
@@ -273,7 +273,7 @@ const CreateService = () => {
               </Form.Group>
 
               <Button
-                className="comn-btn-pair mt-3"
+                className="btn-primary mt-4"
                 type="submit"
                 disabled={loading}
               >

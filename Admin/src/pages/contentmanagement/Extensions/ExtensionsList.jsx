@@ -71,12 +71,12 @@ function ExtensionsList() {
   return (
     <>
       <Loader isLoading={isLoading} />
-      <section className="back-dashboard-sec comn-dashboard-page">
-        <div className="main-notification-messege">
-          <div className="notifi-list d-flex justify-content-between align-items-center">
+      <section className="">
+        <div className="">
+          <div className="flex items-center justify-between mb-6">
             <h6>Extensions Management</h6>
-            <div className="dropdowns-inner-list d-flex">
-              <div className="icon-search-main">
+            <div className="flex items-center gap-3">
+              <div className="">
                 <Form.Control
                   type="text"
                   placeholder="Search Extension..."
@@ -92,10 +92,10 @@ function ExtensionsList() {
               </button>
             </div>
           </div>
-          <div className="notification-table pt-0">
+          <div className="overflow-x-auto mt-6">
             <Table responsive bordered hover>
               <thead>
-                <tr className="head-class-td">
+                <tr className="bg-gray-50">
                   <th>Sr. No.</th>
                   <th>Title</th>
                   <th>Link</th>
@@ -131,7 +131,7 @@ function ExtensionsList() {
                         }}
                       />
                       <td>
-                        <div className="d-flex table_action_btn_group">
+                        <div className="flex items-center gap-2">
                           <Button
                             variant="info"
                             size="sm"
@@ -187,22 +187,22 @@ function ExtensionsList() {
         onHide={() => setShow(false)}
         centered
         size={isDeleteModal ? "md" : "lg"}
-        className="comm_modal cst_inner_wid_modal"
+        className=""
       >
         {isDeleteModal ? (
           <Modal.Body className="text-center p-4">
-            <div className="img-modal mb-3">
+            <div className="flex justify-center mb-4">
               <img src={Delt} alt="Delete" width="70" />
             </div>
             <h4 className="heading mb-3">
               Are you sure you want to delete this extension?
             </h4>
             <div className="d-flex justify-content-center gap-2">
-              <Button className="comn-modal-btns-blue" onClick={handleDelete}>
+              <Button className="btn-primary" onClick={handleDelete}>
                 Yes, Delete
               </Button>
               <Button
-                className="comn-modal-btns-transparent"
+                className="btn-secondary"
                 onClick={() => setShow(false)}
               >
                 Cancel

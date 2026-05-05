@@ -48,7 +48,7 @@ function EditProfile() {
     <>
       <Loader isLoading={isLoading} />
       <Breadcrumb
-        className="cstm_bredcrumb"
+        className="mb-5"
         listProps={{ className: "breadcrumb-custom-separator" }}
       >
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/profile" }}>
@@ -57,16 +57,16 @@ function EditProfile() {
         <Breadcrumb.Item active>Edit Profile</Breadcrumb.Item>
       </Breadcrumb>
       <section>
-        <div className="comn-back-white">
-          <h3 className="heading-view-med">Update Profile</h3>
-          <div className="comm_form_border_box mt-4">
-            <section className="back-comn-img">
-              <div className="custm-container">
-                <div className="edit-profile-amin">
+        <div className="card">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">Update Profile</h3>
+          <div className="mt-6">
+            <section className="">
+              <div className="">
+                <div className="">
                   <Form>
                     <Row>
                       <Col md={6}>
-                        <Form.Group className="comn-class-inputs">
+                        <Form.Group className="mb-4">
                           <Form.Label>Full Name</Form.Label>
                           <Form.Control
                             type="text"
@@ -106,7 +106,7 @@ function EditProfile() {
                       <Col md={6}>
                         <Form.Group
                           controlId="formGridEmail"
-                          className="comn-class-inputs"
+                          className="mb-4"
                         >
                           <Form.Label>Email Address</Form.Label>
                           <Form.Control
@@ -118,15 +118,15 @@ function EditProfile() {
                         </Form.Group>
                       </Col>
                     </Row>
-                    <div className="pair-btns-comn d-flex align-items-center gap-3 mt-3">
+                    <div className="flex items-center gap-3 mt-6">
                       <Button
-                        className="comn-btn-pair"
+                        className="btn-primary"
                         onClick={() => updateProfile()}
                       >
                         Update Profile
                       </Button>
                       <Button
-                        className="comn-btn-pair back-white-btn"
+                        className="btn-secondary"
                         onClick={() => navigate("/profile")}
                       >
                         Discard

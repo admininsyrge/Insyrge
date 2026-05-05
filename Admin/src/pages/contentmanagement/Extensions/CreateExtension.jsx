@@ -113,7 +113,7 @@ const CreateExtension = () => {
   // ------------------ UI ------------------
   return (
     <>
-      <Breadcrumb className="cstm_bredcrumb">
+      <Breadcrumb className="mb-5">
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/extensions" }}>
           Extensions Management
         </Breadcrumb.Item>
@@ -122,12 +122,12 @@ const CreateExtension = () => {
 
       <section>
         <div className="col-12">
-          <div className="comn-back-white">
-            <h3 className="heading-view-med">Create New Extension</h3>
+          <div className="card">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Create New Extension</h3>
 
             <Form onSubmit={handleSubmit(onSubmit)}>
               {/* TITLE */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Title *</Form.Label>
                 <Form.Control
                   type="text"
@@ -140,13 +140,13 @@ const CreateExtension = () => {
               </Form.Group>
 
               {/* SLUG */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Slug (auto-generated)</Form.Label>
                 <Form.Control type="text" {...register("slug")} readOnly />
               </Form.Group>
 
               {/* SHORT DESCRIPTION */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Short Description *</Form.Label>
                 <Form.Control
                   type="text"
@@ -163,7 +163,7 @@ const CreateExtension = () => {
               </Form.Group>
 
               {/* LONG DESCRIPTION */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Long Description *</Form.Label>
                 <Controller
                   name="longDescription"
@@ -186,7 +186,7 @@ const CreateExtension = () => {
               </Form.Group>
 
               {/* LINK */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Extension Link *</Form.Label>
                 <Form.Control
                   type="text"
@@ -199,7 +199,7 @@ const CreateExtension = () => {
               </Form.Group>
 
               {/* IMAGE + PREVIEW */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Upload Image *</Form.Label>
                 <Form.Control
                   type="file"
@@ -227,7 +227,7 @@ const CreateExtension = () => {
               </Form.Group>
 
               {/* FEATURES */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Features *</Form.Label>
                 {featureFields.map((item, index) => (
                   <div
@@ -272,7 +272,7 @@ const CreateExtension = () => {
               </Form.Group>
 
               {/* BENEFITS */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Benefits *</Form.Label>
                 {benefitFields.map((item, index) => (
                   <div
@@ -318,7 +318,7 @@ const CreateExtension = () => {
 
               {/* SUBMIT */}
               <Button
-                className="comn-btn-pair mt-3"
+                className="btn-primary mt-4"
                 type="submit"
                 disabled={isSubmitting}
               >

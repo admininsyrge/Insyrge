@@ -70,7 +70,7 @@ function ChangePassword() {
     <>
       <Loader isLoading={isLoading} />
       <Breadcrumb
-        className="cstm_bredcrumb"
+        className="mb-5"
         listProps={{ className: "breadcrumb-custom-separator" }}
       >
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/profile" }}>
@@ -79,18 +79,18 @@ function ChangePassword() {
         <Breadcrumb.Item active>Change Password</Breadcrumb.Item>
       </Breadcrumb>
       <section>
-        <div className="comn-back-white">
-          <h3 className="heading-view-med">Change password</h3>
-          <div className="comm_form_border_box  mt-4">
-            <section className="back-comn-img">
-              <div className="custm-container">
-                <div className="edit-profile-amin">
+        <div className="card">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">Change password</h3>
+          <div className="mt-6">
+            <section className="">
+              <div className="">
+                <div className="">
                   <Form onSubmit={handleSubmit(changePasswordHandler)}>
                     <Row>
                       <Col md={6}>
-                        <Form.Group className="comn-class-inputs">
+                        <Form.Group className="mb-4">
                           <Form.Label>Old Password</Form.Label>
-                          <div className="cstPassGroup">
+                          <div className="relative">
                             <Form.Control
                               type={showPassword1 ? "text" : "password"}
                               placeholder="Enter Old Password"
@@ -100,7 +100,7 @@ function ChangePassword() {
                             />
                             <div
                               onClick={() => setShowPassword1(!showPassword1)}
-                              className="eyeToggleBtn"
+                              className="password-toggle"
                             >
                               {showPassword1 ? (
                                 <AiOutlineEye />
@@ -110,16 +110,16 @@ function ChangePassword() {
                             </div>
                           </div>
                           {errors.old_password && (
-                            <p className="error">
+                            <p className="text-red-500 text-xs mt-1">
                               {errors.old_password.message}
                             </p>
                           )}
                         </Form.Group>
                       </Col>
                       <Col md={6}>
-                        <Form.Group className="comn-class-inputs">
+                        <Form.Group className="mb-4">
                           <Form.Label>New Password</Form.Label>
-                          <div className="cstPassGroup">
+                          <div className="relative">
                             <Form.Control
                               type={showPassword2 ? "text" : "password"}
                               placeholder="Enter New Password"
@@ -131,20 +131,16 @@ function ChangePassword() {
                                     "Password must be less than 25 characters",
                                 },
                                 pattern: {
-                                  value: /^\S*$/,
-                                  message: "Password should not contain spaces",
-                                },
-                                pattern: {
                                   value:
-                                    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/,
+                                    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])\S{8,}$/,
                                   message:
-                                    "New password must be at least 8 characters long with uppercase, lowercase, number, special character, and no spaces.",
+                                    "Must be 8+ chars with uppercase, lowercase, number, special char, and no spaces.",
                                 },
                               })}
                             />
                             <div
                               onClick={() => setShowPassword2(!showPassword2)}
-                              className="eyeToggleBtn"
+                              className="password-toggle"
                             >
                               {showPassword2 ? (
                                 <AiOutlineEye />
@@ -154,16 +150,16 @@ function ChangePassword() {
                             </div>
                           </div>
                           {errors.new_password && (
-                            <p className="error">
+                            <p className="text-red-500 text-xs mt-1">
                               {errors.new_password.message}
                             </p>
                           )}
                         </Form.Group>
                       </Col>
                       <Col md={6}>
-                        <Form.Group className="comn-class-inputs">
+                        <Form.Group className="mb-4">
                           <Form.Label>Confirm New Password</Form.Label>
-                          <div className="cstPassGroup">
+                          <div className="relative">
                             <Form.Control
                               type={showPassword3 ? "text" : "password"}
                               placeholder="Confirm New Password"
@@ -176,7 +172,7 @@ function ChangePassword() {
                             />
                             <div
                               onClick={() => setShowPassword3(!showPassword3)}
-                              className="eyeToggleBtn"
+                              className="password-toggle"
                             >
                               {showPassword3 ? (
                                 <AiOutlineEye />
@@ -186,19 +182,19 @@ function ChangePassword() {
                             </div>
                           </div>
                           {errors.new_password2 && (
-                            <p className="error">
+                            <p className="text-red-500 text-xs mt-1">
                               {errors.new_password2.message}
                             </p>
                           )}
                         </Form.Group>
                       </Col>
                     </Row>
-                    <div className="pair-btns-comn d-flex align-items-center gap-3 mt-3">
-                      <Button className="comn-btn-pair" type="submit">
+                    <div className="flex items-center gap-3 mt-6">
+                      <Button className="btn-primary" type="submit">
                         Update Password
                       </Button>
                       <Button
-                        className="comn-btn-pair back-white-btn"
+                        className="btn-secondary"
                         onClick={() => navigate("/profile")}
                       >
                         Discard

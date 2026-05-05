@@ -145,7 +145,7 @@ const EditStaticPage = () => {
   return (
     <>
       {/* Breadcrumb */}
-      <Breadcrumb className="cstm_bredcrumb">
+      <Breadcrumb className="mb-5">
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: `/pages/${pageType}` }}>
           {pageLabel} Management
         </Breadcrumb.Item>
@@ -159,16 +159,16 @@ const EditStaticPage = () => {
       {/* Main Section */}
       <section>
         <div className="col-12">
-          <div className="comn-back-white">
+          <div className="card">
             {/* Heading */}
-            <h3 className="heading-view-med">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
               Edit {pageLabel}
               {selectedExtensionTitle ? ` – ${selectedExtensionTitle}` : ""}
             </h3>
 
             <Form onSubmit={handleSubmit(onSubmit)}>
               {/* Extension Dropdown */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Select Extension *</Form.Label>
                 <Form.Select
                   {...register("extensionId", {
@@ -190,7 +190,7 @@ const EditStaticPage = () => {
               </Form.Group>
 
               {/* Title */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Title *</Form.Label>
                 <Form.Control
                   type="text"
@@ -203,7 +203,7 @@ const EditStaticPage = () => {
               </Form.Group>
 
               {/* Content */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Content *</Form.Label>
 
                 <Controller
@@ -229,7 +229,7 @@ const EditStaticPage = () => {
 
               {/* Submit Button */}
               <Button
-                className="comn-btn-pair mt-3"
+                className="btn-primary mt-4"
                 type="submit"
                 disabled={loading || isSubmitting}
               >

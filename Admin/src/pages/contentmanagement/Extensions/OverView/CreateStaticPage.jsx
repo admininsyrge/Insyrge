@@ -96,7 +96,7 @@ const CreateStaticPage = () => {
 
   return (
     <>
-      <Breadcrumb className="cstm_bredcrumb">
+      <Breadcrumb className="mb-5">
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: `/pages/${pageType}` }}>
           {pageLabel} Management
         </Breadcrumb.Item>
@@ -105,12 +105,12 @@ const CreateStaticPage = () => {
 
       <section>
         <div className="col-12">
-          <div className="comn-back-white">
-            <h3 className="heading-view-med">Create {pageLabel}</h3>
+          <div className="card">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Create {pageLabel}</h3>
 
             <Form onSubmit={handleSubmit(onSubmit)}>
               {/* EXTENSION DROPDOWN */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Select Extension *</Form.Label>
 
                 <Form.Select
@@ -134,7 +134,7 @@ const CreateStaticPage = () => {
               </Form.Group>
 
               {/* TITLE */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Title *</Form.Label>
                 <Form.Control
                   type="text"
@@ -147,7 +147,7 @@ const CreateStaticPage = () => {
               </Form.Group>
 
               {/* CONTENT */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Content *</Form.Label>
 
                 <Controller
@@ -173,7 +173,7 @@ const CreateStaticPage = () => {
 
               {/* SUBMIT BUTTON */}
               <Button
-                className="comn-btn-pair mt-3"
+                className="btn-primary mt-4"
                 type="submit"
                 disabled={isSubmitting}
               >

@@ -114,7 +114,7 @@ const CreateProject = () => {
 
   return (
     <>
-      <Breadcrumb className="cstm_bredcrumb">
+      <Breadcrumb className="mb-5">
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/projects" }}>
           Project Management
         </Breadcrumb.Item>
@@ -123,7 +123,7 @@ const CreateProject = () => {
 
       <section>
         <div className="col-12">
-          <div className="comn-back-white p-4 rounded-4 shadow-sm">
+          <div className="card">
             <h3 className="heading-view-med mb-4 text-primary">
               Create New Project
             </h3>

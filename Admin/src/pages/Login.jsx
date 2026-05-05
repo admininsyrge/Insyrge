@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
-import Form from "react-bootstrap/esm/Form";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/esm/Button";
-import Col from "react-bootstrap/esm/Col";
-import Row from "react-bootstrap/esm/Row";
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BASE_URL_ADMIN, LOGIN } from "../API";
@@ -13,25 +9,21 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 function Login() {
   const token = localStorage.getItem("token");
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm();
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
     const storedPassword = localStorage.getItem("password");
-    setValue("email", storedEmail);
-    setValue("password", storedPassword);
+    if (storedEmail) setValue("email", storedEmail);
+    if (storedPassword) setValue("password", storedPassword);
+  }, []);
+
+  useEffect(() => {
+    if (token) navigate("/projects");
   }, []);
 
   const submitHandler = async (data) => {
@@ -47,133 +39,102 @@ function Login() {
           localStorage.removeItem("email");
           localStorage.removeItem("password");
         }
-        const token = response.data.data.user_details.access_token;
-        localStorage.setItem("token", token);
+        const accessToken = response.data.data.user_details.access_token;
+        localStorage.setItem("token", accessToken);
         navigate("/projects");
       }
     } catch (error) {
-      if (error.response && error.response.data) {
-        const errorMessage =
-          error.response.data.error_description || "An error occurred";
-        toast.error(errorMessage);
-      } else {
-        toast.error("An error occurred");
-      }
+      const errorMessage = error.response?.data?.error_description || "An error occurred";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (token) {
-      navigate("/projects");
-    }
-  }, []);
-
   return (
     <>
       <Loader isLoading={isLoading} />
-      <section className="login-section">
-        <div className="container-fluid g-0">
-          <Row className="row-min-h">
-            <Col lg={6} className="img-n">
-              <div className="upper-fig-main-login">
-                <figure className="login-img-main">
-                  <img src="/logo.png" alt="" />
-                </figure>
-              </div>
-            </Col>
-            <Col lg={6}>
-              <div className="inner-login-mian">
-                <div className="loginupper-right">
-                  <h2>Log in to your account</h2>
-                  <p className="forg-pass-text">
-                    Welcome back! Please fill the information below:{" "}
-                  </p>
-                  <Form onSubmit={handleSubmit(submitHandler)}>
-                    <Row>
-                      <Col md={12}>
-                        <Form.Group className="comn-class-inputs">
-                          <Form.Label>Email Address</Form.Label>
-                          <Form.Control
-                            type="email"
-                            placeholder="Enter Your Username or Email Address"
-                            {...register("email", { required: true })}
-                          />
-                          {errors.email && (
-                            <span className="error">E-mail is required</span>
-                          )}
-                        </Form.Group>
-                      </Col>
-                      <Col md={12}>
-                        <Form.Group className="comn-class-inputs">
-                          <Form.Label>Password</Form.Label>
-                          <div className="cstPassGroup">
-                            <Form.Control
-                              placeholder="Enter Your Password"
-                              type={showPassword ? "text" : "password"}
-                              onKeyDown={(e) => {
-                                if (e.key === " ") {
-                                  e.preventDefault();
-                                }
-                              }}
-                              {...register("password", {
-                                required: "Password is required",
-                                maxLength: {
-                                  value: 25,
-                                  message:
-                                    "Password must be less than 25 characters",
-                                },
-                                pattern: {
-                                  value: /^\S*$/,
-                                  message: "Password should not contain spaces",
-                                },
-                              })}
-                            />
-                            <div
-                              onClick={togglePasswordVisibility}
-                              className="eyeToggleBtn"
-                            >
-                              {showPassword ? (
-                                <AiOutlineEyeInvisible />
-                              ) : (
-                                <AiOutlineEye />
-                              )}
-                            </div>
-                          </div>
-                          {errors.password && (
-                            <span className="error">Password is required</span>
-                          )}
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                    <div className="upper-main-forgot-pass d-flex">
-                      <div className="">
-                        <Form.Group className="custom-checkbox">
-                          <Form.Check
-                            type="checkbox"
-                            className="ps-0"
-                            label="Remember Me"
-                            id="checkbox1"
-                            onClick={() => setRememberMe(!rememberMe)}
-                            defaultChecked={rememberMe}
-                          />
-                        </Form.Group>
-                      </div>
-                      <Link className="forgot-link" to={"/forgotpassword"}>
-                        Forgot Password?
-                      </Link>
-                    </div>
-                    <Button className="login-btn" type="submit">
-                      Login
-                    </Button>
-                  </Form>
-                </div>
-              </div>
-            </Col>
-          </Row>
+      <div className="min-h-screen flex">
+        {/* Left Panel — Brand */}
+        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-gray-900 via-gray-800 to-black items-center justify-center p-12 relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-20 left-20 w-72 h-72 bg-emerald-400 rounded-full blur-3xl" />
+            <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500 rounded-full blur-3xl" />
+          </div>
+          <div className="relative z-10 text-center">
+            <img src="/logo.png" alt="Insyrge" className="w-80 mx-auto drop-shadow-2xl" />
+          </div>
         </div>
-      </section>
+
+        {/* Right Panel — Form */}
+        <div className="flex-1 flex items-center justify-center p-8 lg:p-16 bg-white">
+          <div className="w-full max-w-md">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Log in to your account</h2>
+            <p className="text-gray-500 mb-8">Welcome back! Please fill the information below:</p>
+
+            <form onSubmit={handleSubmit(submitHandler)} className="space-y-5">
+              {/* Email */}
+              <div>
+                <label className="form-label">Email Address</label>
+                <input
+                  type="email"
+                  className="form-input"
+                  placeholder="Enter Your Username or Email Address"
+                  {...register("email", { required: true })}
+                />
+                {errors.email && <span className="error-text">E-mail is required</span>}
+              </div>
+
+              {/* Password */}
+              <div>
+                <label className="form-label">Password</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="form-input pr-10"
+                    placeholder="Enter Your Password"
+                    onKeyDown={(e) => { if (e.key === " ") e.preventDefault(); }}
+                    {...register("password", {
+                      required: "Password is required",
+                      maxLength: { value: 25, message: "Password must be less than 25 characters" },
+                      pattern: { value: /^\S*$/, message: "Password should not contain spaces" },
+                    })}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="password-toggle"
+                  >
+                    {showPassword ? <AiOutlineEyeInvisible size={18} /> : <AiOutlineEye size={18} />}
+                  </button>
+                </div>
+                {errors.password && <span className="error-text">{errors.password.message || "Password is required"}</span>}
+              </div>
+
+              {/* Remember + Forgot */}
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 rounded border-gray-300 text-brand-900 focus:ring-brand-900"
+                    checked={rememberMe}
+                    onChange={() => setRememberMe(!rememberMe)}
+                  />
+                  Remember Me
+                </label>
+                <Link to="/forgotpassword" className="text-sm text-brand-900 font-medium hover:underline">
+                  Forgot Password?
+                </Link>
+              </div>
+
+              {/* Submit */}
+              <button type="submit" className="w-full py-3 bg-brand-900 text-white rounded-xl font-semibold text-base hover:bg-black transition-colors">
+                Login
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

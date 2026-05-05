@@ -109,14 +109,14 @@ function OverviewList() {
     <>
       <Loader isLoading={isLoading} />
 
-      <section className="back-dashboard-sec comn-dashboard-page">
-        <div className="main-notification-messege">
+      <section className="">
+        <div className="">
           {/* Page Header */}
-          <div className="notifi-list d-flex justify-content-between align-items-center">
+          <div className="flex items-center justify-between mb-6">
             <h6>{pageLabel} Pages</h6>
 
-            <div className="dropdowns-inner-list d-flex">
-              <div className="icon-search-main">
+            <div className="flex items-center gap-3">
+              <div className="">
                 <Form.Control
                   type="text"
                   placeholder={`Search ${pageLabel}...`}
@@ -135,10 +135,10 @@ function OverviewList() {
           </div>
 
           {/* Table */}
-          <div className="notification-table pt-0">
+          <div className="overflow-x-auto mt-6">
             <Table bordered hover responsive>
               <thead>
-                <tr className="head-class-td">
+                <tr className="bg-gray-50">
                   <th>Sr. No.</th>
                   <th>Title</th>
                   <th>Extension</th>
@@ -165,7 +165,7 @@ function OverviewList() {
                             /> */}
 
                       <td>
-                        <div className="d-flex table_action_btn_group">
+                        <div className="flex items-center gap-2">
                           {/* VIEW */}
                           <Button
                             size="md"
@@ -227,11 +227,11 @@ function OverviewList() {
         onHide={() => setShow(false)}
         centered
         size={isDeleteModal ? "md" : "lg"}
-        className="comm_modal cst_inner_wid_modal"
+        className=""
       >
         {isDeleteModal ? (
           <Modal.Body className="text-center p-4">
-            <div className="img-modal mb-3">
+            <div className="flex justify-center mb-4">
               <img src={Delt} alt="Delete Icon" width="70" />
             </div>
 
@@ -240,12 +240,12 @@ function OverviewList() {
             </h4>
 
             <div className="d-flex justify-content-center gap-2">
-              <Button className="comn-modal-btns-blue" onClick={handleDelete}>
+              <Button className="btn-primary" onClick={handleDelete}>
                 Yes, Delete
               </Button>
 
               <Button
-                className="comn-modal-btns-transparent"
+                className="btn-secondary"
                 onClick={() => setShow(false)}
               >
                 Cancel

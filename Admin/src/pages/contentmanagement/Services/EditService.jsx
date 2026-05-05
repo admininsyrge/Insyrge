@@ -143,7 +143,7 @@ const EditService = () => {
 
   return (
     <>
-      <Breadcrumb className="cstm_bredcrumb">
+      <Breadcrumb className="mb-5">
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/services" }}>
           Services Management
         </Breadcrumb.Item>
@@ -152,12 +152,12 @@ const EditService = () => {
 
       <section>
         <div className="col-12">
-          <div className="comn-back-white">
-            <h3 className="heading-view-med">Edit Service</h3>
+          <div className="card">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Edit Service</h3>
 
             <form onSubmit={handleSubmit}>
               {/* Title */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Title *</Form.Label>
                 <Form.Control
                   type="text"
@@ -169,7 +169,7 @@ const EditService = () => {
               </Form.Group>
 
               {/* Slug */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Slug *</Form.Label>
                 <Form.Control
                   type="text"
@@ -181,7 +181,7 @@ const EditService = () => {
               </Form.Group>
 
               {/* Description */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Description *</Form.Label>
                 <RichTextEditor
                   value={description}
@@ -192,7 +192,7 @@ const EditService = () => {
               </Form.Group>
 
               {/* Points */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Points *</Form.Label>
 
                 {points.map((point, index) => (
@@ -230,7 +230,7 @@ const EditService = () => {
               </Form.Group>
 
               {/* URL */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>URL *</Form.Label>
                 <Form.Control
                   type="text"
@@ -242,7 +242,7 @@ const EditService = () => {
               </Form.Group>
 
               {/* Button */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Button Text *</Form.Label>
                 <Form.Control
                   type="text"
@@ -254,7 +254,7 @@ const EditService = () => {
               </Form.Group>
 
               {/* Image */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Upload Image</Form.Label>
                 <Form.Control
                   type="file"
@@ -269,7 +269,7 @@ const EditService = () => {
                       <img
                         src={`${BASE_URL_ADMIN}${existingImage}`}
                         alt="Existing"
-                        className="img-thumbnail"
+                        className="rounded-lg border border-gray-200 object-cover"
                         width="200"
                       />
                     </div>
@@ -281,7 +281,7 @@ const EditService = () => {
                       <img
                         src={URL.createObjectURL(image)}
                         alt="Preview"
-                        className="img-thumbnail"
+                        className="rounded-lg border border-gray-200 object-cover"
                         width="200"
                       />
                     </div>
@@ -290,7 +290,7 @@ const EditService = () => {
               </Form.Group>
 
               <Button
-                className="comn-btn-pair mt-3"
+                className="btn-primary mt-4"
                 type="submit"
                 disabled={loading}
               >

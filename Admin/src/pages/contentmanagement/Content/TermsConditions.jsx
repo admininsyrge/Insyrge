@@ -57,18 +57,18 @@ const TermsConditions = () => {
 
   return (
     <>
-      <Breadcrumb className="cstm_bredcrumb">
+      <Breadcrumb className="mb-5">
         <Breadcrumb.Item>Content Management</Breadcrumb.Item>
         <Breadcrumb.Item active>Terms & Conditions</Breadcrumb.Item>
       </Breadcrumb>
 
       <section>
         <div className="col-12">
-          <div className="comn-back-white">
-            <h3 className="heading-view-med">Terms & Conditions</h3>
+          <div className="card">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Terms & Conditions</h3>
 
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Terms & Conditions Content *</Form.Label>
 
                 <Controller
@@ -87,7 +87,7 @@ const TermsConditions = () => {
               </Form.Group>
 
               <Button
-                className="comn-btn-pair mt-3"
+                className="btn-primary mt-4"
                 type="submit"
                 disabled={loading}
               >

@@ -1,7 +1,5 @@
 import React from "react";
-import "./App.css";
-import RoutesComponent from "./RoutesComponent";
-import "bootstrap/dist/css/bootstrap.min.css";
+import RoutesComponent from "./RoutesComponent.jsx";
 import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
 import store from "./redux/store";

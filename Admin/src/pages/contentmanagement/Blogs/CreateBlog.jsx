@@ -75,7 +75,7 @@ const CreateBlog = () => {
   return (
     <>
       <Breadcrumb
-        className="cstm_bredcrumb"
+        className="mb-5"
         listProps={{ className: "breadcrumb-custom-separator" }}
       >
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/blogs" }}>
@@ -87,10 +87,10 @@ const CreateBlog = () => {
       <section>
         <div className="row">
           <div className="col-12">
-            <div className="comn-back-white">
-              <h3 className="heading-view-med">Create New Blog</h3>
+            <div className="card">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">Create New Blog</h3>
               <form onSubmit={handleSubmit}>
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Blog Title *</Form.Label>
                   <Form.Control
                     type="text"
@@ -101,7 +101,7 @@ const CreateBlog = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Slug (auto-generated)</Form.Label>
                   <Form.Control
                     type="text"
@@ -111,7 +111,7 @@ const CreateBlog = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Sub Title *</Form.Label>
                   <Form.Control
                     type="text"
@@ -122,7 +122,7 @@ const CreateBlog = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Author</Form.Label>
                   <Form.Control
                     type="text"
@@ -132,7 +132,7 @@ const CreateBlog = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Category</Form.Label>
                   <Form.Control
                     type="text"
@@ -142,7 +142,7 @@ const CreateBlog = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Short Description</Form.Label>
                   <Form.Control
                     as="textarea"
@@ -153,7 +153,7 @@ const CreateBlog = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Blog Description *</Form.Label>
                   <RichTextEditor
                     value={description}
@@ -163,7 +163,7 @@ const CreateBlog = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="comn-class-inputs">
+                <Form.Group className="mb-4">
                   <Form.Label>Upload Cover Image</Form.Label>
                   <Form.Control
                     type="file"
@@ -175,7 +175,7 @@ const CreateBlog = () => {
                       <img
                         src={URL.createObjectURL(image)}
                         alt="Preview"
-                        className="img-thumbnail"
+                        className="rounded-lg border border-gray-200 object-cover"
                         width="200"
                       />
                     </div>
@@ -183,7 +183,7 @@ const CreateBlog = () => {
                 </Form.Group>
 
                 <Button
-                  className="comn-btn-pair"
+                  className="btn-primary"
                   type="submit"
                   disabled={loading}
                 >

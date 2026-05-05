@@ -199,14 +199,14 @@ const UpdateHome = () => {
   // ==========================
   return (
     <>
-      <Breadcrumb className="cstm_bredcrumb">
+      <Breadcrumb className="mb-5">
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/projects" }}>
           Side Bar
         </Breadcrumb.Item>
         <Breadcrumb.Item active>Update Home Page</Breadcrumb.Item>
       </Breadcrumb>
 
-      <div className="comn-back-white p-4 rounded-4 shadow-sm">
+      <div className="card">
         <h3 className="mb-4 text-primary">Update Home Page</h3>
 
         <form onSubmit={handleSubmit}>
@@ -249,7 +249,7 @@ const UpdateHome = () => {
                     src={getImageSrc(img)}
                     width="150"
                     alt=""
-                    className="img-thumbnail"
+                    className="rounded-lg border border-gray-200 object-cover"
                   />
                   <Button
                     size="sm"
@@ -279,7 +279,7 @@ const UpdateHome = () => {
                     src={getImageSrc(img)}
                     width="120"
                     alt=""
-                    className="img-thumbnail"
+                    className="rounded-lg border border-gray-200 object-cover"
                   />
                   <Button
                     size="sm"

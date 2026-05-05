@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import user from "../Assets/Images/blank.png";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/slices/AdminDetails";
 import { BASE_URL_ADMIN, USER_DETAILS } from "../API";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { getImageUrl, handleImageError } from "../utils/imageUtils";
+import { Bell } from "lucide-react";
 
 function Header() {
   const token = localStorage.getItem("token");
@@ -15,7 +15,6 @@ function Header() {
   const userStateDetail = useSelector((state) => state.user.user);
 
   useEffect(() => {
-    // Only fetch if we don't already have user data in Redux
     if (!userStateDetail) {
       getDetail();
     }
@@ -24,48 +23,52 @@ function Header() {
   const getDetail = async () => {
     try {
       setIsLoading(true);
-
       const headers = { Token: token };
-      const response = await axios.get(BASE_URL_ADMIN + USER_DETAILS, {
-        headers,
-      });
-
+      const response = await axios.get(BASE_URL_ADMIN + USER_DETAILS, { headers });
       if (response.data.code === 200 && response.status === 200) {
-        const userDetail = response.data.data[0];
-        dispatch(setUser(userDetail));
-      } else {
-        toast.error("Failed to fetch user details");
+        dispatch(setUser(response.data.data[0]));
       }
     } catch (error) {
-      if (error.response && error.response.data) {
-        const errorMessage =
-          error.response.data.message || "An error occurred";
-        toast.error(errorMessage);
-      } else {
-        toast.error("An error occurred");
-      }
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <nav className="dashboard_header navbar navbar-expand-lg navbar-admin">
-      <div className="container-fluid m-0 p-0">
-        <div className="welcom-upper d-flex">
-          <h6 className="user_name">Hello {userStateDetail?.name || ""}</h6>
-          <div className="dash_header_notify_wrap notifi-icon-na d-flex">
-            <div className="divider"></div>
-            <Link to="/profile" className="dash_profile_image">
-              <img
-                src={getImageUrl(userStateDetail?.image)}
-                alt="User"
-                className="img-fluid"
-                onError={handleImageError}
-              />
-            </Link>
+    <nav className="h-[72px] bg-white border-b border-gray-200 px-8 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+      {/* Left side — Page context */}
+      <div className="flex items-center gap-3">
+        <h1 className="text-lg font-semibold text-gray-800">
+          Admin Panel
+        </h1>
+      </div>
+
+      {/* Right side — User info */}
+      <div className="flex items-center gap-5">
+        {/* Notification bell */}
+        <button className="relative p-2 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors">
+          <Bell size={20} />
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-emerald-500 rounded-full ring-2 ring-white" />
+        </button>
+
+        {/* Divider */}
+        <div className="w-px h-8 bg-gray-200" />
+
+        {/* User profile */}
+        <Link to="/profile" className="flex items-center gap-3 hover:bg-gray-50 rounded-xl px-3 py-1.5 transition-colors -mr-3">
+          <div className="text-right hidden sm:block">
+            <p className="text-sm font-semibold text-gray-800 leading-tight">{userStateDetail?.name || "Admin"}</p>
+            <p className="text-xs text-gray-500 leading-tight">Administrator</p>
           </div>
-        </div>
+          <img
+            src={getImageUrl(userStateDetail?.image)}
+            alt="User"
+            className="w-10 h-10 rounded-full object-cover ring-2 ring-emerald-100 hover:ring-emerald-300 transition-all"
+            onError={handleImageError}
+          />
+        </Link>
       </div>
     </nav>
   );

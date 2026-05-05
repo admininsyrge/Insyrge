@@ -121,7 +121,7 @@ const EditProject = () => {
   return (
     <>
       <Breadcrumb
-        className="cstm_bredcrumb"
+        className="mb-5"
         listProps={{ className: "breadcrumb-custom-separator" }}
       >
         <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/projects" }}>
@@ -132,12 +132,12 @@ const EditProject = () => {
 
       <section>
         <div className="col-12">
-          <div className="comn-back-white">
-            <h3 className="heading-view-med">Edit Project</h3>
+          <div className="card">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Edit Project</h3>
 
             <form onSubmit={handleSubmit}>
               {/* Slug */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Slug</Form.Label>
                 <Form.Control
                   type="text"
@@ -148,7 +148,7 @@ const EditProject = () => {
               </Form.Group>
 
               {/* Title */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Project Title</Form.Label>
                 <Form.Control
                   type="text"
@@ -160,7 +160,7 @@ const EditProject = () => {
               </Form.Group>
 
               {/* Category */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Category</Form.Label>
                 <Form.Control
                   type="text"
@@ -172,7 +172,7 @@ const EditProject = () => {
               </Form.Group>
 
               {/* Client */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Client Name</Form.Label>
                 <Form.Control
                   type="text"
@@ -184,7 +184,7 @@ const EditProject = () => {
               </Form.Group>
 
               {/* Description */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Project Description</Form.Label>
                 <RichTextEditor
                   value={description}
@@ -195,7 +195,7 @@ const EditProject = () => {
               </Form.Group>
 
               {/* Features */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Features</Form.Label>
                 {features.map((feature, index) => (
                   <div key={index} className="d-flex mb-2 gap-2">
@@ -243,7 +243,7 @@ const EditProject = () => {
               )}
 
               {/* Replace Main Image */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Replace Main Image</Form.Label>
                 <Form.Control
                   type="file"
@@ -281,7 +281,7 @@ const EditProject = () => {
               )}
 
               {/* Upload new gallery */}
-              <Form.Group className="comn-class-inputs">
+              <Form.Group className="mb-4">
                 <Form.Label>Upload Gallery Images (Max 5)</Form.Label>
                 {gallery.map((file, index) => (
                   <div key={index} className="mb-2">
@@ -298,7 +298,7 @@ const EditProject = () => {
               </Form.Group>
 
               <Button
-                className="comn-btn-pair"
+                className="btn-primary"
                 type="submit"
                 disabled={loading}
               >

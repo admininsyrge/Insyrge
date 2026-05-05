@@ -1,25 +1,17 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
-import Header from "./Header";
 import Sidebar from "./Sidebar";
+import Header from "./Header";
+import { Outlet } from "react-router-dom";
 
-/**
- * AdminLayout — wraps all authenticated pages with a consistent
- * Header + Sidebar + scrollable main content area.
- *
- * Eliminates the repeated boilerplate from every page component and
- * ensures Header (which fetches user details) is mounted once at the
- * layout level instead of re-mounting on every navigation.
- */
 function AdminLayout() {
   return (
-    <div className="admin-layout">
+    <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
-      <div className="admin-layout__main">
+      <div className="flex-1 ml-sidebar flex flex-col min-h-screen transition-all duration-300">
         <Header />
-        <div className="admin-layout__content">
+        <main className="flex-1 p-6 lg:p-8 overflow-y-auto max-h-[calc(100vh-72px)] scrollbar-thin">
           <Outlet />
-        </div>
+        </main>
       </div>
     </div>
   );

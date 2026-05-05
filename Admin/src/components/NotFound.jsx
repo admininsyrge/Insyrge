@@ -1,43 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import notFound from "../Assets/Images/404notFound2.png";
 
 const NotFound = () => {
   const navigate = useNavigate();
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#f5f6fa",
-        gap: "2rem",
-      }}
-    >
-      <img
-        src={notFound}
-        style={{ maxWidth: "460px", width: "90%", display: "block" }}
-        className="not-found-child"
-        alt="Page Not Found"
-      />
+    <div className="flex flex-col h-screen items-center justify-center bg-gray-50 gap-8 p-8">
+      <div className="text-center">
+        <h1 className="text-8xl font-bold text-brand-900 mb-4">404</h1>
+        <p className="text-xl text-gray-500 mb-2">Page Not Found</p>
+        <p className="text-sm text-gray-400">The page you're looking for doesn't exist or has been moved.</p>
+      </div>
       <button
         onClick={() => navigate(-1)}
-        style={{
-          padding: "1.2rem 3rem",
-          fontSize: "1.6rem",
-          fontWeight: 600,
-          backgroundColor: "#111111",
-          color: "#ffffff",
-          border: "none",
-          borderRadius: "10px",
-          cursor: "pointer",
-          transition: "opacity 0.3s",
-        }}
-        onMouseOver={(e) => (e.target.style.opacity = "0.8")}
-        onMouseOut={(e) => (e.target.style.opacity = "1")}
+        className="btn-primary text-base"
       >
         ← Go Back
       </button>
