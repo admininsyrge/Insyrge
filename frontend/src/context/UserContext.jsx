@@ -6,137 +6,108 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 const UserContext = createContext();
 
+const api = axios.create({
+  baseURL: BASE_URL_USER,
+});
+
 export const UserProvider = ({ children }) => {
   const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [loginChecked, setLoginChecked] = useState(false);
-  const [projects, setProjects] = useState([]);
-  const [extensions, setExtensions] = useState([]);
-  const [profile, setProfile] = useState(null);
-  const [coreServices, setCoreServices] = useState([]);
-  const [homeData, setHomeData] = useState(null);
-  const [blogs, setBlogs] = useState([]);
-  const [error, setError] = useState(null);
 
-  // 🔹 Load token once
+  // 🔹 Independent states (no global blocking)
+  const [homeData, setHomeData] = useState(null);
+  const [coreServices, setCoreServices] = useState([]);
+  const [extensions, setExtensions] = useState([]);
+  const [blogs, setBlogs] = useState([]);
+  const [projects, setProjects] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Load token (non-blocking)
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedToken = localStorage.getItem("token");
-      if (storedToken) setToken(storedToken);
-    }
+    const storedToken =
+      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    if (storedToken) setToken(storedToken);
   }, []);
 
-  // 🔹 Fetch home data first, then rest in parallel
+  // ✅ Fetch ALL data in parallel (FAST)
   useEffect(() => {
     const fetchAll = async () => {
-      setLoading(true);
-
       try {
-        // 1️⃣ Fetch home data first
-        await fetchHomeData();
-
-        // 2️⃣ After home data completes, fetch everything else in parallel
-        await Promise.all([
-          fetchProjects(),
+        await Promise.allSettled([
+          fetchHomeData(),
+          fetchServices(),
           fetchExtensions(),
           fetchBlogs(),
-          fetchServices(),
+          fetchProjects(),
         ]);
       } catch (err) {
-        console.error("Error during global data fetching:", err);
+        console.error("Global fetch error:", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchAll();
-  }, [token]);
+  }, []);
 
-  // ✅ Fetch Home Data FIRST
+  // ================= API CALLS =================
+
   const fetchHomeData = async () => {
     try {
-      const res = await axios.get(`${BASE_URL_USER}/home`);
+      const res = await api.get("/home");
       if (res.data?.status || res.data?.success) {
         setHomeData(res.data.data);
-      } else {
-        setError(res.data?.message || "Failed to fetch home page data.");
       }
     } catch (err) {
-      console.error("❌ Error fetching home data:", err);
-      setError(
-        err.response?.data?.message ||
-          "Something went wrong while loading home content."
-      );
+      console.error("❌ Home:", err.message);
     }
   };
 
-  // ✅ Fetch Core Services
   const fetchServices = async () => {
     try {
-      const res = await axios.get(`${BASE_URL_USER}/services-all`);
+      const res = await api.get("/services-all");
       if (res.data?.status) {
         setCoreServices(res.data.data || []);
-      } else {
-        setError(res.data?.message || "Failed to fetch services.");
       }
     } catch (err) {
-      console.error("❌ Error fetching core services:", err);
-      setError("Failed to load services. Please try again later.");
+      console.error("❌ Services:", err.message);
     }
   };
 
-  // ✅ Fetch Blogs
   const fetchBlogs = async () => {
     try {
-      const { data } = await axios.get(`${BASE_URL_USER}/blogs-all`);
-      if (data.status === true) {
+      const { data } = await api.get("/blogs-all");
+      if (data?.status) {
         setBlogs(data.data || []);
-      } else {
-        throw new Error("Failed to load blogs");
       }
     } catch (err) {
-      console.error("❌ Error fetching blogs:", err);
-      setError("Failed to load blogs");
+      console.error("❌ Blogs:", err.message);
     }
   };
 
-  // ✅ Fetch Projects
   const fetchProjects = async () => {
     try {
-      const res = await axios.get(`${BASE_URL_USER}/project-all`, {
+      const res = await api.get("/project-all", {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
-      if (res.data.status || res.data.success) {
-        setProjects(res.data.data || res.data.projects || []);
-      } else {
-        setError(res.data.message || "Failed to fetch projects.");
+      if (res.data?.status || res.data?.success) {
+        setProjects(res.data.data || []);
       }
     } catch (err) {
-      console.error("❌ Error fetching projects:", err);
-      setError(
-        err.response?.data?.message ||
-          "Something went wrong while fetching projects."
-      );
+      console.error("❌ Projects:", err.message);
     }
   };
 
-  // ✅ Fetch Extensions
   const fetchExtensions = async () => {
     try {
-      const res = await axios.get(`${BASE_URL_USER}/extension-all`, {
+      const res = await api.get("/extension-all", {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
-      if (res.data.status || res.data.success) {
-        setExtensions(res.data.data || res.data.extensions || []);
-      } else {
-        setError(res.data.message || "Failed to fetch extensions.");
+      if (res.data?.status || res.data?.success) {
+        setExtensions(res.data.data || []);
       }
     } catch (err) {
-      console.error("❌ Error fetching extensions:", err);
-      setError(
-        err.response?.data?.message ||
-          "Something went wrong while fetching extensions."
-      );
+      console.error("❌ Extensions:", err.message);
     }
   };
 
@@ -144,16 +115,11 @@ export const UserProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         loading,
-        setLoading,
-        loginChecked,
-        setLoginChecked,
-        projects,
-        extensions,
-        error,
-        profile,
-        blogs,
-        coreServices,
         homeData,
+        coreServices,
+        extensions,
+        blogs,
+        projects,
       }}
     >
       {children}

@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
 import BlogCard from "./BlogCard";
 
@@ -8,7 +7,6 @@ const BlogList = ({ posts }) => {
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
-  // ✅ Filter posts by title or category
   const filteredPosts = posts.filter(
     (post) =>
       post.title?.toLowerCase().includes(query.toLowerCase()) ||
@@ -17,29 +15,27 @@ const BlogList = ({ posts }) => {
 
   return (
     <section className="relative bg-[#0B1C3D] py-20 overflow-hidden">
-      {/* === Section Title === */}
-      <motion.h2
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-        className="text-center text-3xl md:text-5xl font-bold text-white mb-12"
-      >
-        Latest <span className="text-[#08e5c0]">Insights</span> & Articles
-      </motion.h2>
 
-      {/* === Integrated Search Bar === */}
+      {/* === Section Title === */}
+      <h2 className="text-center text-3xl md:text-5xl font-bold text-white mb-12">
+        Latest <span className="text-[#08e5c0]">Insights</span> & Articles
+      </h2>
+
+      {/* === Search Bar === */}
       <div className="flex justify-center mb-16">
-        <motion.div
-          animate={{
-            boxShadow: isFocused
-              ? "0 0 25px #08e5c0, 0 0 50px #08e5c055"
-              : "0 0 10px rgba(255,255,255,0.15)",
-          }}
-          transition={{ duration: 0.3 }}
-          className="flex items-center w-[90%] sm:w-[450px] bg-[#102a66]/80 backdrop-blur-md border border-[#08e5c0]/50 rounded-full px-5 py-3 transition-all duration-300"
+        <div
+          className={`
+            flex items-center w-[90%] sm:w-[450px]
+            bg-[#102a66]/80 backdrop-blur-md
+            border rounded-full px-5 py-3
+            transition-all duration-300
+            ${isFocused
+              ? "border-[#08e5c0] shadow-[0_0_20px_rgba(8,229,192,0.4)]"
+              : "border-[#08e5c0]/40"}
+          `}
         >
           <FaSearch className="text-[#08e5c0] text-lg mr-3 opacity-80" />
+
           <input
             type="text"
             value={query}
@@ -50,42 +46,23 @@ const BlogList = ({ posts }) => {
             className="w-full bg-transparent outline-none text-white placeholder-gray-400 text-base tracking-wide"
           />
 
-          {/* Glow Dot Animation when typing */}
-          <AnimatePresence>
-            {query && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="w-3 h-3 rounded-full bg-[#08e5c0] shadow-[0_0_10px_#08e5c0] ml-2"
-              />
-            )}
-          </AnimatePresence>
-        </motion.div>
+          {/* Simple dot (no animation) */}
+          {query && (
+            <div className="w-2.5 h-2.5 rounded-full bg-[#08e5c0] ml-2" />
+          )}
+        </div>
       </div>
 
-      {/* === Blog Cards Grid === */}
+      {/* === Blog Grid === */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-8 md:px-16">
         {filteredPosts.length > 0 ? (
-          filteredPosts.map((post, index) => (
-            <motion.div
+          filteredPosts.map((post) => (
+            <div
               key={post._id}
-              initial={{ opacity: 0, y: 40, scale: 0.98 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.6,
-                delay: index * 0.15,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              whileHover={{
-                y: -6,
-                transition: { duration: 0.3, ease: "easeOut" },
-              }}
+              className="transition-transform duration-300 hover:-translate-y-1"
             >
               <BlogCard post={post} />
-            </motion.div>
+            </div>
           ))
         ) : (
           <p className="text-gray-400 text-center col-span-full text-lg">
