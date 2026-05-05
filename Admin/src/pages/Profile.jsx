@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+import Form from "react-bootstrap/esm/Form";
+import Col from "react-bootstrap/esm/Col";
+import Row from "react-bootstrap/esm/Row";
 import prescript from "../Assets/Images/blank.png";
 import editProfile from "../Assets/Images/edit_profile.svg";
 import { BASE_URL_ADMIN, UPLOAD_IMAGE, USER_DETAILS } from "../API";
@@ -20,13 +20,17 @@ function Profile() {
   const [userDetail, setUserDetail] = useState([]);
   const dispatch = useDispatch();
 
-  useEffect(() => { getUserDetail(); }, []);
+  useEffect(() => {
+    getUserDetail();
+  }, []);
 
   const getUserDetail = async () => {
     setIsLoading(true);
     try {
       const headers = { token: token };
-      const response = await axios.get(BASE_URL_ADMIN + USER_DETAILS, { headers });
+      const response = await axios.get(BASE_URL_ADMIN + USER_DETAILS, {
+        headers,
+      });
       if (response.status === 200 && response.data.code === 200) {
         setUserDetail(response.data.data[0]);
         dispatch(setUser(response.data.data[0]));
@@ -63,13 +67,18 @@ function Profile() {
       const headers = { token: token, "Content-Type": "multipart/form-data" };
       const formdata = new FormData();
       formdata.append("file", file);
-      const response = await axios.post(BASE_URL_ADMIN + UPLOAD_IMAGE, formdata, { headers });
+      const response = await axios.post(
+        BASE_URL_ADMIN + UPLOAD_IMAGE,
+        formdata,
+        { headers },
+      );
       if (response.data.code === 200 && response.data.status === true) {
         toast.success(response?.data?.message);
         getUserDetail();
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.error_description || "An error occurred";
+      const errorMessage =
+        error.response?.data?.error_description || "An error occurred";
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -91,10 +100,20 @@ function Profile() {
                       <div className="profile-pic">
                         <label className="label" htmlFor="file">
                           <span className="glyphicon glyphicon-camera">
-                            <img src={editProfile} alt="" className="img-fluid" />
+                            <img
+                              src={editProfile}
+                              alt=""
+                              className="img-fluid"
+                            />
                           </span>
                         </label>
-                        <Form.Control id="file" type="file" name="profile_picture" onChange={uploadImage} accept="image/png, image/jpg, image/jpeg" />
+                        <Form.Control
+                          id="file"
+                          type="file"
+                          name="profile_picture"
+                          onChange={uploadImage}
+                          accept="image/png, image/jpg, image/jpeg"
+                        />
                         <figure className="profile-img-edit">
                           <img
                             src={getImageUrl(userDetail?.image)}
@@ -105,29 +124,58 @@ function Profile() {
                         </figure>
                       </div>
                       <div className="pair-btns-comn d-flex align-items-center gap-3">
-                        <div onClick={() => navigate("/edit-profile", { state: { ...userDetail } })}>
-                          <Link className="comn-btn-pair btn btn-primary">Edit Profile</Link>
+                        <div
+                          onClick={() =>
+                            navigate("/edit-profile", {
+                              state: { ...userDetail },
+                            })
+                          }
+                        >
+                          <Link className="comn-btn-pair btn btn-primary">
+                            Edit Profile
+                          </Link>
                         </div>
                       </div>
                     </div>
                     <Row>
                       <Col md={12}>
-                        <Form.Group controlId="formGridPassword" className="comn-class-inputs">
+                        <Form.Group
+                          controlId="formGridPassword"
+                          className="comn-class-inputs"
+                        >
                           <Form.Label>Full Name</Form.Label>
-                          <Form.Control type="text" placeholder="Enter Your Full Name" defaultValue={userDetail?.name} disabled />
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter Your Full Name"
+                            defaultValue={userDetail?.name}
+                            disabled
+                          />
                         </Form.Group>
                       </Col>
                       <Col md={12}>
-                        <Form.Group controlId="formGridEmail" className="comn-class-inputs">
+                        <Form.Group
+                          controlId="formGridEmail"
+                          className="comn-class-inputs"
+                        >
                           <Form.Label>Email Address</Form.Label>
-                          <Form.Control type="email" placeholder="Enter Your Email Address" defaultValue={userDetail?.email} disabled />
+                          <Form.Control
+                            type="email"
+                            placeholder="Enter Your Email Address"
+                            defaultValue={userDetail?.email}
+                            disabled
+                          />
                         </Form.Group>
                       </Col>
                     </Row>
                     <div className="profile_main_btm_sec">
                       <div className="d-flex cmm_prf_btm_row profile_auto_pay_row">
                         <h6>Do you want to update your password?</h6>
-                        <Link className="comn-btn-pair btn btn-primary" to="/change-password">Change Password</Link>
+                        <Link
+                          className="comn-btn-pair btn btn-primary"
+                          to="/change-password"
+                        >
+                          Change Password
+                        </Link>
                       </div>
                     </div>
                   </Form>

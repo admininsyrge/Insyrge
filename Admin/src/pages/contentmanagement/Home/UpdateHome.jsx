@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Breadcrumb from "react-bootstrap/esm/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BASE_URL, BASE_URL_ADMIN, GET_HOME, UPDATE_HOME } from "../../../API";

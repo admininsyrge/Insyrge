@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Form from "react-bootstrap/esm/Form";
+import Button from "react-bootstrap/esm/Button";
+import Col from "react-bootstrap/esm/Col";
+import Row from "react-bootstrap/esm/Row";
+import Breadcrumb from "react-bootstrap/esm/Breadcrumb";
 import { BASE_URL_ADMIN, UPDATE_PROFILE } from "../API";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -26,13 +26,18 @@ function EditProfile() {
       const headers = { token: token };
       const formdata = new FormData();
       formdata.append("name", name || userDetail?.name);
-      const response = await axios.post(BASE_URL_ADMIN + UPDATE_PROFILE, formdata, { headers });
+      const response = await axios.post(
+        BASE_URL_ADMIN + UPDATE_PROFILE,
+        formdata,
+        { headers },
+      );
       if (response.status === 200 && response.data.code === 200) {
         toast.success(response.data.message);
         navigate("/profile");
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.error_description || "An error occurred";
+      const errorMessage =
+        error.response?.data?.error_description || "An error occurred";
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -42,8 +47,13 @@ function EditProfile() {
   return (
     <>
       <Loader isLoading={isLoading} />
-      <Breadcrumb className="cstm_bredcrumb" listProps={{ className: "breadcrumb-custom-separator" }}>
-        <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/profile" }}>My Profile</Breadcrumb.Item>
+      <Breadcrumb
+        className="cstm_bredcrumb"
+        listProps={{ className: "breadcrumb-custom-separator" }}
+      >
+        <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/profile" }}>
+          My Profile
+        </Breadcrumb.Item>
         <Breadcrumb.Item active>Edit Profile</Breadcrumb.Item>
       </Breadcrumb>
       <section>
@@ -64,33 +74,63 @@ function EditProfile() {
                             defaultValue={userDetail?.name}
                             onChange={(e) => {
                               let value = e.target.value;
-                              if (/^\s/.test(value) || /\s{2,}/.test(value) || /\s$/.test(value)) {
-                                setError("Input cannot start or end with spaces, and cannot have multiple spaces between words.");
+                              if (
+                                /^\s/.test(value) ||
+                                /\s{2,}/.test(value) ||
+                                /\s$/.test(value)
+                              ) {
+                                setError(
+                                  "Input cannot start or end with spaces, and cannot have multiple spaces between words.",
+                                );
                               } else if (value.length >= 50) {
                                 setError("Value cannot exceed 50 characters");
                               } else if (value.trim() === "") {
                                 setError("Please enter full name.");
                               } else if (value.length < 3) {
-                                setError("Full name must be at least 3 characters long");
+                                setError(
+                                  "Full name must be at least 3 characters long",
+                                );
                               } else {
                                 setError("");
                               }
                               setName(value);
                             }}
                           />
-                          {error && <div style={{ color: "red", fontSize: "14px" }}>{error}</div>}
+                          {error && (
+                            <div style={{ color: "red", fontSize: "14px" }}>
+                              {error}
+                            </div>
+                          )}
                         </Form.Group>
                       </Col>
                       <Col md={6}>
-                        <Form.Group controlId="formGridEmail" className="comn-class-inputs">
+                        <Form.Group
+                          controlId="formGridEmail"
+                          className="comn-class-inputs"
+                        >
                           <Form.Label>Email Address</Form.Label>
-                          <Form.Control type="email" placeholder="Enter Your Email Address" defaultValue={userDetail?.email} disabled />
+                          <Form.Control
+                            type="email"
+                            placeholder="Enter Your Email Address"
+                            defaultValue={userDetail?.email}
+                            disabled
+                          />
                         </Form.Group>
                       </Col>
                     </Row>
                     <div className="pair-btns-comn d-flex align-items-center gap-3 mt-3">
-                      <Button className="comn-btn-pair" onClick={() => updateProfile()}>Update Profile</Button>
-                      <Button className="comn-btn-pair back-white-btn" onClick={() => navigate("/profile")}>Discard</Button>
+                      <Button
+                        className="comn-btn-pair"
+                        onClick={() => updateProfile()}
+                      >
+                        Update Profile
+                      </Button>
+                      <Button
+                        className="comn-btn-pair back-white-btn"
+                        onClick={() => navigate("/profile")}
+                      >
+                        Discard
+                      </Button>
                     </div>
                   </Form>
                 </div>

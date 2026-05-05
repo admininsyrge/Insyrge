@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import Table from "react-bootstrap/Table";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import Table from "react-bootstrap/esm/Table";
+import Modal from "react-bootstrap/esm/Modal";
+import Button from "react-bootstrap/esm/Button";
+import Form from "react-bootstrap/esm/Form";
 import { toast } from "react-toastify";
 import Delt from "../../../Assets/Images/del.svg";
 import Loader from "../../../components/Loader";
@@ -63,9 +63,9 @@ function BlogsList() {
   const filteredList = useMemo(
     () =>
       blogs.filter((b) =>
-        b.title?.toLowerCase().includes(searchQuery.toLowerCase())
+        b.title?.toLowerCase().includes(searchQuery.toLowerCase()),
       ),
-    [blogs, searchQuery]
+    [blogs, searchQuery],
   );
 
   return (
@@ -141,9 +141,7 @@ function BlogsList() {
                             variant="warning"
                             size="sm"
                             className="me-2"
-                            onClick={() =>
-                              navigate(`/blogs/edit/${blog._id}`)
-                            }
+                            onClick={() => navigate(`/blogs/edit/${blog._id}`)}
                           >
                             Edit
                           </Button>

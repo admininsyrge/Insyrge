@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Breadcrumb from "react-bootstrap/esm/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -14,7 +14,10 @@ import {
 } from "../../../../API";
 
 import RichTextEditor from "../../../../components/RichTextEditor";
-import { useForm, Controller } from "react-hook-form";
+import {
+  useForm,
+  Controller,
+} from "../../../../../node_modules/react-hook-form/dist";
 import "react-quill/dist/quill.snow.css";
 
 const EditStaticPage = () => {
@@ -78,7 +81,7 @@ const EditStaticPage = () => {
         `${BASE_URL_ADMIN}${GET_STATIC_PAGE_BY_ID(pageType, id)}`,
         {
           headers: { Token: token },
-        }
+        },
       );
 
       const data = res.data?.data;
@@ -125,7 +128,7 @@ const EditStaticPage = () => {
             Token: token,
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
 
       toast.success(`${pageLabel} Updated Successfully!`);
@@ -141,107 +144,101 @@ const EditStaticPage = () => {
   // ---------------- UI ----------------
   return (
     <>
+      {/* Breadcrumb */}
+      <Breadcrumb className="cstm_bredcrumb">
+        <Breadcrumb.Item linkAs={Link} linkProps={{ to: `/pages/${pageType}` }}>
+          {pageLabel} Management
+        </Breadcrumb.Item>
 
-          {/* Breadcrumb */}
-          <Breadcrumb className="cstm_bredcrumb">
-            <Breadcrumb.Item
-              linkAs={Link}
-              linkProps={{ to: `/pages/${pageType}` }}
-            >
-              {pageLabel} Management
-            </Breadcrumb.Item>
+        <Breadcrumb.Item active>
+          Edit {pageLabel}
+          {/* {selectedExtensionTitle ? ` – ${selectedExtensionTitle}` : ""} */}
+        </Breadcrumb.Item>
+      </Breadcrumb>
 
-            <Breadcrumb.Item active>
+      {/* Main Section */}
+      <section>
+        <div className="col-12">
+          <div className="comn-back-white">
+            {/* Heading */}
+            <h3 className="heading-view-med">
               Edit {pageLabel}
-              {/* {selectedExtensionTitle ? ` – ${selectedExtensionTitle}` : ""} */}
-            </Breadcrumb.Item>
-          </Breadcrumb>
+              {selectedExtensionTitle ? ` – ${selectedExtensionTitle}` : ""}
+            </h3>
 
-          {/* Main Section */}
-          <section>
-            <div className="col-12">
-              <div className="comn-back-white">
-                {/* Heading */}
-                <h3 className="heading-view-med">
-                  Edit {pageLabel}
-                  {selectedExtensionTitle ? ` – ${selectedExtensionTitle}` : ""}
-                </h3>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              {/* Extension Dropdown */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Select Extension *</Form.Label>
+                <Form.Select
+                  {...register("extensionId", {
+                    required: "Extension is required",
+                  })}
+                >
+                  <option value="">-- Select Extension --</option>
+                  {extensions.map((ext) => (
+                    <option key={ext._id} value={ext._id}>
+                      {ext.title}
+                    </option>
+                  ))}
+                </Form.Select>
+                {errors.extensionId && (
+                  <small className="text-danger">
+                    {errors.extensionId.message}
+                  </small>
+                )}
+              </Form.Group>
 
-                <Form onSubmit={handleSubmit(onSubmit)}>
-                  {/* Extension Dropdown */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Select Extension *</Form.Label>
-                    <Form.Select
-                      {...register("extensionId", {
-                        required: "Extension is required",
-                      })}
-                    >
-                      <option value="">-- Select Extension --</option>
-                      {extensions.map((ext) => (
-                        <option key={ext._id} value={ext._id}>
-                          {ext.title}
-                        </option>
-                      ))}
-                    </Form.Select>
-                    {errors.extensionId && (
-                      <small className="text-danger">
-                        {errors.extensionId.message}
-                      </small>
-                    )}
-                  </Form.Group>
+              {/* Title */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Title *</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder={`Enter ${pageLabel} title`}
+                  {...register("title", { required: "Title is required" })}
+                />
+                {errors.title && (
+                  <small className="text-danger">{errors.title.message}</small>
+                )}
+              </Form.Group>
 
-                  {/* Title */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Title *</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder={`Enter ${pageLabel} title`}
-                      {...register("title", { required: "Title is required" })}
+              {/* Content */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Content *</Form.Label>
+
+                <Controller
+                  name="content"
+                  control={control}
+                  rules={{ required: "Content is required" }}
+                  render={({ field }) => (
+                    <RichTextEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder={`Enter detailed ${pageLabel} content...`}
+                      height="300px"
                     />
-                    {errors.title && (
-                      <small className="text-danger">
-                        {errors.title.message}
-                      </small>
-                    )}
-                  </Form.Group>
+                  )}
+                />
 
-                  {/* Content */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Content *</Form.Label>
+                {errors.content && (
+                  <small className="text-danger">
+                    {errors.content.message}
+                  </small>
+                )}
+              </Form.Group>
 
-                    <Controller
-                      name="content"
-                      control={control}
-                      rules={{ required: "Content is required" }}
-                      render={({ field }) => (
-                        <RichTextEditor
-                          value={field.value}
-                          onChange={field.onChange}
-                          placeholder={`Enter detailed ${pageLabel} content...`}
-                          height="300px"
-                        />
-                      )}
-                    />
-
-                    {errors.content && (
-                      <small className="text-danger">
-                        {errors.content.message}
-                      </small>
-                    )}
-                  </Form.Group>
-
-                  {/* Submit Button */}
-                  <Button
-                    className="comn-btn-pair mt-3"
-                    type="submit"
-                    disabled={loading || isSubmitting}
-                  >
-                    {loading ? "Updating..." : `Update ${pageLabel}`}
-                  </Button>
-                </Form>
-              </div>
-            </div>
-          </section>
+              {/* Submit Button */}
+              <Button
+                className="comn-btn-pair mt-3"
+                type="submit"
+                disabled={loading || isSubmitting}
+              >
+                {loading ? "Updating..." : `Update ${pageLabel}`}
+              </Button>
+            </Form>
+          </div>
+        </div>
+      </section>
     </>
   );
 };

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Form from "react-bootstrap/Form";
+import Form from "react-bootstrap/esm/Form";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import { useForm } from "react-hook-form";
+import Button from "react-bootstrap/esm/Button";
+import Col from "react-bootstrap/esm/Col";
+import Row from "react-bootstrap/esm/Row";
+import { useForm } from "../../node_modules/react-hook-form/dist";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BASE_URL_ADMIN, LOGIN } from "../API";
@@ -79,7 +79,7 @@ function Login() {
             <Col lg={6} className="img-n">
               <div className="upper-fig-main-login">
                 <figure className="login-img-main">
-                  <img src="/logo.png" alt=""/>
+                  <img src="/logo.png" alt="" />
                 </figure>
               </div>
             </Col>

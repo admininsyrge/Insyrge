@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Breadcrumb from "react-bootstrap/esm/Breadcrumb";
 import axios from "axios";
 import { BASE_URL_ADMIN, CREATE_PROJECT } from "../../../API";
 import { toast } from "react-toastify";
@@ -121,172 +121,172 @@ const CreateProject = () => {
         <Breadcrumb.Item active>Create Project</Breadcrumb.Item>
       </Breadcrumb>
 
-          <section>
-            <div className="col-12">
-              <div className="comn-back-white p-4 rounded-4 shadow-sm">
-                <h3 className="heading-view-med mb-4 text-primary">
-                  Create New Project
-                </h3>
+      <section>
+        <div className="col-12">
+          <div className="comn-back-white p-4 rounded-4 shadow-sm">
+            <h3 className="heading-view-med mb-4 text-primary">
+              Create New Project
+            </h3>
 
-                <form onSubmit={handleSubmit}>
-                  {/* Title */}
-                  <Form.Group className="mb-3">
-                    <Form.Label>Project Title *</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter project title"
-                      value={title}
-                      onChange={handleTitleChange}
-                      required
+            <form onSubmit={handleSubmit}>
+              {/* Title */}
+              <Form.Group className="mb-3">
+                <Form.Label>Project Title *</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter project title"
+                  value={title}
+                  onChange={handleTitleChange}
+                  required
+                />
+              </Form.Group>
+
+              {/* Slug */}
+              <Form.Group className="mb-3">
+                <Form.Label>Slug (auto-generated)</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={slug}
+                  readOnly
+                  className="bg-light"
+                />
+              </Form.Group>
+
+              {/* Category */}
+              <Form.Group className="mb-3">
+                <Form.Label>Category *</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="e.g., Web App, Mobile App"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  required
+                />
+              </Form.Group>
+
+              {/* Client */}
+              <Form.Group className="mb-3">
+                <Form.Label>Client Name *</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter client name"
+                  value={client}
+                  onChange={(e) => setClient(e.target.value)}
+                  required
+                />
+              </Form.Group>
+
+              {/* Main Image */}
+              <Form.Group className="mb-3">
+                <Form.Label>Main Project Image *</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  required
+                />
+                {imagePreview && (
+                  <div className="mt-3">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="img-thumbnail rounded-3 shadow-sm"
+                      width="220"
                     />
-                  </Form.Group>
-
-                  {/* Slug */}
-                  <Form.Group className="mb-3">
-                    <Form.Label>Slug (auto-generated)</Form.Label>
-                    <Form.Control
-                      type="text"
-                      value={slug}
-                      readOnly
-                      className="bg-light"
-                    />
-                  </Form.Group>
-
-                  {/* Category */}
-                  <Form.Group className="mb-3">
-                    <Form.Label>Category *</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="e.g., Web App, Mobile App"
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
-
-                  {/* Client */}
-                  <Form.Group className="mb-3">
-                    <Form.Label>Client Name *</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter client name"
-                      value={client}
-                      onChange={(e) => setClient(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
-
-                  {/* Main Image */}
-                  <Form.Group className="mb-3">
-                    <Form.Label>Main Project Image *</Form.Label>
-                    <Form.Control
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      required
-                    />
-                    {imagePreview && (
-                      <div className="mt-3">
-                        <img
-                          src={imagePreview}
-                          alt="Preview"
-                          className="img-thumbnail rounded-3 shadow-sm"
-                          width="220"
-                        />
-                      </div>
-                    )}
-                  </Form.Group>
-
-                  {/* Description */}
-                  <Form.Group className="mb-3">
-                    <Form.Label>Project Description *</Form.Label>
-                    <RichTextEditor
-                      value={description}
-                      onChange={setDescription}
-                      placeholder="Enter project description..."
-                      height="250px"
-                    />
-                  </Form.Group>
-
-                  {/* Features */}
-                  <Form.Group className="mb-4">
-                    <Form.Label>Project Features</Form.Label>
-                    {features.map((feature, index) => (
-                      <div
-                        key={index}
-                        className="d-flex align-items-center gap-2 mb-2"
-                      >
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter feature"
-                          value={feature}
-                          onChange={(e) =>
-                            handleFeatureChange(index, e.target.value)
-                          }
-                        />
-                        {index > 0 && (
-                          <Button
-                            variant="danger"
-                            size="sm"
-                            className="text-nowrap"
-                            style={{ minWidth: "90px" }}
-                            onClick={() => removeFeatureField(index)}
-                            type="button"
-                          >
-                            Remove
-                          </Button>
-                        )}
-                      </div>
-                    ))}
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      type="button"
-                      onClick={addFeatureField}
-                    >
-                      + Add Feature
-                    </Button>
-                  </Form.Group>
-
-                  {/* Gallery */}
-                  <Form.Group className="mb-4">
-                    <Form.Label>Gallery Images (Max 5)</Form.Label>
-                    <div className="row">
-                      {gallery.map((file, index) => (
-                        <div key={index} className="col-md-4 mb-3">
-                          <Form.Control
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleGalleryChange(index, e)}
-                          />
-                          {galleryPreviews[index] && (
-                            <div className="mt-2 text-center">
-                              <img
-                                src={galleryPreviews[index]}
-                                alt={`Gallery ${index + 1}`}
-                                className="img-thumbnail rounded-3 shadow-sm"
-                                width="200"
-                              />
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </Form.Group>
-
-                  {/* Submit Button */}
-                  <div className="text-center mt-4">
-                    <Button
-                      className="px-5 py-2 fw-semibold"
-                      type="submit"
-                      disabled={loading}
-                    >
-                      {loading ? "Creating..." : "Create Project"}
-                    </Button>
                   </div>
-                </form>
+                )}
+              </Form.Group>
+
+              {/* Description */}
+              <Form.Group className="mb-3">
+                <Form.Label>Project Description *</Form.Label>
+                <RichTextEditor
+                  value={description}
+                  onChange={setDescription}
+                  placeholder="Enter project description..."
+                  height="250px"
+                />
+              </Form.Group>
+
+              {/* Features */}
+              <Form.Group className="mb-4">
+                <Form.Label>Project Features</Form.Label>
+                {features.map((feature, index) => (
+                  <div
+                    key={index}
+                    className="d-flex align-items-center gap-2 mb-2"
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter feature"
+                      value={feature}
+                      onChange={(e) =>
+                        handleFeatureChange(index, e.target.value)
+                      }
+                    />
+                    {index > 0 && (
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        className="text-nowrap"
+                        style={{ minWidth: "90px" }}
+                        onClick={() => removeFeatureField(index)}
+                        type="button"
+                      >
+                        Remove
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  type="button"
+                  onClick={addFeatureField}
+                >
+                  + Add Feature
+                </Button>
+              </Form.Group>
+
+              {/* Gallery */}
+              <Form.Group className="mb-4">
+                <Form.Label>Gallery Images (Max 5)</Form.Label>
+                <div className="row">
+                  {gallery.map((file, index) => (
+                    <div key={index} className="col-md-4 mb-3">
+                      <Form.Control
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleGalleryChange(index, e)}
+                      />
+                      {galleryPreviews[index] && (
+                        <div className="mt-2 text-center">
+                          <img
+                            src={galleryPreviews[index]}
+                            alt={`Gallery ${index + 1}`}
+                            className="img-thumbnail rounded-3 shadow-sm"
+                            width="200"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </Form.Group>
+
+              {/* Submit Button */}
+              <div className="text-center mt-4">
+                <Button
+                  className="px-5 py-2 fw-semibold"
+                  type="submit"
+                  disabled={loading}
+                >
+                  {loading ? "Creating..." : "Create Project"}
+                </Button>
               </div>
-            </div>
+            </form>
+          </div>
+        </div>
       </section>
     </>
   );

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Table from "react-bootstrap/Table";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import Table from "react-bootstrap/esm/Table";
+import Modal from "react-bootstrap/esm/Modal";
+import Button from "react-bootstrap/esm/Button";
+import Form from "react-bootstrap/esm/Form";
 import Loader from "../../../../components/Loader";
 import Delt from "../../../../Assets/Images/del.svg";
 import axios from "axios";
@@ -50,7 +50,7 @@ function OverviewList() {
       setIsLoading(true);
       const res = await axios.get(
         `${BASE_URL_ADMIN}${GET_STATIC_PAGES(pageType)}`,
-        { headers: { Token: localStorage.getItem("token") } }
+        { headers: { Token: localStorage.getItem("token") } },
       );
       setPageList(res.data.data || []);
     } catch (err) {
@@ -87,7 +87,7 @@ function OverviewList() {
       setIsLoading(true);
       await axios.delete(
         `${BASE_URL_ADMIN}${DELETE_STATIC_PAGE(pageType, selectedData._id)}`,
-        { headers: { Token: localStorage.getItem("token") } }
+        { headers: { Token: localStorage.getItem("token") } },
       );
 
       setPageList(pageList.filter((o) => o._id !== selectedData._id));
@@ -102,62 +102,60 @@ function OverviewList() {
 
   // ----------------- Search Filter -----------------
   const filteredList = pageList.filter((o) =>
-    o.title.toLowerCase().includes(searchQuery.toLowerCase())
+    o.title.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
     <>
       <Loader isLoading={isLoading} />
 
+      <section className="back-dashboard-sec comn-dashboard-page">
+        <div className="main-notification-messege">
+          {/* Page Header */}
+          <div className="notifi-list d-flex justify-content-between align-items-center">
+            <h6>{pageLabel} Pages</h6>
 
+            <div className="dropdowns-inner-list d-flex">
+              <div className="icon-search-main">
+                <Form.Control
+                  type="text"
+                  placeholder={`Search ${pageLabel}...`}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
 
-            <section className="back-dashboard-sec comn-dashboard-page">
-              <div className="main-notification-messege">
-                {/* Page Header */}
-                <div className="notifi-list d-flex justify-content-between align-items-center">
-                  <h6>{pageLabel} Pages</h6>
+              <button
+                className="ms-2 add-notification-btn"
+                onClick={() => navigate(`/create-page/${pageType}`)}
+              >
+                + Create {pageLabel}
+              </button>
+            </div>
+          </div>
 
-                  <div className="dropdowns-inner-list d-flex">
-                    <div className="icon-search-main">
-                      <Form.Control
-                        type="text"
-                        placeholder={`Search ${pageLabel}...`}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                    </div>
+          {/* Table */}
+          <div className="notification-table pt-0">
+            <Table bordered hover responsive>
+              <thead>
+                <tr className="head-class-td">
+                  <th>Sr. No.</th>
+                  <th>Title</th>
+                  <th>Extension</th>
+                  {/* <th>Content Preview</th> */}
+                  <th>Action</th>
+                </tr>
+              </thead>
 
-                    <button
-                      className="ms-2 add-notification-btn"
-                      onClick={() => navigate(`/create-page/${pageType}`)}
-                    >
-                      + Create {pageLabel}
-                    </button>
-                  </div>
-                </div>
+              <tbody>
+                {filteredList.length > 0 ? (
+                  filteredList.map((item, index) => (
+                    <tr key={item._id}>
+                      <td>{index + 1}</td>
+                      <td>{item.title}</td>
+                      <td>{getExtensionName(item.extensionId)}</td>
 
-                {/* Table */}
-                <div className="notification-table pt-0">
-                  <Table bordered hover responsive>
-                    <thead>
-                      <tr className="head-class-td">
-                        <th>Sr. No.</th>
-                        <th>Title</th>
-                        <th>Extension</th>
-                        {/* <th>Content Preview</th> */}
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {filteredList.length > 0 ? (
-                        filteredList.map((item, index) => (
-                          <tr key={item._id}>
-                            <td>{index + 1}</td>
-                            <td>{item.title}</td>
-                            <td>{getExtensionName(item.extensionId)}</td>
-
-                            {/* <td
+                      {/* <td
                               dangerouslySetInnerHTML={{
                                 __html:
                                   item.content
@@ -166,130 +164,128 @@ function OverviewList() {
                               }}
                             /> */}
 
-                            <td>
-                              <div className="d-flex table_action_btn_group">
-                                {/* VIEW */}
-                                <Button
-                                  size="md"
-                                  variant="info"
-                                  className="me-2"
-                                  onClick={() => {
-                                    setSelectedData(item);
-                                    setIsDeleteModal(false);
-                                    setShow(true);
-                                  }}
-                                >
-                                  View
-                                </Button>
+                      <td>
+                        <div className="d-flex table_action_btn_group">
+                          {/* VIEW */}
+                          <Button
+                            size="md"
+                            variant="info"
+                            className="me-2"
+                            onClick={() => {
+                              setSelectedData(item);
+                              setIsDeleteModal(false);
+                              setShow(true);
+                            }}
+                          >
+                            View
+                          </Button>
 
-                                {/* EDIT */}
-                                <Button
-                                  size="md"
-                                  variant="warning"
-                                  className="me-2"
-                                  onClick={() =>
-                                    navigate(
-                                      `/edit-page/${pageType}/${item._id}`
-                                    )
-                                  }
-                                >
-                                  Edit
-                                </Button>
+                          {/* EDIT */}
+                          <Button
+                            size="md"
+                            variant="warning"
+                            className="me-2"
+                            onClick={() =>
+                              navigate(`/edit-page/${pageType}/${item._id}`)
+                            }
+                          >
+                            Edit
+                          </Button>
 
-                                {/* DELETE */}
-                                <Button
-                                  size="md"
-                                  variant="danger"
-                                  onClick={() => {
-                                    setSelectedData(item);
-                                    setIsDeleteModal(true);
-                                    setShow(true);
-                                  }}
-                                >
-                                  Delete
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td className="text-center" colSpan="5">
-                            No {pageLabel} Found
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </Table>
-                </div>
-              </div>
-            </section>
+                          {/* DELETE */}
+                          <Button
+                            size="md"
+                            variant="danger"
+                            onClick={() => {
+                              setSelectedData(item);
+                              setIsDeleteModal(true);
+                              setShow(true);
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td className="text-center" colSpan="5">
+                      No {pageLabel} Found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </div>
+        </div>
+      </section>
 
-        {/* View / Delete Modal */}
-        <Modal
-          show={show}
-          onHide={() => setShow(false)}
-          centered
-          size={isDeleteModal ? "md" : "lg"}
-          className="comm_modal cst_inner_wid_modal"
-        >
-          {isDeleteModal ? (
-            <Modal.Body className="text-center p-4">
-              <div className="img-modal mb-3">
-                <img src={Delt} alt="Delete Icon" width="70" />
-              </div>
+      {/* View / Delete Modal */}
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        centered
+        size={isDeleteModal ? "md" : "lg"}
+        className="comm_modal cst_inner_wid_modal"
+      >
+        {isDeleteModal ? (
+          <Modal.Body className="text-center p-4">
+            <div className="img-modal mb-3">
+              <img src={Delt} alt="Delete Icon" width="70" />
+            </div>
 
-              <h4 className="heading mb-3">
-                Are you sure you want to delete this {pageLabel}?
-              </h4>
+            <h4 className="heading mb-3">
+              Are you sure you want to delete this {pageLabel}?
+            </h4>
 
-              <div className="d-flex justify-content-center gap-2">
-                <Button className="comn-modal-btns-blue" onClick={handleDelete}>
-                  Yes, Delete
-                </Button>
+            <div className="d-flex justify-content-center gap-2">
+              <Button className="comn-modal-btns-blue" onClick={handleDelete}>
+                Yes, Delete
+              </Button>
 
-                <Button
-                  className="comn-modal-btns-transparent"
-                  onClick={() => setShow(false)}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </Modal.Body>
-          ) : (
-            selectedData && (
-              <Modal.Body
-                className="p-4"
-                style={{ maxHeight: "70vh", overflowY: "auto" }}
+              <Button
+                className="comn-modal-btns-transparent"
+                onClick={() => setShow(false)}
               >
-                <h4 className="mb-2">{selectedData.title}</h4>
+                Cancel
+              </Button>
+            </div>
+          </Modal.Body>
+        ) : (
+          selectedData && (
+            <Modal.Body
+              className="p-4"
+              style={{ maxHeight: "70vh", overflowY: "auto" }}
+            >
+              <h4 className="mb-2">{selectedData.title}</h4>
 
-                <p>
-                  <strong>Extension: </strong>
-                  {getExtensionName(selectedData.extensionId)}
-                </p>
+              <p>
+                <strong>Extension: </strong>
+                {getExtensionName(selectedData.extensionId)}
+              </p>
 
-                <div
-                  className="mt-3"
-                  dangerouslySetInnerHTML={{ __html: selectedData.content }}
-                />
+              <div
+                className="mt-3"
+                dangerouslySetInnerHTML={{ __html: selectedData.content }}
+              />
 
-                <p className="mt-3">
-                  <small>
-                    <strong>Created At: </strong>
-                    {new Date(selectedData.createdAt).toLocaleString()}
-                  </small>
-                </p>
-              </Modal.Body>
-            )
-          )}
+              <p className="mt-3">
+                <small>
+                  <strong>Created At: </strong>
+                  {new Date(selectedData.createdAt).toLocaleString()}
+                </small>
+              </p>
+            </Modal.Body>
+          )
+        )}
 
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShow(false)}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShow(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/Button";
+import Button from "react-bootstrap/esm/Button";
 import deleteimg from "../Assets/Images/logImage.svg";
-import Modal from "react-bootstrap/Modal";
+import Modal from "react-bootstrap/esm/Modal";
 import { toast } from "react-toastify";
 import {
   LayoutDashboard,
@@ -37,7 +37,7 @@ function Sidebar() {
     location.pathname.startsWith("/extensions") ||
       location.pathname.startsWith("/pages/") ||
       location.pathname.startsWith("/create-extension") ||
-      location.pathname.startsWith("/edit/extension")
+      location.pathname.startsWith("/edit/extension"),
   );
 
   const logoutHandler = () => {
@@ -98,11 +98,7 @@ function Sidebar() {
               {/* CONTENT SECTION */}
               <li className="sidebar-section-heading">Content</li>
 
-              {menuItem(
-                <FolderKanban size={18} />,
-                "Projects",
-                "/projects"
-              )}
+              {menuItem(<FolderKanban size={18} />, "Projects", "/projects")}
               {menuItem(<PenLine size={18} />, "Blogs", "/blogs")}
               {menuItem(<Briefcase size={18} />, "Services", "/services")}
               {menuItem(<Home size={18} />, "Update Home", "/update-home")}
@@ -165,12 +161,12 @@ function Sidebar() {
               {menuItem(
                 <Shield size={18} />,
                 "Privacy Policy",
-                "/update-privacy"
+                "/update-privacy",
               )}
               {menuItem(
                 <FileText size={18} />,
                 "Terms and Conditions",
-                "/update-terms"
+                "/update-terms",
               )}
 
               {/* ACCOUNT SECTION */}

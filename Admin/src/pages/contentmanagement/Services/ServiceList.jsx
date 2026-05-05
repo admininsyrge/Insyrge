@@ -1,14 +1,19 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import Table from "react-bootstrap/Table";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import Table from "react-bootstrap/esm/Table";
+import Modal from "react-bootstrap/esm/Modal";
+import Button from "react-bootstrap/esm/Button";
+import Form from "react-bootstrap/esm/Form";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Delt from "../../../Assets/Images/del.svg";
 import Loader from "../../../components/Loader";
-import { BASE_URL_ADMIN, BASE_URL_USER, GET_SERVICES, DELETE_SERVICE } from "../../../API";
+import {
+  BASE_URL_ADMIN,
+  BASE_URL_USER,
+  GET_SERVICES,
+  DELETE_SERVICE,
+} from "../../../API";
 import { getImageUrl, handleImageError } from "../../../utils/imageUtils";
 
 function ServiceList() {
@@ -32,14 +37,19 @@ function ServiceList() {
     }
   };
 
-  useEffect(() => { fetchServices(); }, []);
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
   const handleDelete = async () => {
     try {
       setIsLoading(true);
-      await axios.delete(`${BASE_URL_ADMIN}${DELETE_SERVICE(selectedData._id)}`, {
-        headers: { Token: localStorage.getItem("token") },
-      });
+      await axios.delete(
+        `${BASE_URL_ADMIN}${DELETE_SERVICE(selectedData._id)}`,
+        {
+          headers: { Token: localStorage.getItem("token") },
+        },
+      );
       setServices(services.filter((s) => s._id !== selectedData._id));
       toast.success("Service deleted!");
       setShow(false);
@@ -50,9 +60,12 @@ function ServiceList() {
     }
   };
 
-  const filteredList = useMemo(() =>
-    services.filter((s) => s.title?.toLowerCase().includes(searchQuery.toLowerCase())),
-    [services, searchQuery]
+  const filteredList = useMemo(
+    () =>
+      services.filter((s) =>
+        s.title?.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
+    [services, searchQuery],
   );
 
   return (
@@ -64,35 +77,89 @@ function ServiceList() {
             <h6>Services Management</h6>
             <div className="dropdowns-inner-list d-flex">
               <div className="icon-search-main">
-                <Form.Control type="text" placeholder="Search Service..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                <Form.Control
+                  type="text"
+                  placeholder="Search Service..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
-              <button className="ms-2 add-notification-btn" onClick={() => navigate("/create-services")}>+ Create New Service</button>
+              <button
+                className="ms-2 add-notification-btn"
+                onClick={() => navigate("/create-services")}
+              >
+                + Create New Service
+              </button>
             </div>
           </div>
           <div className="notification-table pt-0">
             <Table responsive bordered hover>
               <thead>
                 <tr className="head-class-td">
-                  <th>Sr. No.</th><th>Title</th><th>Button</th><th>Points</th><th>Action</th>
+                  <th>Sr. No.</th>
+                  <th>Title</th>
+                  <th>Button</th>
+                  <th>Points</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredList.length > 0 ? filteredList.map((service, i) => (
-                  <tr key={service._id}>
-                    <td>{i + 1}</td>
-                    <td>{service.title}</td>
-                    <td>{service.button}</td>
-                    <td>{service.points?.length > 0 ? `${service.points.slice(0, 2).join(", ")}...` : "—"}</td>
-                    <td>
-                      <div className="d-flex table_action_btn_group">
-                        <Button variant="info" size="sm" className="me-2" onClick={() => { setSelectedData(service); setIsDeleteModal(false); setShow(true); }}>View</Button>
-                        <Button variant="warning" size="sm" className="me-2" onClick={() => navigate(`/service/edit/${service._id}`)}>Edit</Button>
-                        <Button variant="danger" size="sm" onClick={() => { setSelectedData(service); setIsDeleteModal(true); setShow(true); }}>Delete</Button>
-                      </div>
+                {filteredList.length > 0 ? (
+                  filteredList.map((service, i) => (
+                    <tr key={service._id}>
+                      <td>{i + 1}</td>
+                      <td>{service.title}</td>
+                      <td>{service.button}</td>
+                      <td>
+                        {service.points?.length > 0
+                          ? `${service.points.slice(0, 2).join(", ")}...`
+                          : "—"}
+                      </td>
+                      <td>
+                        <div className="d-flex table_action_btn_group">
+                          <Button
+                            variant="info"
+                            size="sm"
+                            className="me-2"
+                            onClick={() => {
+                              setSelectedData(service);
+                              setIsDeleteModal(false);
+                              setShow(true);
+                            }}
+                          >
+                            View
+                          </Button>
+                          <Button
+                            variant="warning"
+                            size="sm"
+                            className="me-2"
+                            onClick={() =>
+                              navigate(`/service/edit/${service._id}`)
+                            }
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            variant="danger"
+                            size="sm"
+                            onClick={() => {
+                              setSelectedData(service);
+                              setIsDeleteModal(true);
+                              setShow(true);
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="text-center">
+                      No Services Found
                     </td>
                   </tr>
-                )) : (
-                  <tr><td colSpan="5" className="text-center">No Services Found</td></tr>
                 )}
               </tbody>
             </Table>
@@ -100,31 +167,84 @@ function ServiceList() {
         </div>
       </section>
 
-      <Modal show={show} onHide={() => setShow(false)} centered size={isDeleteModal ? "md" : "lg"} className="comm_modal cst_inner_wid_modal">
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        centered
+        size={isDeleteModal ? "md" : "lg"}
+        className="comm_modal cst_inner_wid_modal"
+      >
         {isDeleteModal ? (
           <Modal.Body className="text-center p-4">
-            <div className="img-modal mb-3"><img src={Delt} alt="Delete" width="70" /></div>
-            <h4 className="heading mb-3">Are you sure you want to delete this service?</h4>
+            <div className="img-modal mb-3">
+              <img src={Delt} alt="Delete" width="70" />
+            </div>
+            <h4 className="heading mb-3">
+              Are you sure you want to delete this service?
+            </h4>
             <div className="d-flex justify-content-center gap-2">
-              <Button className="comn-modal-btns-blue" onClick={handleDelete}>Yes, Delete</Button>
-              <Button className="comn-modal-btns-transparent" onClick={() => setShow(false)}>Cancel</Button>
+              <Button className="comn-modal-btns-blue" onClick={handleDelete}>
+                Yes, Delete
+              </Button>
+              <Button
+                className="comn-modal-btns-transparent"
+                onClick={() => setShow(false)}
+              >
+                Cancel
+              </Button>
             </div>
           </Modal.Body>
-        ) : selectedData && (
-          <Modal.Body className="p-4" style={{ maxHeight: "70vh", overflowY: "auto" }}>
-            <h4 className="mb-3">{selectedData.title}</h4>
-            {selectedData.image && (
-              <div className="mb-3">
-                <img src={getImageUrl(selectedData.image)} alt={selectedData.title} className="img-fluid rounded" style={{ maxHeight: "300px", objectFit: "cover" }} onError={handleImageError} />
-              </div>
-            )}
-            <p><strong>Description:</strong> <span dangerouslySetInnerHTML={{ __html: selectedData.description }} /></p>
-            {selectedData.points?.length > 0 && (<><strong>Points:</strong><ul>{selectedData.points.map((p, i) => (<li key={i}>{p}</li>))}</ul></>)}
-            <p><strong>Button:</strong> {selectedData.button}</p>
-            <p className="mt-3"><small><strong>Created At:</strong> {new Date(selectedData.createdAt).toLocaleString()}</small></p>
-          </Modal.Body>
+        ) : (
+          selectedData && (
+            <Modal.Body
+              className="p-4"
+              style={{ maxHeight: "70vh", overflowY: "auto" }}
+            >
+              <h4 className="mb-3">{selectedData.title}</h4>
+              {selectedData.image && (
+                <div className="mb-3">
+                  <img
+                    src={getImageUrl(selectedData.image)}
+                    alt={selectedData.title}
+                    className="img-fluid rounded"
+                    style={{ maxHeight: "300px", objectFit: "cover" }}
+                    onError={handleImageError}
+                  />
+                </div>
+              )}
+              <p>
+                <strong>Description:</strong>{" "}
+                <span
+                  dangerouslySetInnerHTML={{ __html: selectedData.description }}
+                />
+              </p>
+              {selectedData.points?.length > 0 && (
+                <>
+                  <strong>Points:</strong>
+                  <ul>
+                    {selectedData.points.map((p, i) => (
+                      <li key={i}>{p}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              <p>
+                <strong>Button:</strong> {selectedData.button}
+              </p>
+              <p className="mt-3">
+                <small>
+                  <strong>Created At:</strong>{" "}
+                  {new Date(selectedData.createdAt).toLocaleString()}
+                </small>
+              </p>
+            </Modal.Body>
+          )
         )}
-        <Modal.Footer><Button variant="secondary" onClick={() => setShow(false)}>Close</Button></Modal.Footer>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShow(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
       </Modal>
     </>
   );

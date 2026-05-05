@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import {
+  useForm,
+  Controller,
+} from "../../../../node_modules/react-hook-form/dist";
+import Breadcrumb from "react-bootstrap/esm/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BASE_URL_ADMIN } from "../../../API";
@@ -41,7 +44,7 @@ const PrivacyPolicy = () => {
       await axios.put(
         `${BASE_URL_ADMIN}/privacy`,
         { content: data.content },
-        { headers: { Token: localStorage.getItem("token") } }
+        { headers: { Token: localStorage.getItem("token") } },
       );
 
       toast.success("Privacy Policy Updated Successfully");
@@ -54,48 +57,46 @@ const PrivacyPolicy = () => {
 
   return (
     <>
+      <Breadcrumb className="cstm_bredcrumb">
+        <Breadcrumb.Item>Content Management</Breadcrumb.Item>
+        <Breadcrumb.Item active>Privacy Policy</Breadcrumb.Item>
+      </Breadcrumb>
 
+      <section>
+        <div className="col-12">
+          <div className="comn-back-white">
+            <h3 className="heading-view-med">Privacy Policy</h3>
 
-          <Breadcrumb className="cstm_bredcrumb">
-            <Breadcrumb.Item>Content Management</Breadcrumb.Item>
-            <Breadcrumb.Item active>Privacy Policy</Breadcrumb.Item>
-          </Breadcrumb>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Privacy Policy Content *</Form.Label>
 
-          <section>
-            <div className="col-12">
-              <div className="comn-back-white">
-                <h3 className="heading-view-med">Privacy Policy</h3>
-
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Privacy Policy Content *</Form.Label>
-
-                    <Controller
-                      name="content"
-                      control={control}
-                      rules={{ required: "Content is required" }}
-                      render={({ field }) => (
-                        <RichTextEditor
-                          value={field.value}
-                          onChange={field.onChange}
-                          placeholder="Write Privacy Policy..."
-                          height="400px"
-                        />
-                      )}
+                <Controller
+                  name="content"
+                  control={control}
+                  rules={{ required: "Content is required" }}
+                  render={({ field }) => (
+                    <RichTextEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Write Privacy Policy..."
+                      height="400px"
                     />
-                  </Form.Group>
+                  )}
+                />
+              </Form.Group>
 
-                  <Button
-                    className="comn-btn-pair mt-3"
-                    type="submit"
-                    disabled={loading}
-                  >
-                    {loading ? "Saving..." : "Save Policy"}
-                  </Button>
-                </form>
-              </div>
-            </div>
-          </section>
+              <Button
+                className="comn-btn-pair mt-3"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Save Policy"}
+              </Button>
+            </form>
+          </div>
+        </div>
+      </section>
     </>
   );
 };

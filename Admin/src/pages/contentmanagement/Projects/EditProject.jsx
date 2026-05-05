@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL_ADMIN } from "../../../API";
 import { toast } from "react-toastify";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Breadcrumb from "react-bootstrap/esm/Breadcrumb";
 import { useEffect, useState } from "react";
 import RichTextEditor from "../../../components/RichTextEditor";
 const EditProject = () => {
@@ -120,201 +120,194 @@ const EditProject = () => {
 
   return (
     <>
+      <Breadcrumb
+        className="cstm_bredcrumb"
+        listProps={{ className: "breadcrumb-custom-separator" }}
+      >
+        <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/projects" }}>
+          Project Management
+        </Breadcrumb.Item>
+        <Breadcrumb.Item active>Edit Project</Breadcrumb.Item>
+      </Breadcrumb>
 
-          <Breadcrumb
-            className="cstm_bredcrumb"
-            listProps={{ className: "breadcrumb-custom-separator" }}
-          >
-            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/projects" }}>
-              Project Management
-            </Breadcrumb.Item>
-            <Breadcrumb.Item active>Edit Project</Breadcrumb.Item>
-          </Breadcrumb>
+      <section>
+        <div className="col-12">
+          <div className="comn-back-white">
+            <h3 className="heading-view-med">Edit Project</h3>
 
-          <section>
-              <div className="col-12">
-                <div className="comn-back-white">
-                  <h3 className="heading-view-med">Edit Project</h3>
+            <form onSubmit={handleSubmit}>
+              {/* Slug */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Slug</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={slug}
+                  readOnly
+                  className="bg-light"
+                />
+              </Form.Group>
 
-                  <form onSubmit={handleSubmit}>
-                    {/* Slug */}
-                    <Form.Group className="comn-class-inputs">
-                      <Form.Label>Slug</Form.Label>
-                      <Form.Control
-                        type="text"
-                        value={slug}
-                        readOnly
-                        className="bg-light"
-                      />
-                    </Form.Group>
+              {/* Title */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Project Title</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter project title"
+                  value={title}
+                  onChange={handleTitleChange}
+                  required
+                />
+              </Form.Group>
 
-                    {/* Title */}
-                    <Form.Group className="comn-class-inputs">
-                      <Form.Label>Project Title</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Enter project title"
-                        value={title}
-                        onChange={handleTitleChange}
-                        required
-                      />
-                    </Form.Group>
+              {/* Category */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Category</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-                    {/* Category */}
-                    <Form.Group className="comn-class-inputs">
-                      <Form.Label>Category</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Enter category"
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        required
-                      />
-                    </Form.Group>
+              {/* Client */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Client Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter client name"
+                  value={client}
+                  onChange={(e) => setClient(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-                    {/* Client */}
-                    <Form.Group className="comn-class-inputs">
-                      <Form.Label>Client Name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Enter client name"
-                        value={client}
-                        onChange={(e) => setClient(e.target.value)}
-                        required
-                      />
-                    </Form.Group>
+              {/* Description */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Project Description</Form.Label>
+                <RichTextEditor
+                  value={description}
+                  onChange={setDescription}
+                  placeholder="Edit project description..."
+                  height="300px"
+                />
+              </Form.Group>
 
-                    {/* Description */}
-                    <Form.Group className="comn-class-inputs">
-                      <Form.Label>Project Description</Form.Label>
-                      <RichTextEditor
-                        value={description}
-                        onChange={setDescription}
-                        placeholder="Edit project description..."
-                        height="300px"
-                      />
-                    </Form.Group>
-
-                    {/* Features */}
-                    <Form.Group className="comn-class-inputs">
-                      <Form.Label>Features</Form.Label>
-                      {features.map((feature, index) => (
-                        <div key={index} className="d-flex mb-2 gap-2">
-                          <Form.Control
-                            type="text"
-                            placeholder="Enter feature"
-                            value={feature}
-                            onChange={(e) =>
-                              handleFeatureChange(index, e.target.value)
-                            }
-                            required
-                          />
-                          {index > 0 && (
-                            <Button
-                              variant="danger"
-                              onClick={() => removeFeatureField(index)}
-                            >
-                              -
-                            </Button>
-                          )}
-                        </div>
-                      ))}
+              {/* Features */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Features</Form.Label>
+                {features.map((feature, index) => (
+                  <div key={index} className="d-flex mb-2 gap-2">
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter feature"
+                      value={feature}
+                      onChange={(e) =>
+                        handleFeatureChange(index, e.target.value)
+                      }
+                      required
+                    />
+                    {index > 0 && (
                       <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={addFeatureField}
+                        variant="danger"
+                        onClick={() => removeFeatureField(index)}
                       >
-                        + Add Feature
+                        -
                       </Button>
-                    </Form.Group>
-
-                    {/* Existing main image */}
-                    {existingMainImage && (
-                      <div className="mb-3">
-                        <Form.Label>Existing Main Image</Form.Label>
-                        <div>
-                          <img
-                            src={`${BASE_URL_ADMIN}/${existingMainImage}`}
-                            alt="main-img"
-                            style={{
-                              width: "120px",
-                              height: "120px",
-                              objectFit: "cover",
-                              borderRadius: "5px",
-                            }}
-                          />
-                        </div>
-                      </div>
                     )}
+                  </div>
+                ))}
+                <Button variant="secondary" size="sm" onClick={addFeatureField}>
+                  + Add Feature
+                </Button>
+              </Form.Group>
 
-                    {/* Replace Main Image */}
-                    <Form.Group className="comn-class-inputs">
-                      <Form.Label>Replace Main Image</Form.Label>
-                      <Form.Control
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => setMainImage(e.target.files[0])}
-                      />
-                      {mainImage && (
-                        <span className="badge bg-primary mt-2">
-                          {mainImage.name}
-                        </span>
-                      )}
-                    </Form.Group>
-
-                    {/* Existing gallery */}
-                    {existingGallery.length > 0 && (
-                      <div className="mb-3">
-                        <Form.Label>Existing Gallery Images</Form.Label>
-                        <div className="d-flex flex-wrap">
-                          {existingGallery.map((img, idx) => (
-                            <img
-                              key={idx}
-                              src={`${BASE_URL_ADMIN}/${img}`}
-                              alt={`gallery-${idx}`}
-                              style={{
-                                width: "100px",
-                                height: "100px",
-                                objectFit: "cover",
-                                marginRight: "10px",
-                                borderRadius: "5px",
-                              }}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Upload new gallery */}
-                    <Form.Group className="comn-class-inputs">
-                      <Form.Label>Upload Gallery Images (Max 5)</Form.Label>
-                      {gallery.map((file, index) => (
-                        <div key={index} className="mb-2">
-                          <Form.Control
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleGalleryChange(index, e)}
-                          />
-                          {file && (
-                            <span className="badge bg-info mt-1">
-                              {file.name}
-                            </span>
-                          )}
-                        </div>
-                      ))}
-                    </Form.Group>
-
-                    <Button
-                      className="comn-btn-pair"
-                      type="submit"
-                      disabled={loading}
-                    >
-                      {loading ? "Updating..." : "Update Project"}
-                    </Button>
-                  </form>
+              {/* Existing main image */}
+              {existingMainImage && (
+                <div className="mb-3">
+                  <Form.Label>Existing Main Image</Form.Label>
+                  <div>
+                    <img
+                      src={`${BASE_URL_ADMIN}/${existingMainImage}`}
+                      alt="main-img"
+                      style={{
+                        width: "120px",
+                        height: "120px",
+                        objectFit: "cover",
+                        borderRadius: "5px",
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-          </section>
+              )}
+
+              {/* Replace Main Image */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Replace Main Image</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setMainImage(e.target.files[0])}
+                />
+                {mainImage && (
+                  <span className="badge bg-primary mt-2">
+                    {mainImage.name}
+                  </span>
+                )}
+              </Form.Group>
+
+              {/* Existing gallery */}
+              {existingGallery.length > 0 && (
+                <div className="mb-3">
+                  <Form.Label>Existing Gallery Images</Form.Label>
+                  <div className="d-flex flex-wrap">
+                    {existingGallery.map((img, idx) => (
+                      <img
+                        key={idx}
+                        src={`${BASE_URL_ADMIN}/${img}`}
+                        alt={`gallery-${idx}`}
+                        style={{
+                          width: "100px",
+                          height: "100px",
+                          objectFit: "cover",
+                          marginRight: "10px",
+                          borderRadius: "5px",
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Upload new gallery */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Upload Gallery Images (Max 5)</Form.Label>
+                {gallery.map((file, index) => (
+                  <div key={index} className="mb-2">
+                    <Form.Control
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleGalleryChange(index, e)}
+                    />
+                    {file && (
+                      <span className="badge bg-info mt-1">{file.name}</span>
+                    )}
+                  </div>
+                ))}
+              </Form.Group>
+
+              <Button
+                className="comn-btn-pair"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Updating..." : "Update Project"}
+              </Button>
+            </form>
+          </div>
+        </div>
+      </section>
     </>
   );
 };

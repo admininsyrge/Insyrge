@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Breadcrumb from "react-bootstrap/esm/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BASE_URL_ADMIN, CREATE_EXTENSION } from "../../../API";
 import RichTextEditor from "../../../components/RichTextEditor";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  Controller,
+} from "../../../../node_modules/react-hook-form/dist";
 import "react-quill/dist/quill.snow.css";
 
 const CreateExtension = () => {
@@ -109,227 +113,221 @@ const CreateExtension = () => {
   // ------------------ UI ------------------
   return (
     <>
-          <Breadcrumb className="cstm_bredcrumb">
-            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/extensions" }}>
-              Extensions Management
-            </Breadcrumb.Item>
-            <Breadcrumb.Item active>Create Extension</Breadcrumb.Item>
-          </Breadcrumb>
+      <Breadcrumb className="cstm_bredcrumb">
+        <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/extensions" }}>
+          Extensions Management
+        </Breadcrumb.Item>
+        <Breadcrumb.Item active>Create Extension</Breadcrumb.Item>
+      </Breadcrumb>
 
-          <section>
-            <div className="col-12">
-              <div className="comn-back-white">
-                <h3 className="heading-view-med">Create New Extension</h3>
+      <section>
+        <div className="col-12">
+          <div className="comn-back-white">
+            <h3 className="heading-view-med">Create New Extension</h3>
 
-                <Form onSubmit={handleSubmit(onSubmit)}>
-                  {/* TITLE */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Title *</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter extension title"
-                      {...register("title", { required: "Title is required" })}
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              {/* TITLE */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Title *</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter extension title"
+                  {...register("title", { required: "Title is required" })}
+                />
+                {errors.title && (
+                  <small className="text-danger">{errors.title.message}</small>
+                )}
+              </Form.Group>
+
+              {/* SLUG */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Slug (auto-generated)</Form.Label>
+                <Form.Control type="text" {...register("slug")} readOnly />
+              </Form.Group>
+
+              {/* SHORT DESCRIPTION */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Short Description *</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter short description"
+                  {...register("description", {
+                    required: "Short description is required",
+                  })}
+                />
+                {errors.description && (
+                  <small className="text-danger">
+                    {errors.description.message}
+                  </small>
+                )}
+              </Form.Group>
+
+              {/* LONG DESCRIPTION */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Long Description *</Form.Label>
+                <Controller
+                  name="longDescription"
+                  control={control}
+                  rules={{ required: "Long description is required" }}
+                  render={({ field }) => (
+                    <RichTextEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Enter detailed description..."
+                      height="300px"
                     />
-                    {errors.title && (
-                      <small className="text-danger">
-                        {errors.title.message}
-                      </small>
-                    )}
-                  </Form.Group>
+                  )}
+                />
+                {errors.longDescription && (
+                  <small className="text-danger">
+                    {errors.longDescription.message}
+                  </small>
+                )}
+              </Form.Group>
 
-                  {/* SLUG */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Slug (auto-generated)</Form.Label>
-                    <Form.Control type="text" {...register("slug")} readOnly />
-                  </Form.Group>
+              {/* LINK */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Extension Link *</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter extension link"
+                  {...register("link", { required: "Link is required" })}
+                />
+                {errors.link && (
+                  <small className="text-danger">{errors.link.message}</small>
+                )}
+              </Form.Group>
 
-                  {/* SHORT DESCRIPTION */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Short Description *</Form.Label>
+              {/* IMAGE + PREVIEW */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Upload Image *</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  {...register("image", { required: "Image is required" })}
+                />
+                {errors.image && (
+                  <small className="text-danger">{errors.image.message}</small>
+                )}
+
+                {previewImage && (
+                  <div className="mt-3 text-center">
+                    <img
+                      src={previewImage}
+                      alt="Preview"
+                      className="img-fluid rounded shadow-sm border"
+                      style={{
+                        maxWidth: "250px",
+                        height: "auto",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </div>
+                )}
+              </Form.Group>
+
+              {/* FEATURES */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Features *</Form.Label>
+                {featureFields.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className="mb-3 border rounded p-3 bg-light position-relative"
+                  >
                     <Form.Control
+                      className="mb-2"
                       type="text"
-                      placeholder="Enter short description"
-                      {...register("description", {
-                        required: "Short description is required",
+                      placeholder="Feature Title"
+                      {...register(`features.${index}.title`, {
+                        required: "Feature title is required",
                       })}
                     />
-                    {errors.description && (
-                      <small className="text-danger">
-                        {errors.description.message}
-                      </small>
-                    )}
-                  </Form.Group>
-
-                  {/* LONG DESCRIPTION */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Long Description *</Form.Label>
-                    <Controller
-                      name="longDescription"
-                      control={control}
-                      rules={{ required: "Long description is required" }}
-                      render={({ field }) => (
-                        <RichTextEditor
-                          value={field.value}
-                          onChange={field.onChange}
-                          placeholder="Enter detailed description..."
-                          height="300px"
-                        />
-                      )}
-                    />
-                    {errors.longDescription && (
-                      <small className="text-danger">
-                        {errors.longDescription.message}
-                      </small>
-                    )}
-                  </Form.Group>
-
-                  {/* LINK */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Extension Link *</Form.Label>
                     <Form.Control
-                      type="text"
-                      placeholder="Enter extension link"
-                      {...register("link", { required: "Link is required" })}
+                      as="textarea"
+                      rows={2}
+                      placeholder="Feature Description"
+                      {...register(`features.${index}.description`, {
+                        required: "Feature description is required",
+                      })}
                     />
-                    {errors.link && (
-                      <small className="text-danger">
-                        {errors.link.message}
-                      </small>
-                    )}
-                  </Form.Group>
-
-                  {/* IMAGE + PREVIEW */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Upload Image *</Form.Label>
-                    <Form.Control
-                      type="file"
-                      accept="image/*"
-                      {...register("image", { required: "Image is required" })}
-                    />
-                    {errors.image && (
-                      <small className="text-danger">
-                        {errors.image.message}
-                      </small>
-                    )}
-
-                    {previewImage && (
-                      <div className="mt-3 text-center">
-                        <img
-                          src={previewImage}
-                          alt="Preview"
-                          className="img-fluid rounded shadow-sm border"
-                          style={{
-                            maxWidth: "250px",
-                            height: "auto",
-                            objectFit: "cover",
-                          }}
-                        />
-                      </div>
-                    )}
-                  </Form.Group>
-
-                  {/* FEATURES */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Features *</Form.Label>
-                    {featureFields.map((item, index) => (
-                      <div
-                        key={item.id}
-                        className="mb-3 border rounded p-3 bg-light position-relative"
+                    {featureFields.length > 1 && (
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        className="mt-2"
+                        onClick={() => removeFeature(index)}
                       >
-                        <Form.Control
-                          className="mb-2"
-                          type="text"
-                          placeholder="Feature Title"
-                          {...register(`features.${index}.title`, {
-                            required: "Feature title is required",
-                          })}
-                        />
-                        <Form.Control
-                          as="textarea"
-                          rows={2}
-                          placeholder="Feature Description"
-                          {...register(`features.${index}.description`, {
-                            required: "Feature description is required",
-                          })}
-                        />
-                        {featureFields.length > 1 && (
-                          <Button
-                            variant="danger"
-                            size="sm"
-                            className="mt-2"
-                            onClick={() => removeFeature(index)}
-                          >
-                            Remove Feature
-                          </Button>
-                        )}
-                      </div>
-                    ))}
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => addFeature({ title: "", description: "" })}
-                    >
-                      + Add Feature
-                    </Button>
-                  </Form.Group>
+                        Remove Feature
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => addFeature({ title: "", description: "" })}
+                >
+                  + Add Feature
+                </Button>
+              </Form.Group>
 
-                  {/* BENEFITS */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Benefits *</Form.Label>
-                    {benefitFields.map((item, index) => (
-                      <div
-                        key={item.id}
-                        className="mb-3 border rounded p-3 bg-light position-relative"
-                      >
-                        <Form.Control
-                          className="mb-2"
-                          type="text"
-                          placeholder="Benefit Title"
-                          {...register(`benefits.${index}.title`, {
-                            required: "Benefit title is required",
-                          })}
-                        />
-                        <Form.Control
-                          as="textarea"
-                          rows={2}
-                          placeholder="Benefit Description"
-                          {...register(`benefits.${index}.description`, {
-                            required: "Benefit description is required",
-                          })}
-                        />
-                        {benefitFields.length > 1 && (
-                          <Button
-                            variant="danger"
-                            size="sm"
-                            className="mt-2"
-                            onClick={() => removeBenefit(index)}
-                          >
-                            Remove Benefit
-                          </Button>
-                        )}
-                      </div>
-                    ))}
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => addBenefit({ title: "", description: "" })}
-                    >
-                      + Add Benefit
-                    </Button>
-                  </Form.Group>
-
-                  {/* SUBMIT */}
-                  <Button
-                    className="comn-btn-pair mt-3"
-                    type="submit"
-                    disabled={isSubmitting}
+              {/* BENEFITS */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Benefits *</Form.Label>
+                {benefitFields.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className="mb-3 border rounded p-3 bg-light position-relative"
                   >
-                    {isSubmitting ? "Creating..." : "Create Extension"}
-                  </Button>
-                </Form>
-              </div>
-            </div>
-          </section>
+                    <Form.Control
+                      className="mb-2"
+                      type="text"
+                      placeholder="Benefit Title"
+                      {...register(`benefits.${index}.title`, {
+                        required: "Benefit title is required",
+                      })}
+                    />
+                    <Form.Control
+                      as="textarea"
+                      rows={2}
+                      placeholder="Benefit Description"
+                      {...register(`benefits.${index}.description`, {
+                        required: "Benefit description is required",
+                      })}
+                    />
+                    {benefitFields.length > 1 && (
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        className="mt-2"
+                        onClick={() => removeBenefit(index)}
+                      >
+                        Remove Benefit
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => addBenefit({ title: "", description: "" })}
+                >
+                  + Add Benefit
+                </Button>
+              </Form.Group>
+
+              {/* SUBMIT */}
+              <Button
+                className="comn-btn-pair mt-3"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Creating..." : "Create Extension"}
+              </Button>
+            </Form>
+          </div>
+        </div>
+      </section>
     </>
   );
 };

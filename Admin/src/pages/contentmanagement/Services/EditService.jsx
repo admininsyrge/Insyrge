@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Breadcrumb from "react-bootstrap/esm/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
@@ -36,7 +36,7 @@ const EditService = () => {
           `${BASE_URL_ADMIN}${GET_SERVICE_BY_ID(id)}`,
           {
             headers: { Token: token },
-          }
+          },
         );
 
         const data = res.data.data;
@@ -45,7 +45,7 @@ const EditService = () => {
         setSlug(data.slug || "");
         setDescription(data.description || "");
         setPoints(
-          Array.isArray(data.points) && data.points.length ? data.points : [""]
+          Array.isArray(data.points) && data.points.length ? data.points : [""],
         );
         setURL(data.url || "");
         setButton(data.button || "");
@@ -134,7 +134,7 @@ const EditService = () => {
     } catch (error) {
       console.error("Error updating service:", error);
       toast.error(
-        error?.response?.data?.message || "Failed to update service!"
+        error?.response?.data?.message || "Failed to update service!",
       );
     } finally {
       setLoading(false);
@@ -143,169 +143,163 @@ const EditService = () => {
 
   return (
     <>
+      <Breadcrumb className="cstm_bredcrumb">
+        <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/services" }}>
+          Services Management
+        </Breadcrumb.Item>
+        <Breadcrumb.Item active>Edit Service</Breadcrumb.Item>
+      </Breadcrumb>
 
-          <Breadcrumb className="cstm_bredcrumb">
-            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/services" }}>
-              Services Management
-            </Breadcrumb.Item>
-            <Breadcrumb.Item active>Edit Service</Breadcrumb.Item>
-          </Breadcrumb>
+      <section>
+        <div className="col-12">
+          <div className="comn-back-white">
+            <h3 className="heading-view-med">Edit Service</h3>
 
-          <section>
-            <div className="col-12">
-              <div className="comn-back-white">
-                <h3 className="heading-view-med">Edit Service</h3>
+            <form onSubmit={handleSubmit}>
+              {/* Title */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Title *</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter service title"
+                  value={title}
+                  onChange={(e) => handleTitleChange(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-                <form onSubmit={handleSubmit}>
-                  {/* Title */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Title *</Form.Label>
+              {/* Slug */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Slug *</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="enter-service-slug"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  required
+                />
+              </Form.Group>
+
+              {/* Description */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Description *</Form.Label>
+                <RichTextEditor
+                  value={description}
+                  onChange={setDescription}
+                  placeholder="Write service details..."
+                  height="300px"
+                />
+              </Form.Group>
+
+              {/* Points */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Points *</Form.Label>
+
+                {points.map((point, index) => (
+                  <div key={index} className="d-flex align-items-center mb-2">
                     <Form.Control
                       type="text"
-                      placeholder="Enter service title"
-                      value={title}
-                      onChange={(e) => handleTitleChange(e.target.value)}
+                      placeholder={`Enter point ${index + 1}`}
+                      value={point}
+                      onChange={(e) => handlePointChange(index, e.target.value)}
                       required
                     />
-                  </Form.Group>
 
-                  {/* Slug */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Slug *</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="enter-service-slug"
-                      value={slug}
-                      onChange={(e) => setSlug(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
-
-                  {/* Description */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Description *</Form.Label>
-                    <RichTextEditor
-                      value={description}
-                      onChange={setDescription}
-                      placeholder="Write service details..."
-                      height="300px"
-                    />
-                  </Form.Group>
-
-                  {/* Points */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Points *</Form.Label>
-
-                    {points.map((point, index) => (
-                      <div
-                        key={index}
-                        className="d-flex align-items-center mb-2"
+                    {points.length > 1 && (
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        className="ms-2"
+                        onClick={() => handleRemovePoint(index)}
+                        type="button"
                       >
-                        <Form.Control
-                          type="text"
-                          placeholder={`Enter point ${index + 1}`}
-                          value={point}
-                          onChange={(e) =>
-                            handlePointChange(index, e.target.value)
-                          }
-                          required
-                        />
+                        Remove
+                      </Button>
+                    )}
+                  </div>
+                ))}
 
-                        {points.length > 1 && (
-                          <Button
-                            variant="danger"
-                            size="sm"
-                            className="ms-2"
-                            onClick={() => handleRemovePoint(index)}
-                            type="button"
-                          >
-                            Remove
-                          </Button>
-                        )}
-                      </div>
-                    ))}
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  type="button"
+                  onClick={handleAddPoint}
+                >
+                  + Add Point
+                </Button>
+              </Form.Group>
 
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      type="button"
-                      onClick={handleAddPoint}
-                    >
-                      + Add Point
-                    </Button>
-                  </Form.Group>
+              {/* URL */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>URL *</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter service URL"
+                  value={url}
+                  onChange={(e) => setURL(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-                  {/* URL */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>URL *</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter service URL"
-                      value={url}
-                      onChange={(e) => setURL(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
+              {/* Button */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Button Text *</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter button label"
+                  value={button}
+                  onChange={(e) => setButton(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-                  {/* Button */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Button Text *</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter button label"
-                      value={button}
-                      onChange={(e) => setButton(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
+              {/* Image */}
+              <Form.Group className="comn-class-inputs">
+                <Form.Label>Upload Image</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
 
-                  {/* Image */}
-                  <Form.Group className="comn-class-inputs">
-                    <Form.Label>Upload Image</Form.Label>
-                    <Form.Control
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                    />
-
-                    <div className="mt-3 d-flex align-items-center gap-3">
-                      {existingImage && !image && (
-                        <div>
-                          <p className="mb-1">Existing Image:</p>
-                          <img
-                            src={`${BASE_URL_ADMIN}${existingImage}`}
-                            alt="Existing"
-                            className="img-thumbnail"
-                            width="200"
-                          />
-                        </div>
-                      )}
-
-                      {image && (
-                        <div>
-                          <p className="mb-1">New Image Preview:</p>
-                          <img
-                            src={URL.createObjectURL(image)}
-                            alt="Preview"
-                            className="img-thumbnail"
-                            width="200"
-                          />
-                        </div>
-                      )}
+                <div className="mt-3 d-flex align-items-center gap-3">
+                  {existingImage && !image && (
+                    <div>
+                      <p className="mb-1">Existing Image:</p>
+                      <img
+                        src={`${BASE_URL_ADMIN}${existingImage}`}
+                        alt="Existing"
+                        className="img-thumbnail"
+                        width="200"
+                      />
                     </div>
-                  </Form.Group>
+                  )}
 
-                  <Button
-                    className="comn-btn-pair mt-3"
-                    type="submit"
-                    disabled={loading}
-                  >
-                    {loading ? "Updating..." : "Update Service"}
-                  </Button>
-                </form>
-              </div>
-            </div>
-          </section>
+                  {image && (
+                    <div>
+                      <p className="mb-1">New Image Preview:</p>
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt="Preview"
+                        className="img-thumbnail"
+                        width="200"
+                      />
+                    </div>
+                  )}
+                </div>
+              </Form.Group>
+
+              <Button
+                className="comn-btn-pair mt-3"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Updating..." : "Update Service"}
+              </Button>
+            </form>
+          </div>
+        </div>
+      </section>
     </>
   );
 };

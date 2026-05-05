@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Breadcrumb from "react-bootstrap/esm/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BASE_URL_ADMIN, CREATE_BLOG } from "../../../API";
@@ -23,7 +23,11 @@ const CreateBlog = () => {
 
   useEffect(() => {
     if (title) {
-      const generatedSlug = title.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-");
+      const generatedSlug = title
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-");
       setSlug(generatedSlug);
     } else {
       setSlug("");
@@ -53,7 +57,10 @@ const CreateBlog = () => {
       if (image) formData.append("image", image);
 
       await axios.post(`${BASE_URL_ADMIN}${CREATE_BLOG}`, formData, {
-        headers: { Token: localStorage.getItem("token"), "Content-Type": "multipart/form-data" },
+        headers: {
+          Token: localStorage.getItem("token"),
+          "Content-Type": "multipart/form-data",
+        },
       });
       toast.success("Blog Created Successfully!");
       navigate("/blogs");
@@ -67,8 +74,13 @@ const CreateBlog = () => {
 
   return (
     <>
-      <Breadcrumb className="cstm_bredcrumb" listProps={{ className: "breadcrumb-custom-separator" }}>
-        <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/blogs" }}>Blog Management</Breadcrumb.Item>
+      <Breadcrumb
+        className="cstm_bredcrumb"
+        listProps={{ className: "breadcrumb-custom-separator" }}
+      >
+        <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/blogs" }}>
+          Blog Management
+        </Breadcrumb.Item>
         <Breadcrumb.Item active>Create Blog</Breadcrumb.Item>
       </Breadcrumb>
 
@@ -80,50 +92,101 @@ const CreateBlog = () => {
               <form onSubmit={handleSubmit}>
                 <Form.Group className="comn-class-inputs">
                   <Form.Label>Blog Title *</Form.Label>
-                  <Form.Control type="text" placeholder="Enter blog title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter blog title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                  />
                 </Form.Group>
 
                 <Form.Group className="comn-class-inputs">
                   <Form.Label>Slug (auto-generated)</Form.Label>
-                  <Form.Control type="text" placeholder="Slug will be generated automatically" value={slug} readOnly />
+                  <Form.Control
+                    type="text"
+                    placeholder="Slug will be generated automatically"
+                    value={slug}
+                    readOnly
+                  />
                 </Form.Group>
 
                 <Form.Group className="comn-class-inputs">
                   <Form.Label>Sub Title *</Form.Label>
-                  <Form.Control type="text" placeholder="Enter blog sub title" value={subTitle} onChange={(e) => setSubTitle(e.target.value)} required />
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter blog sub title"
+                    value={subTitle}
+                    onChange={(e) => setSubTitle(e.target.value)}
+                    required
+                  />
                 </Form.Group>
 
                 <Form.Group className="comn-class-inputs">
                   <Form.Label>Author</Form.Label>
-                  <Form.Control type="text" placeholder="Enter author name" value={author} onChange={(e) => setAuthor(e.target.value)} />
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter author name"
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                  />
                 </Form.Group>
 
                 <Form.Group className="comn-class-inputs">
                   <Form.Label>Category</Form.Label>
-                  <Form.Control type="text" placeholder="Enter blog category" value={category} onChange={(e) => setCategory(e.target.value)} />
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter blog category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                  />
                 </Form.Group>
 
                 <Form.Group className="comn-class-inputs">
                   <Form.Label>Short Description</Form.Label>
-                  <Form.Control as="textarea" rows={4} placeholder="Enter a short description (optional)" value={shortDescription} onChange={(e) => setShortDescription(e.target.value)} />
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    placeholder="Enter a short description (optional)"
+                    value={shortDescription}
+                    onChange={(e) => setShortDescription(e.target.value)}
+                  />
                 </Form.Group>
 
                 <Form.Group className="comn-class-inputs">
                   <Form.Label>Blog Description *</Form.Label>
-                  <RichTextEditor value={description} onChange={setDescription} placeholder="Write the full blog content..." height="600px" />
+                  <RichTextEditor
+                    value={description}
+                    onChange={setDescription}
+                    placeholder="Write the full blog content..."
+                    height="600px"
+                  />
                 </Form.Group>
 
                 <Form.Group className="comn-class-inputs">
                   <Form.Label>Upload Cover Image</Form.Label>
-                  <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
+                  <Form.Control
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
                   {image && (
                     <div className="mt-3">
-                      <img src={URL.createObjectURL(image)} alt="Preview" className="img-thumbnail" width="200" />
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt="Preview"
+                        className="img-thumbnail"
+                        width="200"
+                      />
                     </div>
                   )}
                 </Form.Group>
 
-                <Button className="comn-btn-pair" type="submit" disabled={loading}>
+                <Button
+                  className="comn-btn-pair"
+                  type="submit"
+                  disabled={loading}
+                >
                   {loading ? "Creating..." : "Create Blog"}
                 </Button>
               </form>
