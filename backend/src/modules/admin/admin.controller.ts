@@ -727,11 +727,19 @@ class adminController {
   static async updateHome(req: any, res: any) {
     try {
       const body: any = qs.parse(req.body);
+      const files = req.files || {};
 
-      if (typeof body.contentHighlights === "string") {
-        body.contentHighlights = JSON.parse(body.contentHighlights);
-      }
+      // 🧠 Parse JSON safely
+      const safeParse = (data: any, fallback: any) => {
+        try {
+          if (typeof data === "string") return JSON.parse(data);
+          return data ?? fallback;
+        } catch {
+          return fallback;
+        }
+      };
 
+      // 📦 Existing Data
       const existingHome = await Models.Home.findOne();
       if (!existingHome) {
         return res.status(404).json({
@@ -740,75 +748,100 @@ class adminController {
         });
       }
 
-      // ✅ HERO
-      const hero: any = {
-        title: body.hero?.title?.trim() || existingHome.hero.title,
-        subtitle: body.hero?.subtitle?.trim() || existingHome.hero.subtitle,
-        buttonText: body.hero?.buttonText?.trim() || existingHome.hero.buttonText,
-        sliderImages: existingHome.hero.sliderImages || [],
+      // 🔼 Common Upload Handler
+      const handleUpload = async (fileInput: any, folder: string) => {
+        if (!fileInput) return [];
+
+        const uploaded = await adminServices.uploadFile(fileInput, folder);
+        const filesArray = Array.isArray(uploaded) ? uploaded : [uploaded];
+
+        return filesArray.map((img: any) => ({
+          image: {
+            url: img.url,
+            public_id: img.public_id,
+          },
+        }));
       };
 
-      console.log(req.files.heroSlider)
-      // 🖼 HERO SLIDER (multiple)
-      if (req.files?.heroSlider) {
-        const uploaded = await adminServices.uploadFile(req.files.heroSlider, "home/hero");
+      // 🗑 Remove Images by public_id
+      const removeImages = (existing: any[], removeIds: string[] = []) => {
+        if (!Array.isArray(removeIds)) return existing;
+        return existing.filter(
+          (item) => !removeIds.includes(item.image.public_id)
+        );
+      };
 
-        const filesArray = Array.isArray(uploaded) ? uploaded : [uploaded];
+      // =========================
+      // ✅ HERO SECTION
+      // =========================
+      let heroSlider = existingHome.hero.sliderImages || [];
 
-        const newImages = filesArray.map((img: any) => ({
-          image: {
-            url: img.url,
-            public_id: img.public_id,
-          },
-        }));
+      // remove old images
+      heroSlider = removeImages(
+        heroSlider,
+        safeParse(body.removeHeroImages, [])
+      );
 
-        hero.sliderImages = [...hero.sliderImages, ...newImages];
-      }
+      // upload new
+      const newHeroImages = await handleUpload(files.heroSlider, "home/hero");
 
+      const hero = {
+        title: body.hero?.title?.trim() || existingHome.hero.title,
+        subtitle: body.hero?.subtitle?.trim() || existingHome.hero.subtitle,
+        buttonText:
+          body.hero?.buttonText?.trim() ||
+          existingHome.hero.buttonText,
+        sliderImages: [...heroSlider, ...newHeroImages],
+      };
 
+      // =========================
       // 🤝 PARTNERS
+      // =========================
       let partners = existingHome.partners || [];
 
-      if (req.files?.partnerLogo) {
-        const uploaded = await adminServices.uploadFile(req.files.partnerLogo, "home/partners");
+      partners = removeImages(
+        partners,
+        safeParse(body.removePartnerImages, [])
+      );
 
-        const filesArray = Array.isArray(uploaded) ? uploaded : [uploaded];
+      const newPartners = await handleUpload(
+        files.partnerLogo,
+        "home/partners"
+      );
 
-        const newPartners = filesArray.map((img: any) => ({
-          image: {
-            url: img.url,
-            public_id: img.public_id,
-          },
-        }));
+      partners = [...partners, ...newPartners];
 
-        partners = [...partners, ...newPartners];
-      }
-
+      // =========================
       // 🧩 CONTENT
-      const contentHighlights =
-        body.contentHighlights && Array.isArray(body.contentHighlights)
-          ? body.contentHighlights
-          : existingHome.contentHighlights;
+      // =========================
+      const contentHighlights = safeParse(
+        body.contentHighlights,
+        existingHome.contentHighlights
+      );
 
+      // =========================
       // ☎️ CONTACT
+      // =========================
       const contact = {
-        title: body.contact?.title?.trim() || existingHome.contact.title,
+        title:
+          body.contact?.title?.trim() ||
+          existingHome.contact.title,
         highlights: Array.isArray(body.contact?.highlights)
           ? body.contact.highlights
           : existingHome.contact.highlights,
       };
 
-      // ✅ FINAL DATA
-      const homeData = {
-        hero,
-        partners,
-        contentHighlights,
-        contact,
-      };
-
+      // =========================
+      // 💾 FINAL UPDATE
+      // =========================
       const updated = await Models.Home.findByIdAndUpdate(
         existingHome._id,
-        homeData,
+        {
+          hero,
+          partners,
+          contentHighlights,
+          contact,
+        },
         { new: true }
       );
 
@@ -817,7 +850,6 @@ class adminController {
         message: "Home Page updated successfully!",
         data: updated,
       });
-
     } catch (err: any) {
       console.error("❌ Update Home Error:", err);
       return res.status(400).json({
@@ -827,99 +859,99 @@ class adminController {
     }
   }
 
-static async deleteHomeImage(req: any, res: any) {
-  try {
-    const { section, public_id } = req.body;
+  static async deleteHomeImage(req: any, res: any) {
+    try {
+      const { section, public_id } = req.body;
 
-    if (!section || !public_id) {
-      return res.status(400).json({
-        success: false,
-        message: "Section and public_id are required.",
-      });
-    }
-
-    const home = await Models.Home.findOne();
-    if (!home) {
-      return res.status(404).json({
-        success: false,
-        message: "Home data not found",
-      });
-    }
-
-    // 🔥 reusable filter helper
-    const removeImage = (array: any[], keyPath: string) => {
-      return array.filter((item) => {
-        const keys = keyPath.split(".");
-        let value = item;
-
-        for (const key of keys) {
-          value = value?.[key];
-        }
-
-        return value !== public_id;
-      });
-    };
-
-    let updated = false;
-
-    switch (section) {
-      case "hero":
-        home.hero.sliderImages = removeImage(
-          home.hero.sliderImages,
-          "image.public_id"
-        );
-        updated = true;
-        break;
-
-      case "partners":
-        home.partners = removeImage(
-          home.partners,
-          "image.public_id"
-        );
-        updated = true;
-        break;
-
-      case "caseStudies":
-        // future-proof (if image added later)
-        home.caseStudies = removeImage(
-          home.caseStudies,
-          "image.public_id"
-        );
-        updated = true;
-        break;
-
-      default:
+      if (!section || !public_id) {
         return res.status(400).json({
           success: false,
-          message: "Invalid section. Use: hero, partners, caseStudies",
+          message: "Section and public_id are required.",
         });
-    }
+      }
 
-    if (!updated) {
-      return res.status(400).json({
+      const home = await Models.Home.findOne();
+      if (!home) {
+        return res.status(404).json({
+          success: false,
+          message: "Home data not found",
+        });
+      }
+
+      // 🔥 reusable filter helper
+      const removeImage = (array: any[], keyPath: string) => {
+        return array.filter((item) => {
+          const keys = keyPath.split(".");
+          let value = item;
+
+          for (const key of keys) {
+            value = value?.[key];
+          }
+
+          return value !== public_id;
+        });
+      };
+
+      let updated = false;
+
+      switch (section) {
+        case "hero":
+          home.hero.sliderImages = removeImage(
+            home.hero.sliderImages,
+            "image.public_id"
+          );
+          updated = true;
+          break;
+
+        case "partners":
+          home.partners = removeImage(
+            home.partners,
+            "image.public_id"
+          );
+          updated = true;
+          break;
+
+        case "caseStudies":
+          // future-proof (if image added later)
+          home.caseStudies = removeImage(
+            home.caseStudies,
+            "image.public_id"
+          );
+          updated = true;
+          break;
+
+        default:
+          return res.status(400).json({
+            success: false,
+            message: "Invalid section. Use: hero, partners, caseStudies",
+          });
+      }
+
+      if (!updated) {
+        return res.status(400).json({
+          success: false,
+          message: "Nothing updated",
+        });
+      }
+
+      // 🔥 delete from cloudinary
+      await adminServices.deleteFile(public_id);
+
+      await home.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "Image deleted successfully",
+      });
+
+    } catch (err: any) {
+      console.error("❌ Delete Image Error:", err);
+      return res.status(500).json({
         success: false,
-        message: "Nothing updated",
+        message: err.message || "Failed to delete image",
       });
     }
-
-    // 🔥 delete from cloudinary
-    await adminServices.deleteFile(public_id);
-
-    await home.save();
-
-    return res.status(200).json({
-      success: true,
-      message: "Image deleted successfully",
-    });
-
-  } catch (err: any) {
-    console.error("❌ Delete Image Error:", err);
-    return res.status(500).json({
-      success: false,
-      message: err.message || "Failed to delete image",
-    });
   }
-}
 
   static async getHome(req: any, res: any) {
     try {
