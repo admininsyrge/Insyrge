@@ -29,5 +29,5 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           source: "Admin/build"
-          target: "/var/www/insyrge/admin"
+          target: "/var/www/insyrge/admin/build"
           strip_components: 2
