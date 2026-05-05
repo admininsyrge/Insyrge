@@ -40,7 +40,14 @@ app.use(
   })
 );
 
-app.use(cors({ origin: "*" }));
+app.use(cors({
+  origin: [
+    "https://insyrge.com",
+    "https://admin.insyrge.com",
+    "http://localhost:3000"
+  ],
+  credentials: true
+}));
 
 const apiLogger = (req: Request, res: Response, next: NextFunction) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
