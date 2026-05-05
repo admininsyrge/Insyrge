@@ -827,72 +827,99 @@ class adminController {
     }
   }
 
-  static async deleteHomeImage(req: any, res: any) {
-    try {
-      const { section, public_id } = req.body;
+static async deleteHomeImage(req: any, res: any) {
+  try {
+    const { section, public_id } = req.body;
 
-      if (!section || !public_id) {
-        return res.status(400).json({
-          success: false,
-          message: "Section and public_id are required.",
-        });
-      }
-
-      // 1️⃣ Fetch home
-      const home = await Models.Home.findOne();
-      if (!home) {
-        return res.status(404).json({
-          success: false,
-          message: "Home data not found",
-        });
-      }
-
-      // 2️⃣ Remove from DB
-      switch (section) {
-        case "hero":
-          home.hero.sliderImages = home.hero.sliderImages.filter(
-            (item: any) => item.public_id !== public_id
-          );
-          break;
-
-        case "partners":
-          home.partners = home.partners.filter(
-            (item: any) => item.public_id !== public_id
-          );
-          break;
-
-        case "caseStudies":
-          home.caseStudies = home.caseStudies.filter(
-            (item: any) => item.image_public_id !== public_id
-          );
-          break;
-
-        default:
-          return res.status(400).json({
-            success: false,
-            message: "Invalid section. Use: hero, partners, caseStudies",
-          });
-      }
-
-      // 3️⃣ Delete from Cloudinary 🔥
-      await adminServices.deleteFile(public_id);
-
-      // 4️⃣ Save DB
-      await home.save();
-
-      return res.status(200).json({
-        success: true,
-        message: "Image deleted successfully",
-      });
-
-    } catch (err: any) {
-      console.error("❌ Delete Image Error:", err);
-      return res.status(500).json({
+    if (!section || !public_id) {
+      return res.status(400).json({
         success: false,
-        message: err.message || "Failed to delete image",
+        message: "Section and public_id are required.",
       });
     }
+
+    const home = await Models.Home.findOne();
+    if (!home) {
+      return res.status(404).json({
+        success: false,
+        message: "Home data not found",
+      });
+    }
+
+    // 🔥 reusable filter helper
+    const removeImage = (array: any[], keyPath: string) => {
+      return array.filter((item) => {
+        const keys = keyPath.split(".");
+        let value = item;
+
+        for (const key of keys) {
+          value = value?.[key];
+        }
+
+        return value !== public_id;
+      });
+    };
+
+    let updated = false;
+
+    switch (section) {
+      case "hero":
+        home.hero.sliderImages = removeImage(
+          home.hero.sliderImages,
+          "image.public_id"
+        );
+        updated = true;
+        break;
+
+      case "partners":
+        home.partners = removeImage(
+          home.partners,
+          "image.public_id"
+        );
+        updated = true;
+        break;
+
+      case "caseStudies":
+        // future-proof (if image added later)
+        home.caseStudies = removeImage(
+          home.caseStudies,
+          "image.public_id"
+        );
+        updated = true;
+        break;
+
+      default:
+        return res.status(400).json({
+          success: false,
+          message: "Invalid section. Use: hero, partners, caseStudies",
+        });
+    }
+
+    if (!updated) {
+      return res.status(400).json({
+        success: false,
+        message: "Nothing updated",
+      });
+    }
+
+    // 🔥 delete from cloudinary
+    await adminServices.deleteFile(public_id);
+
+    await home.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Image deleted successfully",
+    });
+
+  } catch (err: any) {
+    console.error("❌ Delete Image Error:", err);
+    return res.status(500).json({
+      success: false,
+      message: err.message || "Failed to delete image",
+    });
   }
+}
 
   static async getHome(req: any, res: any) {
     try {
