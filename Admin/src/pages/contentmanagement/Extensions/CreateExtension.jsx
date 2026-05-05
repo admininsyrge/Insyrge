@@ -10,7 +10,7 @@ import {
   useForm,
   useFieldArray,
   Controller,
-} from "../../../../node_modules/react-hook-form/dist";
+} from "react-hook-form";
 import "react-quill/dist/quill.snow.css";
 
 const CreateExtension = () => {

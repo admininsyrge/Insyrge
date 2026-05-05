@@ -5,7 +5,7 @@ import {
   useForm,
   useFieldArray,
   Controller,
-} from "../../../../node_modules/react-hook-form/dist";
+} from "react-hook-form";
 
 import Breadcrumb from "react-bootstrap/esm/Breadcrumb";
 import axios from "axios";
