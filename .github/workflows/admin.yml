@@ -2,7 +2,7 @@ name: Admin Deploy
 
 on:
   push:
-    paths: ["admin/**"]
+    paths: "admin/**"
 
 jobs:
   deploy:
