@@ -8,7 +8,7 @@ import Breadcrumb from "react-bootstrap/esm/Breadcrumb";
 import { BASE_URL_ADMIN, CHANGE_PASSWORD } from "../API";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useForm } from "../../node_modules/react-hook-form/dist";
+import { useForm } from 'react-hook-form';
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Loader from "../components/Loader";
 function ChangePassword() {

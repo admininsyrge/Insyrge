@@ -5,7 +5,7 @@ import Button from "react-bootstrap/esm/Button";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 import loginimg from "../Assets/Images/Phrase_box_Logo.jpg";
-import { useForm } from "../../node_modules/react-hook-form/dist";
+import { useForm } from 'react-hook-form';
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BASE_URL_ADMIN, RESET_PASSWORD, CHECKSECURITYCODE } from "../API";
