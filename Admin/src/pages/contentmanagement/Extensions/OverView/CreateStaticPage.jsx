@@ -15,7 +15,7 @@ import RichTextEditor from "../../../../components/RichTextEditor";
 import {
   useForm,
   Controller,
-} from "../react-hook-form";
+} from "react-hook-form";
 import "react-quill/dist/quill.snow.css";
 
 const CreateStaticPage = () => {
