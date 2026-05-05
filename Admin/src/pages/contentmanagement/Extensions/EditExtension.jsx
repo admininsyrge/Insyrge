@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import Header from "../../../components/Header";
-import Sidebar from "../../../components/Sidebar";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
-  BASE_URL,
   BASE_URL_ADMIN,
   GET_EXTENSION_BY_ID,
   UPDATE_EXTENSION,
 } from "../../../API";
 import RichTextEditor from "../../../components/RichTextEditor";
+import { getImageUrl, handleImageError } from "../../../utils/imageUtils";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import "react-quill/dist/quill.snow.css";
 
@@ -140,11 +138,7 @@ const EditExtension = () => {
 
   // ✅ UI
   return (
-    <div className="container-fluid">
-      <Header />
-      <div className="row">
-        <Sidebar />
-        <div className="col-9 main-dash-left">
+    <>
           <Breadcrumb className="cstm_bredcrumb">
             <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/extensions" }}>
               Extensions Management
@@ -248,7 +242,7 @@ const EditExtension = () => {
                         <div>
                           <p className="mb-1">Existing Image:</p>
                           <img
-                            src={existingImage.url}
+                            src={getImageUrl(existingImage)}
                             alt="Existing"
                             className="img-thumbnail"
                             width="200"
@@ -371,9 +365,7 @@ const EditExtension = () => {
               </div>
             </div>
           </section>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

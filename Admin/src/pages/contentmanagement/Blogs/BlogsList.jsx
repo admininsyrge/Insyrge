@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../../components/Header";
-import Sidebar from "../../../components/Sidebar";
 import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -16,6 +14,7 @@ import {
   GET_BLOGS,
   DELETE_BLOG,
 } from "../../../API";
+import { getImageUrl, handleImageError } from "../../../utils/imageUtils";
 
 function BlogsList() {
   const navigate = useNavigate();
@@ -60,208 +59,209 @@ function BlogsList() {
     }
   };
 
-  // Search filter
-  const filteredList = blogs.filter((b) =>
-    b.title?.toLowerCase().includes(searchQuery.toLowerCase())
+  // Memoized search filter
+  const filteredList = useMemo(
+    () =>
+      blogs.filter((b) =>
+        b.title?.toLowerCase().includes(searchQuery.toLowerCase())
+      ),
+    [blogs, searchQuery]
   );
 
   return (
     <>
       <Loader isLoading={isLoading} />
-      <div className="container-fluid">
-        <Header />
-        <div className="row">
-          <Sidebar />
-          <div className="col-9 main-dash-left">
-            <section className="back-dashboard-sec comn-dashboard-page">
-              <div className="main-notification-messege">
-                {/* Header */}
-                <div className="notifi-list d-flex justify-content-between align-items-center">
-                  <h6>Blogs Management</h6>
-                  <div className="dropdowns-inner-list d-flex">
-                    <div className="icon-search-main">
-                      <Form.Control
-                        type="text"
-                        placeholder="Search Blog..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                    </div>
-                    <button
-                      className="ms-2 add-notification-btn"
-                      onClick={() => navigate("/create-blog")}
-                    >
-                      + Create New Blog
-                    </button>
-                  </div>
-                </div>
-
-                {/* Table */}
-                <div className="notification-table pt-0">
-                  <Table responsive bordered hover>
-                    <thead>
-                      <tr className="head-class-td">
-                        <th>Sr. No.</th>
-                        <th>Title</th>
-                        <th>Sub Title</th>
-                        <th>Author</th>
-                        <th>Category</th>
-                        <th>Short Description</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredList.length > 0 ? (
-                        filteredList.map((blog, index) => (
-                          <tr key={blog._id}>
-                            <td>{index + 1}</td>
-                            <td>{blog.title}</td>
-                            <td>{blog.subTitle}</td>
-                            <td>{blog.author || "N/A"}</td>
-                            <td>{blog.category || "N/A"}</td>
-                            <td>
-                              {blog.shortDescription
-                                ? blog.shortDescription.substring(0, 50) + "..."
-                                : ""}
-                            </td>
-                            <td>
-                              <div className="d-flex table_action_btn_group">
-                                <Button
-                                  variant="info"
-                                  size="sm"
-                                  className="me-2"
-                                  onClick={() => {
-                                    setSelectedData(blog);
-                                    setIsDeleteModal(false);
-                                    setShow(true);
-                                  }}
-                                >
-                                  View
-                                </Button>
-
-                                <Button
-                                  variant="warning"
-                                  size="sm"
-                                  className="me-2"
-                                  onClick={() =>
-                                    navigate(`/blogs/edit/${blog._id}`)
-                                  }
-                                >
-                                  Edit
-                                </Button>
-
-                                <Button
-                                  variant="danger"
-                                  size="sm"
-                                  onClick={() => {
-                                    setSelectedData(blog);
-                                    setIsDeleteModal(true);
-                                    setShow(true);
-                                  }}
-                                >
-                                  Delete
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan="7" className="text-center">
-                            No Blogs Found
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </Table>
-                </div>
+      <section className="back-dashboard-sec comn-dashboard-page">
+        <div className="main-notification-messege">
+          {/* Header */}
+          <div className="notifi-list d-flex justify-content-between align-items-center">
+            <h6>Blogs Management</h6>
+            <div className="dropdowns-inner-list d-flex">
+              <div className="icon-search-main">
+                <Form.Control
+                  type="text"
+                  placeholder="Search Blog..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
-            </section>
+              <button
+                className="ms-2 add-notification-btn"
+                onClick={() => navigate("/create-blog")}
+              >
+                + Create New Blog
+              </button>
+            </div>
+          </div>
+
+          {/* Table */}
+          <div className="notification-table pt-0">
+            <Table responsive bordered hover>
+              <thead>
+                <tr className="head-class-td">
+                  <th>Sr. No.</th>
+                  <th>Title</th>
+                  <th>Sub Title</th>
+                  <th>Author</th>
+                  <th>Category</th>
+                  <th>Short Description</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredList.length > 0 ? (
+                  filteredList.map((blog, index) => (
+                    <tr key={blog._id}>
+                      <td>{index + 1}</td>
+                      <td>{blog.title}</td>
+                      <td>{blog.subTitle}</td>
+                      <td>{blog.author || "N/A"}</td>
+                      <td>{blog.category || "N/A"}</td>
+                      <td>
+                        {blog.shortDescription
+                          ? blog.shortDescription.substring(0, 50) + "..."
+                          : ""}
+                      </td>
+                      <td>
+                        <div className="d-flex table_action_btn_group">
+                          <Button
+                            variant="info"
+                            size="sm"
+                            className="me-2"
+                            onClick={() => {
+                              setSelectedData(blog);
+                              setIsDeleteModal(false);
+                              setShow(true);
+                            }}
+                          >
+                            View
+                          </Button>
+
+                          <Button
+                            variant="warning"
+                            size="sm"
+                            className="me-2"
+                            onClick={() =>
+                              navigate(`/blogs/edit/${blog._id}`)
+                            }
+                          >
+                            Edit
+                          </Button>
+
+                          <Button
+                            variant="danger"
+                            size="sm"
+                            onClick={() => {
+                              setSelectedData(blog);
+                              setIsDeleteModal(true);
+                              setShow(true);
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="text-center">
+                      No Blogs Found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
           </div>
         </div>
+      </section>
 
-        {/* Modal (View/Delete) */}
-        <Modal
-          show={show}
-          onHide={() => setShow(false)}
-          centered
-          size={isDeleteModal ? "md" : "lg"}
-          className="comm_modal cst_inner_wid_modal"
-        >
-          {isDeleteModal ? (
-            <Modal.Body className="text-center p-4">
-              <div className="img-modal mb-3">
-                <img src={Delt} alt="Delete Icon" width="70" />
-              </div>
-              <h4 className="heading mb-3">
-                Are you sure you want to delete this blog?
-              </h4>
-              <div className="d-flex justify-content-center gap-2">
-                <Button className="comn-modal-btns-blue" onClick={handleDelete}>
-                  Yes, Delete
-                </Button>
-                <Button
-                  className="comn-modal-btns-transparent"
-                  onClick={() => setShow(false)}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </Modal.Body>
-          ) : (
-            selectedData && (
-              <Modal.Body className="p-4" style={{ maxHeight: "70vh", overflowY: "auto" }}>
-                <h4 className="mb-2">{selectedData.title}</h4>
-                <h6 className="text-muted mb-3">{selectedData.subTitle}</h6>
+      {/* Modal (View/Delete) */}
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        centered
+        size={isDeleteModal ? "md" : "lg"}
+        className="comm_modal cst_inner_wid_modal"
+      >
+        {isDeleteModal ? (
+          <Modal.Body className="text-center p-4">
+            <div className="img-modal mb-3">
+              <img src={Delt} alt="Delete Icon" width="70" />
+            </div>
+            <h4 className="heading mb-3">
+              Are you sure you want to delete this blog?
+            </h4>
+            <div className="d-flex justify-content-center gap-2">
+              <Button className="comn-modal-btns-blue" onClick={handleDelete}>
+                Yes, Delete
+              </Button>
+              <Button
+                className="comn-modal-btns-transparent"
+                onClick={() => setShow(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </Modal.Body>
+        ) : (
+          selectedData && (
+            <Modal.Body
+              className="p-4"
+              style={{ maxHeight: "70vh", overflowY: "auto" }}
+            >
+              <h4 className="mb-2">{selectedData.title}</h4>
+              <h6 className="text-muted mb-3">{selectedData.subTitle}</h6>
 
-                {selectedData.image && (
-                  <div className="mb-3">
-                    <img
-                      src={selectedData.image.url}
-                      alt={selectedData.title}
-                      className="img-fluid rounded"
-                      style={{ maxHeight: "300px", objectFit: "cover" }}
-                    />
-                  </div>
-                )}
-
-                <p>
-                  <strong>Author:</strong> {selectedData.author || "N/A"}
-                </p>
-                <p>
-                  <strong>Category:</strong> {selectedData.category || "N/A"}
-                </p>
-                <p>
-                  <strong>Description:</strong>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: selectedData.description,
-                    }}
+              {selectedData.image && (
+                <div className="mb-3">
+                  <img
+                    src={getImageUrl(selectedData.image)}
+                    alt={selectedData.title}
+                    className="img-fluid rounded"
+                    style={{ maxHeight: "300px", objectFit: "cover" }}
+                    onError={handleImageError}
                   />
-                </p>
+                </div>
+              )}
 
-                {selectedData.shortDescription && (
-                  <p>
-                    <strong>Short Description:</strong> {selectedData.shortDescription}
-                  </p>
-                )}
+              <p>
+                <strong>Author:</strong> {selectedData.author || "N/A"}
+              </p>
+              <p>
+                <strong>Category:</strong> {selectedData.category || "N/A"}
+              </p>
+              <p>
+                <strong>Description:</strong>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: selectedData.description,
+                  }}
+                />
+              </p>
 
-                <p className="mt-3">
-                  <small>
-                    <strong>Created At:</strong>{" "}
-                    {new Date(selectedData.createdAt).toLocaleString()}
-                  </small>
+              {selectedData.shortDescription && (
+                <p>
+                  <strong>Short Description:</strong>{" "}
+                  {selectedData.shortDescription}
                 </p>
-              </Modal.Body>
-            )
-          )}
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShow(false)}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+              )}
+
+              <p className="mt-3">
+                <small>
+                  <strong>Created At:</strong>{" "}
+                  {new Date(selectedData.createdAt).toLocaleString()}
+                </small>
+              </p>
+            </Modal.Body>
+          )
+        )}
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShow(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

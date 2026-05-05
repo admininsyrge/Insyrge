@@ -1,19 +1,20 @@
 import React from "react";
-import { Rings } from 'react-loader-spinner'
+import { Rings } from "react-loader-spinner";
 
-function Loader({isLoading}) {
+function Loader({ isLoading }) {
+  if (!isLoading) return null;
+
   return (
-    <Rings
-        visible={isLoading}
+    <div className="admin-loader-overlay">
+      <Rings
+        visible={true}
         height="80"
         width="80"
         radius="48"
-        color="#e83424"
-        ariaLabel="watch-loading"
-        wrapperStyle={{}}
-        wrapperClass="hell"
-        />
-
+        color="#111111"
+        ariaLabel="loading"
+      />
+    </div>
   );
 }
 

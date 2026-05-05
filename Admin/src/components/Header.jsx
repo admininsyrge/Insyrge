@@ -3,19 +3,22 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import user from "../Assets/Images/blank.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/slices/AdminDetails";
-import { BASE_URL_ADMIN, IMAGE_URL, USER_DETAILS } from "../API";
+import { BASE_URL_ADMIN, USER_DETAILS } from "../API";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { getImageUrl, handleImageError } from "../utils/imageUtils";
 
 function Header() {
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
-  const [userDetail, setUserDetail] = useState(null);
   const dispatch = useDispatch();
   const userStateDetail = useSelector((state) => state.user.user);
 
   useEffect(() => {
-    getDetail();
+    // Only fetch if we don't already have user data in Redux
+    if (!userStateDetail) {
+      getDetail();
+    }
   }, []);
 
   const getDetail = async () => {
@@ -29,14 +32,14 @@ function Header() {
 
       if (response.data.code === 200 && response.status === 200) {
         const userDetail = response.data.data[0];
-        setUserDetail(userDetail);
         dispatch(setUser(userDetail));
       } else {
         toast.error("Failed to fetch user details");
       }
     } catch (error) {
       if (error.response && error.response.data) {
-        const errorMessage = error.response || "An error occurred";
+        const errorMessage =
+          error.response.data.message || "An error occurred";
         toast.error(errorMessage);
       } else {
         toast.error("An error occurred");
@@ -55,13 +58,10 @@ function Header() {
             <div className="divider"></div>
             <Link to="/profile" className="dash_profile_image">
               <img
-                src={
-                  userStateDetail?.image
-                    ? IMAGE_URL + userStateDetail.image
-                    : user
-                }
+                src={getImageUrl(userStateDetail?.image)}
                 alt="User"
                 className="img-fluid"
+                onError={handleImageError}
               />
             </Link>
           </div>

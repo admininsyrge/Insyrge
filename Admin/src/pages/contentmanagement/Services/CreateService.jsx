@@ -3,13 +3,11 @@ import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 
-import Sidebar from "../../../components/Sidebar";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BASE_URL_ADMIN, CREATE_SERVICE } from "../../../API";
 import RichTextEditor from "../../../components/RichTextEditor";
-import Header from "../../../components/Header";
 
 const CreateService = () => {
   const navigate = useNavigate();
@@ -96,12 +94,8 @@ const CreateService = () => {
   };
 
   return (
-    <div className="container-fluid">
-      <Header />
-      <div className="row">
-        <Sidebar />
+    <>
 
-        <div className="col-9 main-dash-left">
           <Breadcrumb className="cstm_bredcrumb">
             <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/services" }}>
               Services Management
@@ -295,9 +289,7 @@ const CreateService = () => {
               </div>
             </div>
           </section>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

@@ -1,9 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import deleteimg from "../Assets/Images/logImage.svg";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
+import {
+  LayoutDashboard,
+  FolderKanban,
+  PenLine,
+  Briefcase,
+  Home,
+  Puzzle,
+  Shield,
+  FileText,
+  Settings,
+  LogOut,
+  ChevronDown,
+} from "lucide-react";
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -12,11 +25,20 @@ function Sidebar() {
   const [show, setShow] = useState(false);
   const [isToggled, setIsToggled] = useState(false);
 
-  // ACTIVE MENU
+  // ACTIVE MENU — sync with route on every navigation
   const [activeMenu, setActiveMenu] = useState(location.pathname);
 
+  useEffect(() => {
+    setActiveMenu(location.pathname);
+  }, [location.pathname]);
+
   // COLLAPSE STATE
-  const [collapseExtensions, setCollapseExtensions] = useState(false);
+  const [collapseExtensions, setCollapseExtensions] = useState(
+    location.pathname.startsWith("/extensions") ||
+      location.pathname.startsWith("/pages/") ||
+      location.pathname.startsWith("/create-extension") ||
+      location.pathname.startsWith("/edit/extension")
+  );
 
   const logoutHandler = () => {
     localStorage.removeItem("token");
@@ -26,16 +48,31 @@ function Sidebar() {
   };
 
   // Static pages inside extensions
-  // Static pages inside extensions
   const staticPages = [
     { label: "Overview", route: "/pages/overview" },
     { label: "User Guide", route: "/pages/userGuide" },
-    { label: "Admin Guide", route: "/pages/adminGuide" }, // NEW
-    { label: "Help Page", route: "/pages/help" }, // NEW
-    { label: "Case Study", route: "/pages/caseStudy" }, // NEW
+    { label: "Admin Guide", route: "/pages/adminGuide" },
+    { label: "Help Page", route: "/pages/help" },
+    { label: "Case Study", route: "/pages/caseStudy" },
     { label: "Terms & Conditions", route: "/pages/terms" },
     { label: "Privacy Policy", route: "/pages/privacy" },
   ];
+
+  const menuItem = (icon, label, route) => (
+    <li
+      key={route}
+      className={`inner-slide-li subitem ${
+        activeMenu === route ? "active" : ""
+      }`}
+      onClick={() => {
+        setActiveMenu(route);
+        navigate(route);
+      }}
+    >
+      {icon}
+      <span>{label}</span>
+    </li>
+  );
 
   return (
     <>
@@ -51,6 +88,7 @@ function Sidebar() {
               <figure
                 className="text-center"
                 onClick={() => navigate("/projects")}
+                style={{ cursor: "pointer" }}
               >
                 <img src="/logo.png" className="img-fluid" alt="Logo" />
               </figure>
@@ -60,53 +98,14 @@ function Sidebar() {
               {/* CONTENT SECTION */}
               <li className="sidebar-section-heading">Content</li>
 
-              <li
-                className={`inner-slide-li subitem ${
-                  activeMenu === "/projects" ? "active" : ""
-                }`}
-                onClick={() => {
-                  setActiveMenu("/projects");
-                  navigate("/projects");
-                }}
-              >
-                Projects
-              </li>
-
-              <li
-                className={`inner-slide-li subitem ${
-                  activeMenu === "/blogs" ? "active" : ""
-                }`}
-                onClick={() => {
-                  setActiveMenu("/blogs");
-                  navigate("/blogs");
-                }}
-              >
-                Blogs
-              </li>
-
-              <li
-                className={`inner-slide-li subitem ${
-                  activeMenu === "/services" ? "active" : ""
-                }`}
-                onClick={() => {
-                  setActiveMenu("/services");
-                  navigate("/services");
-                }}
-              >
-                Services
-              </li>
-
-              <li
-                className={`inner-slide-li subitem ${
-                  activeMenu === "/update-home" ? "active" : ""
-                }`}
-                onClick={() => {
-                  setActiveMenu("/update-home");
-                  navigate("/update-home");
-                }}
-              >
-                Update Home
-              </li>
+              {menuItem(
+                <FolderKanban size={18} />,
+                "Projects",
+                "/projects"
+              )}
+              {menuItem(<PenLine size={18} />, "Blogs", "/blogs")}
+              {menuItem(<Briefcase size={18} />, "Services", "/services")}
+              {menuItem(<Home size={18} />, "Update Home", "/update-home")}
 
               {/* EXTENSION SECTION */}
               <li className="sidebar-section-heading">Manage Extensions</li>
@@ -118,12 +117,14 @@ function Sidebar() {
                 }`}
                 onClick={() => setCollapseExtensions(!collapseExtensions)}
               >
+                <Puzzle size={18} />
                 <span>Extensions</span>
-                <i
-                  className={`fa-solid fa-chevron-down collapse-arrow ${
+                <ChevronDown
+                  size={16}
+                  className={`collapse-arrow ${
                     collapseExtensions ? "rotate" : ""
                   }`}
-                ></i>
+                />
               </li>
 
               {/* CHILD MENUS */}
@@ -158,52 +159,31 @@ function Sidebar() {
                   ))}
                 </ul>
               )}
+
               <li className="sidebar-section-heading">Legal</li>
 
-              <li
-                className={`inner-slide-li subitem ${
-                  activeMenu === "/update-privacy" ? "active" : ""
-                }`}
-                onClick={() => {
-                  setActiveMenu("/update-privacy");
-                  navigate("/update-privacy");
-                }}
-              >
-                Privacy Policy
-              </li>
-
-              <li
-                className={`inner-slide-li subitem ${
-                  activeMenu === "/update-terms" ? "active" : ""
-                }`}
-                onClick={() => {
-                  setActiveMenu("/update-terms");
-                  navigate("/update-terms");
-                }}
-              >
-                Terms and Condition's
-              </li>
+              {menuItem(
+                <Shield size={18} />,
+                "Privacy Policy",
+                "/update-privacy"
+              )}
+              {menuItem(
+                <FileText size={18} />,
+                "Terms and Conditions",
+                "/update-terms"
+              )}
 
               {/* ACCOUNT SECTION */}
               <li className="sidebar-section-heading">Account</li>
 
-              <li
-                className={`inner-slide-li subitem ${
-                  activeMenu === "/profile" ? "active" : ""
-                }`}
-                onClick={() => {
-                  setActiveMenu("/profile");
-                  navigate("/profile");
-                }}
-              >
-                Settings
-              </li>
+              {menuItem(<Settings size={18} />, "Settings", "/profile")}
 
               <li
                 className="inner-slide-li logout subitem"
                 onClick={() => setShow(true)}
               >
-                Logout
+                <LogOut size={18} />
+                <span>Logout</span>
               </li>
             </ul>
           </div>

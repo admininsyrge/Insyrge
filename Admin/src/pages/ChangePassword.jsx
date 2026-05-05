@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 import Form from "react-bootstrap/Form";
-import Sidebar from "../components/Sidebar";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -62,15 +60,10 @@ function ChangePassword() {
   return (
     <>
       <Loader isLoading={isLoading} />
-      <div className="container-fluid">
-        <Header />
-        <div className="row">
-          <Sidebar />
-          <div className="col-9 main-dash-left">
             <Breadcrumb
               className="cstm_bredcrumb" listProps={{ className: "breadcrumb-custom-separator" }}>
               <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/profile" }}>My Profile</Breadcrumb.Item>
-              <Breadcrumb.Item active href='#'>Change Password</Breadcrumb.Item>
+              <Breadcrumb.Item active>Change Password</Breadcrumb.Item>
             </Breadcrumb>
             <section>
               <div className="comn-back-white">
@@ -154,9 +147,6 @@ function ChangePassword() {
                 </div>
               </div>
             </section>
-          </div>
-        </div>
-      </div>
     </>
   );
 }

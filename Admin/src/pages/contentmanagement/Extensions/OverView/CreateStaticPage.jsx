@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Sidebar from "../../../../components/Sidebar";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -15,7 +14,6 @@ import {
 import RichTextEditor from "../../../../components/RichTextEditor";
 import { useForm, Controller } from "react-hook-form";
 import "react-quill/dist/quill.snow.css";
-import Header from "../../../../components/Header";
 
 const CreateStaticPage = () => {
   const navigate = useNavigate();
@@ -94,12 +92,8 @@ const CreateStaticPage = () => {
   const pageLabel = pageTitleMap[pageType] || "Static Page";
 
   return (
-    <div className="container-fluid">
-      <Header />
-      <div className="row">
-        <Sidebar />
+    <>
 
-        <div className="col-9 main-dash-left">
           <Breadcrumb className="cstm_bredcrumb">
             <Breadcrumb.Item
               linkAs={Link}
@@ -192,9 +186,7 @@ const CreateStaticPage = () => {
               </div>
             </div>
           </section>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

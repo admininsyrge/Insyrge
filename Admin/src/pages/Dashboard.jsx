@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import Sidebar from "../components/Sidebar";
 import card2 from "../Assets/Images/admin_card1.svg";
 import HalfEye from "../Assets/Images/half_eye.svg";
 import { BASE_URL_ADMIN, GET_DASHBOARD_DETAILS } from "../API";
@@ -72,11 +70,6 @@ function Dashboard() {
   return (
     <>
       <Loader isLoading={isLoading} />
-      <div className="container-fluid">
-        <Header />
-        <div className="row">
-          <Sidebar />
-          <div className="col-9 main-dash-left">
             <Breadcrumb
               className="cstm_bredcrumb"
               listProps={{ className: "breadcrumb-custom-separator" }}
@@ -224,12 +217,10 @@ function Dashboard() {
                       <p className="mb-2 fs-4">
                         {idx + 1}. {proj.title}
                       </p>
-                    </div>
                   ))
                 ) : (
                   <p>No interested projects found.</p>
                 )}
-              </div>
             ) : (
               <p>No user selected</p>
             )}
@@ -241,7 +232,6 @@ function Dashboard() {
           </Modal.Footer>
         </Modal>
 
-      </div>
     </>
   );
 }

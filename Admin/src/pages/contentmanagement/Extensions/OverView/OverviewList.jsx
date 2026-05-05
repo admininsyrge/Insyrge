@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "../../../../components/Header";
-import Sidebar from "../../../../components/Sidebar";
 import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -111,13 +109,8 @@ function OverviewList() {
     <>
       <Loader isLoading={isLoading} />
 
-      <div className="container-fluid">
-        <Header />
 
-        <div className="row">
-          <Sidebar />
 
-          <div className="col-9 main-dash-left">
             <section className="back-dashboard-sec comn-dashboard-page">
               <div className="main-notification-messege">
                 {/* Page Header */}
@@ -231,8 +224,6 @@ function OverviewList() {
                 </div>
               </div>
             </section>
-          </div>
-        </div>
 
         {/* View / Delete Modal */}
         <Modal
@@ -299,7 +290,6 @@ function OverviewList() {
             </Button>
           </Modal.Footer>
         </Modal>
-      </div>
     </>
   );
 }

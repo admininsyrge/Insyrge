@@ -3,11 +3,9 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL_ADMIN } from "../../../API";
 import { toast } from "react-toastify";
-import Sidebar from "../../../components/Sidebar";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import { useEffect, useState } from "react";
 import RichTextEditor from "../../../components/RichTextEditor";
-import Header from "../../../components/Header";
 const EditProject = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -121,12 +119,8 @@ const EditProject = () => {
   };
 
   return (
-    <div className="container-fluid">
-      <Header />
-      <div className="row">
-        <Sidebar />
+    <>
 
-        <div className="col-9 main-dash-left">
           <Breadcrumb
             className="cstm_bredcrumb"
             listProps={{ className: "breadcrumb-custom-separator" }}
@@ -138,7 +132,6 @@ const EditProject = () => {
           </Breadcrumb>
 
           <section>
-            <div className="row">
               <div className="col-12">
                 <div className="comn-back-white">
                   <h3 className="heading-view-med">Edit Project</h3>
@@ -321,11 +314,8 @@ const EditProject = () => {
                   </form>
                 </div>
               </div>
-            </div>
           </section>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import Header from "../../../components/Header";
-import Sidebar from "../../../components/Sidebar";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -144,12 +142,8 @@ const EditService = () => {
   };
 
   return (
-    <div className="container-fluid">
-      <Header />
-      <div className="row">
-        <Sidebar />
+    <>
 
-        <div className="col-9 main-dash-left">
           <Breadcrumb className="cstm_bredcrumb">
             <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/services" }}>
               Services Management
@@ -312,9 +306,7 @@ const EditService = () => {
               </div>
             </div>
           </section>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

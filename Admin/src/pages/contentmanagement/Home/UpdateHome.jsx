@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../../../components/Header";
-import Sidebar from "../../../components/Sidebar";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BASE_URL, BASE_URL_ADMIN, GET_HOME, UPDATE_HOME } from "../../../API";
+import { getImageUrl, handleImageError } from "../../../utils/imageUtils";
 
 const UpdateHome = () => {
   const [loading, setLoading] = useState(false);
@@ -76,10 +75,10 @@ const UpdateHome = () => {
   // ==========================
   // 🔹 Delete Image
   // ==========================
-  const deleteExistingImage = async (section, imagePath) => {
+  const deleteExistingImage = async (section, public_id) => {
     try {
       await axios.delete(`${BASE_URL_ADMIN}/home/delete-image`, {
-        data: { section, imagePath },
+        data: { section, public_id },
         headers: { Token: localStorage.getItem("token") },
       });
       toast.success("Image deleted successfully!");
@@ -111,7 +110,7 @@ const UpdateHome = () => {
 
   const removeHeroImage = (index, existing) => {
     if (existing) {
-      deleteExistingImage("hero", existing.image);
+      deleteExistingImage("hero", existing.image.public_id);
       setHero((prev) => ({
         ...prev,
         existing: prev.existing.filter((_, i) => i !== index),
@@ -147,8 +146,7 @@ const UpdateHome = () => {
   const getImageSrc = (img) => {
     if (!img) return "";
     if (typeof img === "string") return img;
-    if (img?.image) return `${BASE_URL}/uploads/${img.image}`;
-    return "";
+    return getImageUrl(img);
   };
 
   const isExistingImage = (img) => {
@@ -200,127 +198,111 @@ const UpdateHome = () => {
   // 🔹 UI
   // ==========================
   return (
-    <div className="container-fluid">
-      <Header />
-      <div className="row">
-        <Sidebar />
+    <>
+      <Breadcrumb className="cstm_bredcrumb">
+        <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/projects" }}>
+          Side Bar
+        </Breadcrumb.Item>
+        <Breadcrumb.Item active>Update Home Page</Breadcrumb.Item>
+      </Breadcrumb>
 
-        <div className="col-9 main-dash-left">
-          <Breadcrumb className="cstm_bredcrumb">
-            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/projects" }}>
-              Side Bar
-            </Breadcrumb.Item>
-            <Breadcrumb.Item active>Update Home Page</Breadcrumb.Item>
-          </Breadcrumb>
+      <div className="comn-back-white p-4 rounded-4 shadow-sm">
+        <h3 className="mb-4 text-primary">Update Home Page</h3>
 
-          <div className="comn-back-white p-4 rounded-4 shadow-sm">
-            <h3 className="mb-4 text-primary">Update Home Page</h3>
+        <form onSubmit={handleSubmit}>
+          {/* HERO */}
+          <h5>Hero Section</h5>
 
-            <form onSubmit={handleSubmit}>
-              {/* HERO */}
-              <h5>Hero Section</h5>
+          <Form.Control
+            value={hero.title}
+            placeholder="Title"
+            onChange={(e) => setHero({ ...hero, title: e.target.value })}
+          />
 
-              <Form.Control
-                value={hero.title}
-                placeholder="Title"
-                onChange={(e) => setHero({ ...hero, title: e.target.value })}
-              />
+          <Form.Control
+            className="mt-2"
+            value={hero.subtitle}
+            placeholder="Subtitle"
+            onChange={(e) => setHero({ ...hero, subtitle: e.target.value })}
+          />
 
-              <Form.Control
-                className="mt-2"
-                value={hero.subtitle}
-                placeholder="Subtitle"
-                onChange={(e) => setHero({ ...hero, subtitle: e.target.value })}
-              />
+          <Form.Control
+            className="mt-2"
+            value={hero.buttonText}
+            placeholder="Button Text"
+            onChange={(e) => setHero({ ...hero, buttonText: e.target.value })}
+          />
 
-              <Form.Control
-                className="mt-2"
-                value={hero.buttonText}
-                placeholder="Button Text"
-                onChange={(e) =>
-                  setHero({ ...hero, buttonText: e.target.value })
-                }
-              />
+          <Form.Control
+            type="file"
+            multiple
+            className="mt-2"
+            onChange={handleHeroImages}
+          />
 
-              <Form.Control
-                type="file"
-                multiple
-                className="mt-2"
-                onChange={handleHeroImages}
-              />
-
-              <div className="d-flex gap-3 mt-3 flex-wrap">
-                {[...hero.existing, ...hero.previews]
-                  .filter(Boolean)
-                  .map((img, i) => (
-                    <div key={i} className="position-relative">
-                      <img
-                        src={getImageSrc(img)}
-                        width="150"
-                        alt=""
-                        className="img-thumbnail"
-                      />
-                      <Button
-                        size="sm"
-                        variant="danger"
-                        className="position-absolute top-0 end-0"
-                        onClick={() =>
-                          removeHeroImage(i, isExistingImage(img) ? img : null)
-                        }
-                      >
-                        ×
-                      </Button>
-                    </div>
-                  ))}
-              </div>
-
-              {/* PARTNERS */}
-              <h5 className="mt-4">Partners</h5>
-
-              <Form.Control
-                type="file"
-                multiple
-                onChange={handlePartnerLogos}
-              />
-
-              <div className="d-flex gap-3 mt-3 flex-wrap">
-                {[...partners.existing, ...partners.previews]
-                  .filter(Boolean)
-                  .map((img, i) => (
-                    <div key={i} className="position-relative">
-                      <img
-                        src={getImageSrc(img)}
-                        width="120"
-                        alt=""
-                        className="img-thumbnail"
-                      />
-                      <Button
-                        size="sm"
-                        variant="danger"
-                        className="position-absolute top-0 end-0"
-                        onClick={() =>
-                          removePartnerLogo(
-                            i,
-                            isExistingImage(img) ? img : null,
-                          )
-                        }
-                      >
-                        ×
-                      </Button>
-                    </div>
-                  ))}
-              </div>
-
-              <div className="text-center mt-4">
-                <Button type="submit" disabled={loading}>
-                  {loading ? "Updating..." : "Update"}
-                </Button>
-              </div>
-            </form>
+          <div className="d-flex gap-3 mt-3 flex-wrap">
+            {[...hero.existing, ...hero.previews]
+              .filter(Boolean)
+              .map((img, i) => (
+                <div key={i} className="position-relative">
+                  <img
+                    src={getImageSrc(img)}
+                    width="150"
+                    alt=""
+                    className="img-thumbnail"
+                  />
+                  <Button
+                    size="sm"
+                    variant="danger"
+                    className="position-absolute top-0 end-0"
+                    onClick={() =>
+                      removeHeroImage(i, isExistingImage(img) ? img : null)
+                    }
+                  >
+                    ×
+                  </Button>
+                </div>
+              ))}
           </div>
-        </div>
+
+          {/* PARTNERS */}
+          <h5 className="mt-4">Partners</h5>
+
+          <Form.Control type="file" multiple onChange={handlePartnerLogos} />
+
+          <div className="d-flex gap-3 mt-3 flex-wrap">
+            {[...partners.existing, ...partners.previews]
+              .filter(Boolean)
+              .map((img, i) => (
+                <div key={i} className="position-relative">
+                  <img
+                    src={getImageSrc(img)}
+                    width="120"
+                    alt=""
+                    className="img-thumbnail"
+                  />
+                  <Button
+                    size="sm"
+                    variant="danger"
+                    className="position-absolute top-0 end-0"
+                    onClick={() =>
+                      removePartnerLogo(i, isExistingImage(img) ? img : null)
+                    }
+                  >
+                    ×
+                  </Button>
+                </div>
+              ))}
+          </div>
+
+          <div className="text-center mt-4">
+            <Button type="submit" disabled={loading}>
+              {loading ? "Updating..." : "Update"}
+            </Button>
+          </div>
+        </form>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import Header from "../../../components/Header";
-import Sidebar from "../../../components/Sidebar";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BASE_URL_ADMIN, GET_BLOG_BY_ID, UPDATE_BLOG } from "../../../API";
 import RichTextEditor from "../../../components/RichTextEditor";
+import { getImageUrl, handleImageError } from "../../../utils/imageUtils";
 
 const EditBlog = () => {
   const { id } = useParams();
@@ -113,21 +112,16 @@ const EditBlog = () => {
   };
 
   return (
-    <div className="container-fluid">
-      <Header />
-      <div className="row">
-        <Sidebar />
-
-        <div className="col-9 main-dash-left">
-          <Breadcrumb
-            className="cstm_bredcrumb"
-            listProps={{ className: "breadcrumb-custom-separator" }}
-          >
-            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/blogs" }}>
-              Blog Management
-            </Breadcrumb.Item>
-            <Breadcrumb.Item active>Edit Blog</Breadcrumb.Item>
-          </Breadcrumb>
+    <>
+      <Breadcrumb
+        className="cstm_bredcrumb"
+        listProps={{ className: "breadcrumb-custom-separator" }}
+      >
+        <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/blogs" }}>
+          Blog Management
+        </Breadcrumb.Item>
+        <Breadcrumb.Item active>Edit Blog</Breadcrumb.Item>
+      </Breadcrumb>
 
           <section>
             <div className="row">
@@ -234,10 +228,11 @@ const EditBlog = () => {
                           <div>
                             <p className="mb-1">Existing Image:</p>
                             <img
-                              src={existingImage.url}
+                              src={getImageUrl(existingImage)}
                               alt="Existing"
                               className="img-thumbnail"
                               width="200"
+                              onError={handleImageError}
                             />
                           </div>
                         )}
@@ -269,9 +264,7 @@ const EditBlog = () => {
               </div>
             </div>
           </section>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 
