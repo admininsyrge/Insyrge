@@ -26,7 +26,7 @@ export default function FeaturedExtensions({ extensions }) {
           className="text-center mb-16"
         >
           <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-[#08e5c0] bg-[#08e5c0]/10 border border-[#08e5c0]/20 mb-4">
-            Marketplace
+            Proprietary Tools &amp; Integrations
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Featured{" "}
@@ -35,7 +35,7 @@ export default function FeaturedExtensions({ extensions }) {
             </span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-base leading-relaxed">
-            Supercharge your Zoho experience with our custom-built marketplace extensions.
+            Explore our suite of proprietary plugins, cloud extensions, and enterprise integration tools designed to supercharge business productivity.
           </p>
         </motion.div>
 

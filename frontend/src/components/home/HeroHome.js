@@ -2,133 +2,237 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/effect-fade";
+import Link from "next/link";
+import {
+  CheckCircle,
+  Calendar,
+  Sparkles,
+  ShieldCheck,
+  Zap,
+  Activity,
+  Award,
+} from "lucide-react";
 
-const HeroHome = ({ data }) => {
-  const sliderImages = data.sliderImages;
-
+export default function HeroHome({ data }) {
   return (
-    <section className="relative w-full h-screen text-white overflow-hidden bg-[#081b33]">
-      {/* === Background === */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#081b33] via-[#0a2642] to-[#081b33]" />
-      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_20%_30%,#08e5c025,transparent_50%),radial-gradient(circle_at_80%_70%,#00e0ff20,transparent_50%)]" />
-
-      {/* === Slider (Full Screen) === */}
-      <Swiper
-        modules={[Autoplay, EffectFade]}
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
-        effect="fade"
-        fadeEffect={{ crossFade: true }}
-        loop
-        speed={1200}
-        className="w-full h-full"
-      >
-        {sliderImages.map((src, i) => (
-          <SwiperSlide key={i}>
-            <div className="relative w-full h-full">
-              <Image
-                src={src.image.url}
-                alt={`Slide ${i + 1}`}
-                fill
-                sizes="100vw"
-                className="object-cover"
-                priority={i === 0}
-              />
-
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-b from-[#081b33]/70 via-black/50 to-[#081b33]/80" />
-
-              {/* Glow accents */}
-              <div className="absolute top-[15%] left-[5%] w-80 h-80 bg-[#08e5c0]/10 rounded-full blur-[150px]" />
-              <div className="absolute bottom-[10%] right-[5%] w-80 h-80 bg-[#00e0ff]/10 rounded-full blur-[150px]" />
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-
-      {/* === Text Content (overlaid on slider) === */}
-      <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center px-6">
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-6"
-        >
-          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium bg-[#08e5c0]/10 text-[#08e5c0] border border-[#08e5c0]/20 backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-[#08e5c0] animate-pulseGlow" />
-            Zoho Premium Partner
-          </span>
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-5 leading-[1.1] max-w-5xl"
-        >
-          {data.title}{" "}
-          <span className="bg-gradient-to-r from-[#08e5c0] to-[#4dffe4] bg-clip-text text-transparent">
-            Insyrge
-          </span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="max-w-2xl text-gray-300/90 mb-10 text-base sm:text-lg leading-relaxed"
-        >
-          {data.subtitle}
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.45 }}
-          className="flex flex-col sm:flex-row gap-4"
-        >
-          <a
-            href="/services"
-            className="inline-block bg-[#08e5c0] text-[#081b33] px-10 py-3.5 rounded-full font-semibold text-base shadow-lg animate-ctaPulse hover:scale-105 transition-transform duration-300"
-          >
-            {data.buttonText || "Explore Services"}
-          </a>
-          <a
-            href="https://insyrge.zohobookings.com/#/4623360000000149002"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block border border-[#08e5c0]/40 text-[#08e5c0] px-10 py-3.5 rounded-full font-semibold text-base backdrop-blur-sm hover:bg-[#08e5c0]/10 hover:border-[#08e5c0]/60 transition-all duration-300"
-          >
-            Book Free Consultation
-          </a>
-        </motion.div>
+    <section className="relative min-h-[92vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 bg-[#071831] text-white overflow-hidden">
+      {/* === Atmospheric Lighting & Grid === */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Subtle grid */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, #08e5c0 1px, transparent 1px)",
+            backgroundSize: "36px 36px",
+          }}
+        />
+        {/* Glowing Orbs */}
+        <div className="w-[500px] h-[500px] bg-[#08e5c0]/15 blur-[220px] rounded-full absolute -top-40 -left-20" />
+        <div className="w-[450px] h-[450px] bg-[#00e0ff]/10 blur-[200px] rounded-full absolute top-1/3 -right-20" />
+        <div className="w-[350px] h-[350px] bg-[#08e5c0]/10 blur-[180px] rounded-full absolute -bottom-20 left-1/3" />
       </div>
 
-      {/* === Scroll indicator === */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
-      >
-        <span className="text-gray-400 text-xs tracking-widest uppercase">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-5 h-8 rounded-full border-2 border-gray-500 flex items-start justify-center p-1"
-        >
-          <div className="w-1 h-2 bg-[#08e5c0] rounded-full" />
-        </motion.div>
-      </motion.div>
+      <div className="relative z-10 max-w-7xl mx-auto w-full">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          {/* === Left Column: Value Proposition & CTAs === */}
+          <div className="lg:col-span-7 text-center lg:text-left">
+            {/* Trust Badges Bar */}
+            <motion.div
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-6"
+            >
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#08e5c0]/10 text-[#08e5c0] border border-[#08e5c0]/30 backdrop-blur-md shadow-[0_0_15px_#08e5c020]">
+                <Award className="w-3.5 h-3.5" />
+                Zoho Marketplace Developer (9+ Extensions)
+              </span>
+              <a
+                href="https://help.hover.to/en/articles/12651040-zoho-crm-integration"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/5 text-gray-200 border border-white/15 hover:border-[#08e5c0]/40 transition-colors backdrop-blur-md"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-[#08e5c0]" />
+                Featured in HOVER&apos;s Zoho CRM Docs
+              </a>
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/5 text-gray-300 border border-white/10 backdrop-blur-md">
+                Bilateral NDA Protected
+              </span>
+            </motion.div>
 
-      {/* === Bottom accent === */}
-      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#08e5c0]/50 to-transparent z-10" />
+            {/* Main Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight leading-[1.12] mb-6"
+            >
+              Zoho CRM &amp; Business Automation for{" "}
+              <span className="bg-gradient-to-r from-[#08e5c0] via-[#33ffd0] to-[#00e0ff] bg-clip-text text-transparent">
+                Construction and Home Service
+              </span>{" "}
+              Companies
+            </motion.h1>
+
+            {/* Subheadline */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-gray-300 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-6"
+            >
+              We design, implement and customize Zoho systems that connect
+              sales, operations, estimating, documents, field workflows and
+              customer communication — without forcing your team into a
+              complicated technology stack.
+            </motion.p>
+
+            {/* Ecosystem Pills Strip */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-8 text-xs font-medium text-gray-300"
+            >
+              <span className="px-3 py-1 rounded-md bg-[#0B1C3D] border border-white/10 text-[#08e5c0]">
+                Zoho CRM
+              </span>
+              <span className="text-gray-500">•</span>
+              <span className="px-3 py-1 rounded-md bg-[#0B1C3D] border border-white/10">
+                Zoho One
+              </span>
+              <span className="text-gray-500">•</span>
+              <span className="px-3 py-1 rounded-md bg-[#0B1C3D] border border-white/10 text-cyan-400">
+                Custom Integrations
+              </span>
+              <span className="text-gray-500">•</span>
+              <span className="px-3 py-1 rounded-md bg-[#0B1C3D] border border-white/10">
+                Business Automation
+              </span>
+              <span className="text-gray-500">•</span>
+              <span className="px-3 py-1 rounded-md bg-[#0B1C3D] border border-white/10 text-emerald-400">
+                Zoho Extensions
+              </span>
+            </motion.div>
+
+            {/* High-Converting CTA Action Stack */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-8"
+            >
+              <a
+                href="https://insyrge.zohobookings.com/#/4623360000000149002"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full font-bold text-base bg-[#08e5c0] text-[#081b33] shadow-[0_0_25px_#08e5c060] hover:shadow-[0_0_35px_#08e5c090] hover:scale-105 transition-all duration-300"
+              >
+                <Calendar className="w-5 h-5" />
+                Book a Free 45-Minute Consultation
+              </a>
+            </motion.div>
+
+            {/* Micro-Trust Signals */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center lg:justify-start gap-y-2 gap-x-6 text-xs sm:text-sm text-gray-400"
+            >
+              <div className="flex items-center gap-1.5">
+                <CheckCircle className="w-4 h-4 text-[#08e5c0] shrink-0" />
+                <span>100% Free Consultation</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle className="w-4 h-4 text-[#08e5c0] shrink-0" />
+                <span>No Long-Term Lock-in</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-[#08e5c0] shrink-0" />
+                <span>100% NDA Protected</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Zap className="w-4 h-4 text-[#08e5c0] shrink-0" />
+                <span>2–4 Week Rapid Launch</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* === Right Column: Interactive 3D Automation Cockpit === */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="lg:col-span-5 relative"
+          >
+            {/* Glowing Backdrop Frame */}
+            <div className="relative mx-auto max-w-lg lg:max-w-none">
+              <div className="absolute -inset-1.5 bg-gradient-to-r from-[#08e5c0] via-[#00e0ff] to-[#08e5c0] rounded-3xl blur-xl opacity-30 animate-pulseGlow" />
+
+              <div className="relative rounded-2xl overflow-hidden border border-[#08e5c0]/30 bg-[#0B1C3D]/90 backdrop-blur-xl shadow-2xl">
+                <Image
+                  src="/images/hero-automation-dashboard.jpg"
+                  alt="Insyrge Enterprise Business Automation Cockpit and Real-Time CRM Dashboard"
+                  width={1200}
+                  height={675}
+                  priority
+                  className="w-full h-auto object-cover rounded-xl transition-transform duration-700 hover:scale-[1.02]"
+                />
+
+                {/* Floating Metric Badge 1 (Top Right) */}
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                  className="absolute top-4 right-4 bg-[#081b33]/90 border border-[#08e5c0]/40 rounded-xl px-3.5 py-2 backdrop-blur-md shadow-lg flex items-center gap-2.5"
+                >
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#08e5c0] animate-ping" />
+                  <div>
+                    <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">
+                      Zoho Workflows
+                    </p>
+                    <p className="text-xs font-bold text-[#08e5c0]">
+                      Real-Time Data Sync
+                    </p>
+                  </div>
+                </motion.div>
+
+                {/* Floating Metric Badge 2 (Bottom Left) */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 0.5 }}
+                  className="absolute bottom-4 left-4 bg-[#081b33]/90 border border-white/20 rounded-xl px-3.5 py-2 backdrop-blur-md shadow-lg flex items-center gap-2.5"
+                >
+                  <Activity className="w-4 h-4 text-[#00e0ff]" />
+                  <div>
+                    <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">
+                      Deluge Engine
+                    </p>
+                    <p className="text-xs font-bold text-white">
+                      Automated Triggers Active
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Bottom live stats pill */}
+              <div className="mt-4 flex items-center justify-between px-4 py-2 rounded-xl bg-white/[0.03] border border-white/10 text-xs text-gray-400">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  End-to-End Zoho Integration
+                </span>
+                <span className="text-[#08e5c0] font-medium">
+                  CRM • Creator • Books • APIs
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
-};
-
-export default HeroHome;
+}

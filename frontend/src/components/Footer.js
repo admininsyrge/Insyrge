@@ -40,9 +40,10 @@ const Footer = () => {
             />
           </Link>
 
-          <p className="text-gray-400 leading-relaxed">
-            Empowering businesses with smart technology solutions and honest,
-            straightforward service.
+          <p className="text-gray-400 leading-relaxed text-sm">
+            Global IT consultancy and digital engineering partner. Transforming
+            enterprises through custom software, cloud architecture, AI automation,
+            and strategic technology consulting.
           </p>
 
           <div className="space-y-3 mt-5">

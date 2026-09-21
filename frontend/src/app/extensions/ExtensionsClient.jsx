@@ -3,9 +3,14 @@
 import ExtensionGrid from "@/components/extensions/ExtensionGrid";
 import { useUser } from "@/context/UserContext";
 import Link from "next/link";
+import React from "react";
 
-export default function ExtensionsClient() {
-  const { extensions, loading, error } = useUser();
+export default function ExtensionsClient({ initialExtensions = [] }) {
+  const { extensions: contextExtensions } = useUser();
+  const extensions =
+    initialExtensions && initialExtensions.length > 0
+      ? initialExtensions
+      : contextExtensions || [];
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#071831] via-[#0B1C3D] to-[#071831] text-white py-20 px-6 md:px-16 relative overflow-hidden">
@@ -25,7 +30,7 @@ export default function ExtensionsClient() {
         </nav>
 
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5">
-          Powerful{" "}
+          Official{" "}
           <span className="bg-gradient-to-r from-[#08e5c0] to-[#4dffe4] bg-clip-text text-transparent">
             Zoho Extensions
           </span>
@@ -36,28 +41,19 @@ export default function ExtensionsClient() {
         </p>
 
         {/* Extension count */}
-        {!loading && extensions?.length > 0 && (
+        {extensions.length > 0 && (
           <div className="mt-6">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium bg-[#08e5c0]/10 text-[#08e5c0] border border-[#08e5c0]/20">
               <span className="w-2 h-2 rounded-full bg-[#08e5c0] animate-pulseGlow" />
-              {extensions.length} Extensions Available
+              {extensions.length} Published Extensions Live
             </span>
           </div>
         )}
       </section>
 
-      {/* Extensions Grid / Loader / Error */}
+      {/* Extensions Grid */}
       <div className="relative z-10 max-w-7xl mx-auto">
-        {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="bars"></div>
-          </div>
-        ) : error ? (
-          <div className="text-center text-red-400 py-20 glass-card max-w-md mx-auto p-8">
-            <p className="text-lg font-medium mb-2">Something went wrong</p>
-            <p className="text-sm text-gray-400">{error}</p>
-          </div>
-        ) : extensions?.length > 0 ? (
+        {extensions.length > 0 ? (
           <ExtensionGrid extensions={extensions} />
         ) : (
           <div className="text-center text-gray-400 py-20 glass-card max-w-md mx-auto p-8">

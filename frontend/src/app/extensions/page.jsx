@@ -1,15 +1,76 @@
+import React from "react";
 import ExtensionsClient from "./ExtensionsClient";
+import StructuredData from "@/components/seo/StructuredData";
+import { BASE_URL_USER, GET_EXTENSION } from "@/API";
+import { fallbackExtensions } from "@/data/extensionsFallback";
 
-// ✅ Server-side metadata
 export const metadata = {
-  title: "Zoho Extensions | Insyrge Consultancy",
+  title: "Zoho CRM Extensions & Marketplace Addons | Insyrge",
   description:
-    "Explore our range of powerful Zoho Extensions — custom-built solutions to enhance your business workflows, efficiency, and automation.",
-  icons: {
-    icon: "/favicon.png",
+    "Supercharge your CRM workflows with official Zoho Marketplace Extensions by Insyrge. Explore Hover integration, Google Address Autocomplete, Timeline Pro, Contact Roles, and PDF export tools.",
+  alternates: {
+    canonical: "https://insyrge.com/extensions",
+  },
+  openGraph: {
+    title: "Zoho CRM Extensions & Marketplace Addons | Insyrge",
+    description:
+      "Supercharge your CRM workflows with official Zoho Marketplace Extensions by Insyrge. Explore Hover integration, Google Address Autocomplete, Timeline Pro, Contact Roles, and PDF export tools.",
+    url: "https://insyrge.com/extensions",
+    siteName: "Insyrge",
+    type: "website",
+    images: [
+      {
+        url: "/logo.png",
+        width: 800,
+        height: 600,
+        alt: "Insyrge Zoho Extensions",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zoho CRM Extensions & Marketplace Addons | Insyrge",
+    description:
+      "Explore our range of powerful Zoho Extensions — custom-built solutions to enhance business workflows.",
+    images: ["/logo.png"],
   },
 };
 
-export default function ExtensionsPage() {
-  return <ExtensionsClient />;
+const extensionsCollectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Zoho CRM Extensions by Insyrge",
+  url: "https://insyrge.com/extensions",
+  description:
+    "Catalog of high-impact Zoho Marketplace extensions and private workflow plugins built by Insyrge.",
+  publisher: {
+    "@type": "Organization",
+    name: "Insyrge",
+    url: "https://insyrge.com",
+  },
+};
+
+async function getExtensions() {
+  try {
+    const res = await fetch(`${BASE_URL_USER}${GET_EXTENSION}`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return fallbackExtensions;
+    const json = await res.json();
+    return json.data && json.data.length > 0 ? json.data : fallbackExtensions;
+  } catch (err) {
+    console.error("Error fetching extensions, using fallback:", err);
+    return fallbackExtensions;
+  }
+}
+
+export default async function ExtensionsPage() {
+  const extensions = await getExtensions();
+
+  return (
+    <>
+      <StructuredData data={extensionsCollectionSchema} />
+      <ExtensionsClient initialExtensions={extensions} />
+    </>
+  );
 }

@@ -28,6 +28,21 @@ async function getExtensionsList() {
   }
 }
 
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const extension = await getExtension(slug);
+  if (!extension) return {};
+  return {
+    title: {
+      template: `%s — ${extension.title} | Insyrge`,
+      default: `${extension.title} | Insyrge Zoho Extension`,
+    },
+    description:
+      extension.description ||
+      `Documentation, user guides, and resources for ${extension.title} by Insyrge.`,
+  };
+}
+
 export default async function ExtensionSubPageLayout({ children, params }) {
   const { slug } = await params;
 

@@ -1,15 +1,83 @@
+import React from "react";
 import PortfolioClient from "./PortfolioClient";
+import StructuredData from "@/components/seo/StructuredData";
+import { BASE_URL_USER } from "@/API";
+import { portfolioFallback } from "@/data/portfolioFallback";
 
-// ✅ SEO Metadata
 export const metadata = {
-  title: "Portfolio | Insyrge Consultancy",
+  title: "Case Studies & Client Success Stories | Insyrge",
   description:
-    "Explore Insyrge Consultancy's diverse portfolio showcasing innovative digital solutions, Zoho integrations, and enterprise-grade software built to transform businesses.",
-  icons: {
-    icon: "/favicon.png",
+    "Explore Insyrge's verified portfolio of enterprise Zoho implementations, SaaS operations platforms, BI dashboards, and automated CRM workflows.",
+  alternates: {
+    canonical: "https://insyrge.com/portfolio",
+  },
+  openGraph: {
+    title: "Case Studies & Client Success Stories | Insyrge",
+    description:
+      "Explore Insyrge's verified portfolio of enterprise Zoho implementations, SaaS operations platforms, BI dashboards, and automated CRM workflows.",
+    url: "https://insyrge.com/portfolio",
+    siteName: "Insyrge",
+    type: "website",
+    images: [
+      {
+        url: "/logo.png",
+        width: 800,
+        height: 600,
+        alt: "Insyrge Portfolio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Case Studies & Client Success Stories | Insyrge",
+    description:
+      "Explore Insyrge's verified portfolio of enterprise Zoho implementations and automated CRM workflows.",
+    images: ["/logo.png"],
   },
 };
 
-export default function PortfolioPage() {
-  return <PortfolioClient />;
+async function getProjects() {
+  try {
+    const res = await fetch(`${BASE_URL_USER}/project-all`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) throw new Error("Failed to fetch projects");
+    const json = await res.json();
+    return json?.data?.length > 0 ? json.data : portfolioFallback;
+  } catch (err) {
+    console.error("Server fetch projects error, using fallback:", err);
+    return portfolioFallback;
+  }
+}
+
+export default async function PortfolioPage() {
+  const projects = await getProjects();
+
+  const portfolioCollectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Insyrge Portfolio & Case Studies",
+    url: "https://insyrge.com/portfolio",
+    description:
+      "Client success stories, business transformation projects, and enterprise software implementations delivered by Insyrge.",
+    publisher: {
+      "@type": "Organization",
+      name: "Insyrge",
+      url: "https://insyrge.com",
+    },
+    hasPart: projects.map((p) => ({
+      "@type": "CreativeWork",
+      name: p.title,
+      headline: p.title,
+      url: `https://insyrge.com/portfolio/${p.slug}`,
+      description: p.category,
+    })),
+  };
+
+  return (
+    <>
+      <StructuredData data={portfolioCollectionSchema} />
+      <PortfolioClient initialProjects={projects} />
+    </>
+  );
 }

@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PortfolioGrid from "@/components/portfolio/PortfolioGrid";
-import { BASE_URL_USER } from "@/API";
 import { useUser } from "@/context/UserContext";
 
-export default function PortfolioClient() {
-  const { projects, loading, error } = useUser();
-  console.log(projects);
+export default function PortfolioClient({ initialProjects = [] }) {
+  const { projects: contextProjects, loading: contextLoading, error } = useUser();
+  const projects =
+    contextProjects && contextProjects.length > 0
+      ? contextProjects
+      : initialProjects;
 
   return (
     <div className="min-h-screen bg-[#0B1C3D] text-white py-32 px-6 md:px-20 relative overflow-hidden">
@@ -18,24 +20,24 @@ export default function PortfolioClient() {
       {/* === Heading === */}
       <div className="text-center mb-14 relative z-10">
         <h1 className="text-4xl md:text-5xl font-bold text-[#08e5c0] mb-3">
-          Our Portfolio
+          Our Portfolio & Case Studies
         </h1>
         <p className="text-gray-400 max-w-2xl mx-auto">
-          A collection of our recent projects — combining innovation,
-          creativity, and technology to deliver outstanding results.
+          Explore our verified enterprise implementations — combining Zoho CRM architecture,
+          business process automation, custom extensions, and scalable digital systems.
         </p>
       </div>
 
       {/* === Grid Section === */}
       <div className="relative z-10">
-        {loading ? (
+        {projects?.length > 0 ? (
+          <PortfolioGrid projects={projects} />
+        ) : contextLoading ? (
           <div className="flex justify-center items-center text-gray-400 animate-pulse ">
             <div className="bars"></div>
           </div>
         ) : error ? (
           <div className="text-center text-red-400 py-20">{error}</div>
-        ) : projects?.length > 0 ? (
-          <PortfolioGrid projects={projects} />
         ) : (
           <div className="text-center text-gray-400 py-20">
             No projects found.
@@ -45,3 +47,4 @@ export default function PortfolioClient() {
     </div>
   );
 }
+

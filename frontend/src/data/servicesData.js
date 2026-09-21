@@ -1,49 +1,91 @@
 export const heroData = {
-  title: "Technology Solutions That Actually Work",
+  title: "Enterprise IT Consultancy & Digital Engineering That Scales",
   subtitle:
-    "No unnecessary complexity. No overselling. Just practical solutions that deliver real results for construction and trades businesses.",
+    "From strategic IT advisory and cloud architecture to custom enterprise applications, AI automation, and CRM integrations—we engineer technology solutions that deliver measurable ROI for modern businesses.",
   buttonText: "Schedule Free Consultation",
 };
 
 export const coreServices = [
   {
     id: 1,
-    title: "Process Mapping & Optimization",
+    title: "Strategic IT Consulting & Architecture",
     description:
-      "Streamline your workflows and eliminate bottlenecks. We analyze your current processes and implement automated solutions that save time and reduce errors.",
+      "Align your technology investments with overarching business goals. We conduct thorough IT infrastructure audits, design scalable architecture roadmaps, and guide seamless digital transformation.",
     points: [
-      "Current process analysis",
-      "Workflow optimization",
-      "Automation implementation",
-      "Team training",
+      "Enterprise IT infrastructure & security audits",
+      "Digital transformation roadmapping",
+      "Cloud readiness & migration strategy",
+      "Vendor evaluation & technology stack selection",
     ],
     button: "Learn More",
     image: "/images/services/process.png",
   },
   {
     id: 2,
-    title: "Custom CRM Solutions",
+    title: "Custom Enterprise Software & Web Apps",
     description:
-      "Tailored Zoho implementations that fit your specific needs. We configure and customize your CRM to match how your business actually works.",
+      "Bespoke software engineered for performance, security, and scale. We design and build modern full-stack web platforms, mobile applications, and microservices tailored to your exact workflows.",
     points: [
-      "Custom field configuration",
-      "Workflow automation",
-      "Integration setup",
-      "Data migration",
+      "Full-stack web & portal development",
+      "Native & cross-platform mobile apps",
+      "Scalable microservices & REST/GraphQL APIs",
+      "Legacy system modernization & refactoring",
     ],
     button: "Learn More",
     image: "/images/services/crm.png",
   },
   {
     id: 3,
-    title: "Team Training & Support",
+    title: "AI, Workflow Automation & RPA",
     description:
-      "Ensure your team actually uses the tools through comprehensive training and ongoing support that focuses on practical, day-to-day usage.",
+      "Eliminate repetitive manual tasks, accelerate turnaround times, and scale operations effortlessly with cutting-edge robotic process automation, intelligent workflows, and AI integrations.",
     points: [
-      "Hands-on training sessions",
-      "Custom documentation",
-      "Video tutorials",
-      "Ongoing support",
+      "End-to-end robotic process automation (RPA)",
+      "Intelligent document & data processing",
+      "AI chatbots & conversational agents",
+      "Cross-platform workflow orchestration",
+    ],
+    button: "Learn More",
+    image: "/images/services/training.png",
+  },
+  {
+    id: 4,
+    title: "Cloud Engineering, DevOps & Security",
+    description:
+      "Build a resilient, high-availability cloud foundation. We specialize in AWS, Google Cloud, and Azure architectures with automated CI/CD pipelines, containerization, and zero-trust security.",
+    points: [
+      "Cloud migration & hybrid cloud architecture",
+      "DevOps automation & CI/CD deployment pipelines",
+      "Containerization with Docker & Kubernetes",
+      "24/7 cloud monitoring, backup & disaster recovery",
+    ],
+    button: "Learn More",
+    image: "/images/services/process.png",
+  },
+  {
+    id: 5,
+    title: "Data Analytics, BI & Dashboards",
+    description:
+      "Turn fragmented corporate data into actionable business intelligence. We design real-time executive dashboards, data warehouses, and automated KPI tracking systems.",
+    points: [
+      "Data integration & ETL pipeline construction",
+      "Executive KPI & financial dashboards",
+      "Predictive business intelligence modeling",
+      "Self-service reporting tools for teams",
+    ],
+    button: "Learn More",
+    image: "/images/services/crm.png",
+  },
+  {
+    id: 6,
+    title: "CRM, ERP & Enterprise Integrations",
+    description:
+      "Connect your disparate platforms into a unified ecosystem. From certified Zoho One and CRM implementations to Salesforce, HubSpot, and ERP integrations, we keep your data synced in real time.",
+    points: [
+      "Custom Zoho CRM & Salesforce implementation",
+      "Custom marketplace extension & plugin development",
+      "Bi-directional ERP & accounting synchronization",
+      "Comprehensive team onboarding & ongoing technical support",
     ],
     button: "Learn More",
     image: "/images/services/training.png",
@@ -53,50 +95,50 @@ export const coreServices = [
 export const processSteps = [
   {
     id: 1,
-    title: "Discovery",
+    title: "Discovery & IT Audit",
     description:
-      "We start by understanding your business, challenges, and goals through in-depth conversations with your team.",
+      "We begin with a deep-dive assessment into your operational workflows, existing technology stack, and strategic business objectives.",
   },
   {
     id: 2,
-    title: "Analysis",
+    title: "Architecture & Roadmap Design",
     description:
-      "Our team analyzes your current processes and systems to identify opportunities for improvement and automation.",
+      "Our technology architects formulate a detailed blueprint, technology stack recommendation, and phased implementation milestones.",
   },
   {
     id: 3,
-    title: "Implementation",
+    title: "Agile Engineering & Deployment",
     description:
-      "We implement tailored solutions, ensuring minimal disruption to your daily operations.",
+      "We build, test, and integrate your software and cloud infrastructure using agile sprints, ensuring minimal disruption to ongoing operations.",
   },
   {
     id: 4,
-    title: "Training",
+    title: "Training, Governance & Continuous Support",
     description:
-      "Your team receives comprehensive training to ensure they can effectively use the new systems.",
+      "Your team receives hands-on training, documentation, and 24/7 technical governance to ensure maximum user adoption and sustained ROI.",
   },
 ];
 
 export const guarantees = [
   {
     id: 1,
-    title: "100% Money-Back Guarantee",
+    title: "Guaranteed Milestone Delivery",
     description:
-      "If you're not completely satisfied within the first 30 days, we’ll refund your investment—no questions asked.",
-    icon: "💰",
-  },
-  {
-    id: 2,
-    title: "Timely Delivery Promise",
-    description:
-      "We commit to clear timelines and stick to them. Your project will be delivered on schedule, or we’ll credit you for the delay.",
+      "We commit to rigorous project timelines and clear SLAs. Your deliverables will launch on schedule with milestone-based transparency.",
     icon: "⏱️",
   },
   {
-    id: 3,
-    title: "Transparent Pricing",
+    id: 2,
+    title: "Enterprise-Grade Security & 100% IP Ownership",
     description:
-      "No hidden fees, no surprise costs. You’ll always know exactly what you’re paying for and why.",
+      "Your data security, compliance, and confidentiality are guaranteed. You maintain full ownership of all custom source code, assets, and data.",
+    icon: "🛡️",
+  },
+  {
+    id: 3,
+    title: "Transparent Pricing & Value-Driven ROI",
+    description:
+      "No hidden fees, no unnecessary software overselling, and no vendor lock-in. Every dollar invested is tied directly to measurable business outcomes.",
     icon: "💡",
   },
 ];
@@ -106,27 +148,28 @@ export const resources = [
     id: 1,
     title: "Industries We Serve",
     description:
-      "See how our solutions are tailored for construction and trades businesses.",
-    link: "/industries",
+      "See how our IT consulting solutions are tailored for professional services, SaaS, healthcare, construction, finance, and logistics.",
+    link: "/services",
   },
   {
     id: 2,
-    title: "Success Stories",
+    title: "Case Studies",
     description:
-      "Read how other businesses transformed their operations with our help.",
-    link: "/success-stories",
+      "Explore real-world examples of how businesses scaled operations and cut costs with our engineering.",
+    link: "/portfolio",
   },
   {
     id: 3,
-    title: "About Us",
-    description: "Learn about our mission and commitment to your success.",
+    title: "About Our Firm",
+    description:
+      "Learn about our engineering philosophy, leadership, and commitment to client success.",
     link: "/about",
   },
 ];
 
 export const ctaData = {
-  title: "Let’s Build Something That Works.",
+  title: "Ready to Accelerate Your Digital Transformation?",
   subtitle:
-    "Get started with a no-obligation consultation and discover how our tailored solutions can streamline your business operations.",
+    "Schedule a no-obligation consultation with our senior IT consultants. We’ll analyze your challenges and outline a clear roadmap to optimize your systems.",
   buttonText: "Book a Free Consultation",
 };

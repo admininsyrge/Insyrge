@@ -1,12 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import BlogList from "@/components/blogs/BlogList";
 import BlogPagination from "@/components/blogs/BlogPagination";
 import { useUser } from "@/context/UserContext";
 
-export default function BlogPageClient() {
-  const { blogs, loading, error } = useUser();
+export default function BlogPageClient({ initialBlogs = [] }) {
+  const { blogs: contextBlogs } = useUser();
+  const blogs =
+    initialBlogs && initialBlogs.length > 0
+      ? initialBlogs
+      : contextBlogs || [];
+
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
 
@@ -20,23 +25,19 @@ export default function BlogPageClient() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0B1C3D] text-white">
-      {loading ? (
-        <div className="flex items-center justify-center h-40">
-          <div className="bars"></div>
-        </div>
-      ) : error ? (
-        <div className="text-center py-20 text-red-400">{error}</div>
-      ) : blogs.length === 0 ? (
+    <main className="min-h-screen bg-[#0B1C3D] text-white py-16">
+      {blogs.length === 0 ? (
         <div className="text-center py-20 text-gray-400">No blogs found.</div>
       ) : (
         <>
           <BlogList posts={currentPosts} />
-          <BlogPagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
+          {totalPages > 1 && (
+            <BlogPagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          )}
         </>
       )}
     </main>

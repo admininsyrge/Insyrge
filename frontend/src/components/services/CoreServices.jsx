@@ -38,15 +38,14 @@ const CoreServices = ({ data, loading, error }) => {
           </span>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-            Our Core{" "}
+            Our Core IT{" "}
             <span className="bg-gradient-to-r from-[#08e5c0] to-[#4dffe4] bg-clip-text text-transparent">
-              Services
+              Services &amp; Solutions
             </span>
           </h2>
 
           <p className="text-gray-400 max-w-2xl mx-auto text-base leading-relaxed">
-            We help businesses streamline operations and maximize efficiency with
-            expert Zoho implementations and custom technology solutions.
+            From strategic IT advisory and cloud engineering to custom enterprise applications and AI automation—we deliver scalable, secure, and future-proof technology solutions.
           </p>
         </div>
 
