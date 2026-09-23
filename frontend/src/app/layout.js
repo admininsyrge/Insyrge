@@ -173,6 +173,19 @@ export default function RootLayout({ children }) {
           src="https://cdn.pagesense.io/js/851039329/fe82d17f52e84f93bcbfafeffc63b037.js"
           strategy="afterInteractive"
         />
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-HWKVQWKL99"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-HWKVQWKL99');
+          `}
+        </Script>
       </body>
     </html>
   );
