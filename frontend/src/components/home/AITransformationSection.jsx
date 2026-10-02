@@ -83,6 +83,8 @@ export default function AITransformationSection() {
                   alt="AI Agents and Enterprise Intelligent Workflow Automation Architecture"
                   width={1200}
                   height={675}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  loading="lazy"
                   className="w-full h-auto object-cover rounded-xl transition-transform duration-700 hover:scale-[1.02]"
                 />
               </div>

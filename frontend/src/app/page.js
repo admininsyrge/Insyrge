@@ -191,8 +191,13 @@ async function getHomeData() {
     const res = await fetch(`${BASE_URL_USER}/home`, {
       next: { revalidate: 3600 },
     });
+    if (!res.ok) return null;
     const json = await res.json();
-    return json.data || null;
+    if (!json?.data) return null;
+    return {
+      hero: json.data.hero || null,
+      partners: json.data.partners || [],
+    };
   } catch (e) {
     console.error("Failed to fetch home data:", e);
     return null;
@@ -204,26 +209,51 @@ async function getExtensions() {
     const res = await fetch(`${BASE_URL_USER}/extension-all`, {
       next: { revalidate: 3600 },
     });
+    if (!res.ok) return [];
     const json = await res.json();
-    return json.data || [];
+    const list = json.data || [];
+    // Only return the top 4 extensions with lightweight fields needed by FeaturedExtensions
+    return list.slice(0, 4).map((ext) => ({
+      _id: ext._id,
+      title: ext.title,
+      slug: ext.slug,
+      description: ext.description || "",
+      image: ext.image ? { url: ext.image.url } : null,
+    }));
   } catch (e) {
     console.error("Failed to fetch extensions:", e);
     return [];
   }
 }
 
-async function getBlogs() {
-  try {
-    const res = await fetch(`${BASE_URL_USER}/blogs-all`, {
-      next: { revalidate: 3600 },
-    });
-    const json = await res.json();
-    return json.data || [];
-  } catch (e) {
-    console.error("Failed to fetch blogs:", e);
-    return [];
-  }
-}
+import { unstable_cache } from "next/cache";
+
+const getBlogs = unstable_cache(
+  async () => {
+    try {
+      const res = await fetch(`${BASE_URL_USER}/blogs-all`, {
+        cache: "no-store",
+      });
+      if (!res.ok) return [];
+      const json = await res.json();
+      const list = json.data || [];
+      // Only return the top 3 latest blogs with lightweight fields for the home page highlight
+      return list.slice(0, 3).map((blog) => ({
+        _id: blog._id,
+        title: blog.title,
+        slug: blog.slug,
+        shortDescription: blog.shortDescription || "",
+        category: blog.category || "",
+        image: blog.image ? { url: blog.image.url } : null,
+      }));
+    } catch (e) {
+      console.error("Failed to fetch blogs:", e);
+      return [];
+    }
+  },
+  ["home-blogs-preview"],
+  { revalidate: 3600 }
+);
 
 export default async function Home() {
   const [homeData, extensions, blogs] = await Promise.all([

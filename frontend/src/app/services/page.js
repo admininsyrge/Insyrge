@@ -48,11 +48,30 @@ const servicesListSchema = {
   },
 };
 
-export default function ServicesPage() {
+import { BASE_URL_USER } from "@/API";
+import { coreServices as fallbackServices } from "@/data/servicesData";
+
+async function getServices() {
+  try {
+    const res = await fetch(`${BASE_URL_USER}/services-all`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return fallbackServices;
+    const json = await res.json();
+    return json.data && json.data.length > 0 ? json.data : fallbackServices;
+  } catch (err) {
+    console.error("Error fetching services, using fallback:", err);
+    return fallbackServices;
+  }
+}
+
+export default async function ServicesPage() {
+  const services = await getServices();
+
   return (
     <>
       <StructuredData data={servicesListSchema} />
-      <ServicesClient />
+      <ServicesClient initialServices={services} />
     </>
   );
 }

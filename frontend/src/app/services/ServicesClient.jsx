@@ -11,17 +11,24 @@ import {
   processSteps,
   guarantees,
   ctaData,
+  coreServices as fallbackCoreServices,
 } from "@/data/servicesData";
 import { useUser } from "@/context/UserContext";
 
-const ServicesClient = () => {
-  const { coreServices, loading, error } = useUser();
+const ServicesClient = ({ initialServices = [] }) => {
+  const { coreServices: contextServices, loading, error } = useUser();
+  const services =
+    initialServices && initialServices.length > 0
+      ? initialServices
+      : contextServices && contextServices.length > 0
+      ? contextServices
+      : fallbackCoreServices;
 
   // ✅ Page Layout
   return (
     <div className="bg-[#0F2555] text-white overflow-hidden">
       <ServicesHero data={heroData} />
-      <CoreServices data={coreServices} loading={loading} error={error} />
+      <CoreServices data={services} loading={loading && !services.length} error={error} />
       <ProcessSection data={processSteps} />
       <GuaranteeSection data={guarantees} title={"Our Commitment to You"} />
       <CTASection data={ctaData} />

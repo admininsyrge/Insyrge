@@ -50,19 +50,37 @@ const blogListSchema = {
   },
 };
 
-async function getBlogs() {
-  try {
-    const res = await fetch(`${BASE_URL_USER}/blogs-all`, {
-      next: { revalidate: 3600 },
-    });
-    if (!res.ok) return fallbackBlogs;
-    const json = await res.json();
-    return json.data && json.data.length > 0 ? json.data : fallbackBlogs;
-  } catch (err) {
-    console.error("Error fetching blogs, using fallback:", err);
-    return fallbackBlogs;
-  }
-}
+import { unstable_cache } from "next/cache";
+
+const getBlogs = unstable_cache(
+  async () => {
+    try {
+      const res = await fetch(`${BASE_URL_USER}/blogs-all`, {
+        cache: "no-store",
+      });
+      if (!res.ok) return fallbackBlogs;
+      const json = await res.json();
+      const list = json.data && json.data.length > 0 ? json.data : fallbackBlogs;
+      // Strip large full-article description for the listing view so it caches cleanly and doesn't bloat HTML
+      return list.map((blog) => ({
+        _id: blog._id,
+        title: blog.title,
+        slug: blog.slug,
+        subTitle: blog.subTitle || "",
+        shortDescription: blog.shortDescription || "",
+        author: blog.author || "",
+        category: blog.category || "",
+        image: blog.image || null,
+        createdAt: blog.createdAt,
+      }));
+    } catch (err) {
+      console.error("Error fetching blogs, using fallback:", err);
+      return fallbackBlogs;
+    }
+  },
+  ["blogs-listing-clean"],
+  { revalidate: 3600 }
+);
 
 export default async function BlogsPage() {
   const blogs = await getBlogs();

@@ -171,7 +171,7 @@ export default function RootLayout({ children }) {
         <Script
           id="zoho-pagesense"
           src="https://cdn.pagesense.io/js/851039329/fe82d17f52e84f93bcbfafeffc63b037.js"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
         <Script
           strategy="afterInteractive"

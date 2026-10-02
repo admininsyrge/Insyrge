@@ -20,7 +20,7 @@ export const UserProvider = ({ children }) => {
   const [blogs, setBlogs] = useState([]);
   const [projects, setProjects] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // ✅ Load token (non-blocking)
   useEffect(() => {
@@ -29,26 +29,10 @@ export const UserProvider = ({ children }) => {
     if (storedToken) setToken(storedToken);
   }, []);
 
-  // ✅ Fetch ALL data in parallel (FAST)
-  useEffect(() => {
-    const fetchAll = async () => {
-      try {
-        await Promise.allSettled([
-          fetchHomeData(),
-          fetchServices(),
-          fetchExtensions(),
-          fetchBlogs(),
-          fetchProjects(),
-        ]);
-      } catch (err) {
-        console.error("Global fetch error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAll();
-  }, []);
+  // Note: Data is pre-rendered via Server Components / ISR on individual pages.
+  // We avoid eager global fetchAll on mount to prevent downloading 4.5MB+ of data
+  // and blocking home page critical rendering path. Individual fetch methods
+  // are exposed below for on-demand use if needed.
 
   // ================= API CALLS =================
 
@@ -120,6 +104,11 @@ export const UserProvider = ({ children }) => {
         extensions,
         blogs,
         projects,
+        fetchHomeData,
+        fetchServices,
+        fetchExtensions,
+        fetchBlogs,
+        fetchProjects,
       }}
     >
       {children}

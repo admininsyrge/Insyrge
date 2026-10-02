@@ -479,7 +479,7 @@ class adminServices {
 
     static async getAllBlogs() {
         try {
-            const projection = { __v: 0 };
+            const projection = { description: 0, __v: 0 };
             const options = { lean: true, sort: { createdAt: -1 } };
             const response = await DAO.getData(Models.Blog, {}, projection, options);
             return response;

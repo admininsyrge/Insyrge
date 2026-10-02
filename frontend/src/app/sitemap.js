@@ -1,4 +1,25 @@
 import { BASE_URL_USER, GET_EXTENSION } from "@/API";
+import { unstable_cache } from "next/cache";
+
+const getSitemapBlogs = unstable_cache(
+  async () => {
+    try {
+      const res = await fetch(`${BASE_URL_USER}/blogs-all`, { cache: "no-store" });
+      const result = await res.json();
+      const blogs = result?.data || [];
+      return blogs
+        .filter((b) => b?.slug)
+        .map((b) => ({
+          slug: b.slug,
+          lastModified: b.updatedAt || b.createdAt || null,
+        }));
+    } catch {
+      return [];
+    }
+  },
+  ["sitemap-blogs"],
+  { revalidate: 3600 }
+);
 
 export default async function sitemap() {
   const baseUrl = "https://insyrge.com";
@@ -92,20 +113,13 @@ export default async function sitemap() {
   // ---------------------------------------------
   let dynamicBlogs = [];
   try {
-    const res = await fetch(`${BASE_URL_USER}/blogs-all`, {
-      next: { revalidate: 3600 },
-    });
-    const result = await res.json();
-    const blogs = result?.data || [];
-
-    dynamicBlogs = blogs
-      .filter((b) => b?.slug)
-      .map((blog) => ({
-        url: `${baseUrl}/blogs/${blog.slug}`,
-        lastModified: blog.updatedAt || blog.createdAt || now,
-        changeFrequency: "weekly",
-        priority: 0.8,
-      }));
+    const blogs = await getSitemapBlogs();
+    dynamicBlogs = blogs.map((blog) => ({
+      url: `${baseUrl}/blogs/${blog.slug}`,
+      lastModified: blog.lastModified || now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    }));
   } catch (error) {
     console.error("📌 Blogs Sitemap Error:", error);
   }

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   FaPhoneAlt,
   FaEnvelope,
@@ -33,9 +34,11 @@ const Footer = () => {
         {/* === Brand & Info === */}
         <div className="space-y-5">
           <Link href="/" className="inline-block">
-            <img
+            <Image
               src="/logo.png"
               alt="Insyrge Logo"
+              width={140}
+              height={40}
               className="w-auto h-10 object-contain hover:opacity-90 transition-opacity duration-300"
             />
           </Link>
