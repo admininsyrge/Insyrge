@@ -1,8 +1,10 @@
 import React from "react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { BASE_URL_USER } from "@/API";
 import PortfolioDetails from "@/components/portfolio/PortfolioDetails";
 import StructuredData from "@/components/seo/StructuredData";
+import { portfolioFallback } from "@/data/portfolioFallback";
 
 async function getProject(slug) {
   try {
@@ -10,10 +12,11 @@ async function getProject(slug) {
       next: { revalidate: 3600 },
     });
     const result = await res.json();
-    return result.status || result.success ? result.data : null;
+    if ((result.status || result.success) && result.data) return result.data;
+    return portfolioFallback.find((p) => p.slug === slug) || null;
   } catch (err) {
     console.error("Error fetching project for SEO:", err);
-    return null;
+    return portfolioFallback.find((p) => p.slug === slug) || null;
   }
 }
 
@@ -23,8 +26,9 @@ export async function generateMetadata({ params }) {
 
   if (!project) {
     return {
-      title: "Project Not Found | Insyrge",
+      title: "Project Not Found",
       description: "The requested portfolio case study could not be found.",
+      robots: { index: false, follow: false },
     };
   }
 
@@ -35,7 +39,7 @@ export async function generateMetadata({ params }) {
       : `Explore how Insyrge delivered successful enterprise transformation for ${project.title}.`);
 
   return {
-    title: `${project.title} - Case Study`,
+    title: `${project.title} — Case Study`,
     description: cleanDescription,
     alternates: {
       canonical: `https://insyrge.com/portfolio/${slug}`,
@@ -74,23 +78,9 @@ export default async function PortfolioSlugPage({ params }) {
   const project = await getProject(slug);
 
   if (!project) {
-    return (
-      <main className="flex flex-col items-center justify-center min-h-screen bg-[#0B1C3D] text-white px-6">
-        <h1 className="text-3xl font-bold text-[#08e5c0] mb-4">
-          Project Not Found ⚡
-        </h1>
-        <p className="text-gray-400 mb-8 text-center max-w-md">
-          The case study you are looking for is unavailable or has been archived.
-        </p>
-        <Link
-          href="/portfolio"
-          className="inline-block px-8 py-3 rounded-full bg-[#08e5c0] text-[#0B1C3D] font-semibold hover:shadow-[0_0_30px_#08e5c060] transition-all"
-        >
-          ← Explore All Projects
-        </Link>
-      </main>
-    );
+    notFound();
   }
+
 
   const projectSchema = {
     "@context": "https://schema.org",

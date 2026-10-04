@@ -23,7 +23,7 @@ export default function ContactClient() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0B1C3D] text-white relative overflow-hidden">
+    <div className="min-h-screen bg-[#0B1C3D] text-white relative overflow-hidden">
       {/* === Optimized Glowing Background === */}
       <motion.div
         className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,#08e5c050,transparent_60%),radial-gradient(circle_at_80%_80%,#00b3ff25,transparent_60%)] blur-[100px] opacity-70 will-change-transform"
@@ -63,6 +63,7 @@ export default function ContactClient() {
           </motion.div>
         </div>
       </motion.section>
-    </main>
+    </div>
   );
 }
+

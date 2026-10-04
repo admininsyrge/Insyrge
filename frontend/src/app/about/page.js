@@ -44,6 +44,8 @@ const aboutSchema = {
   "@type": "AboutPage",
   name: "About Insyrge",
   url: "https://insyrge.com/about",
+  description:
+    "Learn about Insyrge — our leadership, technology philosophy, and dedication to delivering enterprise IT consulting, custom software development, and cloud solutions.",
   mainEntity: {
     "@type": "Organization",
     name: "Insyrge",
@@ -54,11 +56,31 @@ const aboutSchema = {
   },
 };
 
+const aboutBreadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://insyrge.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "About Us",
+      item: "https://insyrge.com/about",
+    },
+  ],
+};
+
 export default function AboutPage() {
   return (
     <>
-      <StructuredData data={aboutSchema} />
+      <StructuredData data={[aboutSchema, aboutBreadcrumbSchema]} />
       <div>
+
         <AboutHero data={aboutData.hero} />
         <MissionVision data={aboutData.missionVision} />
         <WhyStart data={aboutData.whyStart} />

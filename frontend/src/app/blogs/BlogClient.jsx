@@ -48,7 +48,7 @@ export default function BlogPageClient({ initialBlogs = [] }) {
   };
 
   return (
-    <main className="min-h-screen bg-[#0B1C3D] text-white py-16">
+    <div className="min-h-screen bg-[#0B1C3D] text-white py-16">
       {blogs.length === 0 ? (
         <div className="text-center py-20 text-gray-400">No blogs found.</div>
       ) : (
@@ -69,6 +69,7 @@ export default function BlogPageClient({ initialBlogs = [] }) {
           )}
         </>
       )}
-    </main>
+    </div>
   );
 }
+

@@ -48,6 +48,25 @@ const servicesListSchema = {
   },
 };
 
+const servicesBreadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://insyrge.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Services",
+      item: "https://insyrge.com/services",
+    },
+  ],
+};
+
 import { BASE_URL_USER } from "@/API";
 import { coreServices as fallbackServices } from "@/data/servicesData";
 
@@ -70,8 +89,9 @@ export default async function ServicesPage() {
 
   return (
     <>
-      <StructuredData data={servicesListSchema} />
+      <StructuredData data={[servicesListSchema, servicesBreadcrumbSchema]} />
       <ServicesClient initialServices={services} />
     </>
   );
 }
+

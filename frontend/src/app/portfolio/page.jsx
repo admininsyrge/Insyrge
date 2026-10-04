@@ -5,7 +5,7 @@ import { BASE_URL_USER } from "@/API";
 import { portfolioFallback } from "@/data/portfolioFallback";
 
 export const metadata = {
-  title: "Case Studies & Client Success Stories | Insyrge",
+  title: "Case Studies & Client Success Stories",
   description:
     "Explore Insyrge's verified portfolio of enterprise Zoho implementations, SaaS operations platforms, BI dashboards, and automated CRM workflows.",
   alternates: {
@@ -74,10 +74,30 @@ export default async function PortfolioPage() {
     })),
   };
 
+  const portfolioBreadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://insyrge.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Portfolio",
+        item: "https://insyrge.com/portfolio",
+      },
+    ],
+  };
+
   return (
     <>
-      <StructuredData data={portfolioCollectionSchema} />
+      <StructuredData data={[portfolioCollectionSchema, portfolioBreadcrumbSchema]} />
       <PortfolioClient initialProjects={projects} />
     </>
   );
 }
+

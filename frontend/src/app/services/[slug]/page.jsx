@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { BASE_URL_USER } from "@/API";
 import ServiceDetails from "@/components/services/ServiceDetails";
 import StructuredData from "@/components/seo/StructuredData";
@@ -23,8 +24,9 @@ export async function generateMetadata({ params }) {
 
   if (!service) {
     return {
-      title: "Service Not Found | Insyrge",
+      title: "Service Not Found",
       description: "The requested service could not be found.",
+      robots: { index: false, follow: false },
     };
   }
 
@@ -33,7 +35,7 @@ export async function generateMetadata({ params }) {
     : `Expert ${service.title} by Insyrge. Streamline operations and enhance CRM productivity.`;
 
   return {
-    title: `${service.title} - Zoho Services`,
+    title: `${service.title} — Zoho Services`,
     description: cleanDescription,
     alternates: {
       canonical: `https://insyrge.com/services/${slug}`,
@@ -72,23 +74,9 @@ export default async function ServicesSlugPage({ params }) {
   const service = await getService(slug);
 
   if (!service) {
-    return (
-      <main className="min-h-screen flex flex-col items-center justify-center bg-[#0B1C3D] text-white px-6">
-        <h1 className="text-3xl font-bold text-[#08e5c0] mb-4">
-          Service Not Found
-        </h1>
-        <p className="text-gray-400 mb-8 text-center max-w-md">
-          The service you are looking for does not exist or has been moved.
-        </p>
-        <Link
-          href="/services"
-          className="inline-block px-8 py-3 rounded-full bg-[#08e5c0] text-[#0B1C3D] font-semibold hover:shadow-[0_0_30px_#08e5c060] transition-all"
-        >
-          ← Explore All Services
-        </Link>
-      </main>
-    );
+    notFound();
   }
+
 
   const serviceSchema = {
     "@context": "https://schema.org",

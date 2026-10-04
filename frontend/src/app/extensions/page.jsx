@@ -5,7 +5,7 @@ import { BASE_URL_USER, GET_EXTENSION } from "@/API";
 import { fallbackExtensions } from "@/data/extensionsFallback";
 
 export const metadata = {
-  title: "Zoho CRM Extensions & Marketplace Addons | Insyrge",
+  title: "Zoho CRM Extensions & Marketplace Addons",
   description:
     "Supercharge your CRM workflows with official Zoho Marketplace Extensions by Insyrge. Explore Hover integration, Google Address Autocomplete, Timeline Pro, Contact Roles, and PDF export tools.",
   alternates: {
@@ -50,6 +50,25 @@ const extensionsCollectionSchema = {
   },
 };
 
+const extensionsBreadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://insyrge.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Extensions",
+      item: "https://insyrge.com/extensions",
+    },
+  ],
+};
+
 async function getExtensions() {
   try {
     const res = await fetch(`${BASE_URL_USER}${GET_EXTENSION}`, {
@@ -69,8 +88,9 @@ export default async function ExtensionsPage() {
 
   return (
     <>
-      <StructuredData data={extensionsCollectionSchema} />
+      <StructuredData data={[extensionsCollectionSchema, extensionsBreadcrumbSchema]} />
       <ExtensionsClient initialExtensions={extensions} />
     </>
   );
 }
+

@@ -1,8 +1,10 @@
 import React from "react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { BASE_URL_USER } from "@/API";
 import ExtensionDetails from "@/components/extensions/ExtensionDetails";
 import StructuredData from "@/components/seo/StructuredData";
+import { fallbackExtensions } from "@/data/extensionsFallback";
 
 async function getExtension(slug) {
   try {
@@ -10,10 +12,11 @@ async function getExtension(slug) {
       next: { revalidate: 3600 },
     });
     const result = await res.json();
-    return result.status ? result.data : null;
+    if (result.status && result.data) return result.data;
+    return fallbackExtensions.find((e) => e.slug === slug) || null;
   } catch (err) {
     console.error("Error fetching extension for SEO:", err);
-    return null;
+    return fallbackExtensions.find((e) => e.slug === slug) || null;
   }
 }
 
@@ -23,8 +26,9 @@ export async function generateMetadata({ params }) {
 
   if (!extension) {
     return {
-      title: "Extension Not Found | Insyrge",
+      title: "Extension Not Found",
       description: "The requested Zoho extension could not be found.",
+      robots: { index: false, follow: false },
     };
   }
 
@@ -34,7 +38,7 @@ export async function generateMetadata({ params }) {
     `Boost your Zoho CRM productivity with ${extension.title} by Insyrge.`;
 
   return {
-    title: `${extension.title} - Zoho Extension`,
+    title: `${extension.title} — Zoho Extension`,
     description: cleanDescription.slice(0, 160),
     alternates: {
       canonical: `https://insyrge.com/extensions/${slug}`,
@@ -73,20 +77,9 @@ export default async function ExtensionSlugPage({ params }) {
   const extension = await getExtension(slug);
 
   if (!extension) {
-    return (
-      <div className="text-center py-16">
-        <h2 className="text-2xl font-semibold text-gray-400 mb-4">
-          Extension not found ⚡
-        </h2>
-        <Link
-          href="/extensions"
-          className="inline-block px-6 py-2 rounded-full bg-[#08e5c0] text-[#0B1C3D] font-semibold"
-        >
-          ← View All Extensions
-        </Link>
-      </div>
-    );
+    notFound();
   }
+
 
   const appSchema = {
     "@context": "https://schema.org",

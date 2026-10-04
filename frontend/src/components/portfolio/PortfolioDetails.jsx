@@ -5,13 +5,15 @@ import Link from "next/link";
 import { BASE_URL } from "@/API";
 
 export default function PortfolioDetails({ project }) {
-  if (!project) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0B1C3D] text-white text-2xl">
-        Project Not Found 😢
-      </div>
-    );
-  }
+  if (!project) return null;
+
+  const headerImageUrl = project.image?.url
+    ? project.image.url
+    : typeof project.image === "string"
+    ? project.image.startsWith("http")
+      ? project.image
+      : `${BASE_URL}/uploads/${project.image}`
+    : "/logo.png";
 
   return (
     <div className="min-h-screen bg-[#0B1C3D] text-white py-32 px-6 md:px-20 relative overflow-hidden">
@@ -30,9 +32,11 @@ export default function PortfolioDetails({ project }) {
       {/* === Project Header === */}
       <div className="relative w-full h-80 md:h-[450px] rounded-2xl overflow-hidden mb-10 border border-[#1A2C55] shadow-lg shadow-[#08e5c0]/20">
         <Image
-          src={`${BASE_URL}/uploads/${project.image}`}
+          src={headerImageUrl}
           alt={project.title}
           fill
+          priority
+          sizes="(max-width: 768px) 100vw, 1200px"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B1C3D]/80 to-transparent" />
@@ -88,19 +92,23 @@ export default function PortfolioDetails({ project }) {
               Project Highlights
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {project.gallery.map((img, index) => (
-                <div
-                  key={index}
-                  className="relative w-full h-52 rounded-xl overflow-hidden border border-[#1A2C55]"
-                >
-                  <Image
-                    src={img.image.url}
-                    alt={`Screenshot ${index + 1}`}
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-              ))}
+              {project.gallery.map((img, index) => {
+                const galleryImgUrl = img?.image?.url || img?.url || "/logo.png";
+                return (
+                  <div
+                    key={index}
+                    className="relative w-full h-52 rounded-xl overflow-hidden border border-[#1A2C55]"
+                  >
+                    <Image
+                      src={galleryImgUrl}
+                      alt={`${project.title} screenshot ${index + 1}`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                );
+              })}
             </div>
           </section>
         )}
@@ -108,3 +116,4 @@ export default function PortfolioDetails({ project }) {
     </div>
   );
 }
+

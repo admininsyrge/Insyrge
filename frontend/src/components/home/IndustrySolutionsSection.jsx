@@ -146,12 +146,16 @@ export default function IndustrySolutionsSection() {
         </div>
 
         {/* Industry Navigation Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-10" role="tablist" aria-label="Industry solutions">
           {industries.map((ind) => {
             const isActive = ind.id === activeTab;
             return (
               <button
                 key={ind.id}
+                id={`industry-tab-${ind.id}`}
+                role="tab"
+                aria-selected={isActive}
+                aria-controls={`industry-panel-${ind.id}`}
                 onClick={() => setActiveTab(ind.id)}
                 className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 ${
                   isActive
@@ -170,6 +174,9 @@ export default function IndustrySolutionsSection() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndustry.id}
+            id={`industry-panel-${activeIndustry.id}`}
+            role="tabpanel"
+            aria-labelledby={`industry-tab-${activeIndustry.id}`}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}

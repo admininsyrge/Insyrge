@@ -33,18 +33,25 @@ const BlogList = ({
       );
 
   return (
-    <section className="relative bg-[#0B1C3D] py-20 overflow-hidden">
-
-      {/* === Section Title === */}
-      <h2 className="text-center text-3xl md:text-5xl font-bold text-white mb-12">
-        Latest <span className="text-[#08e5c0]">Insights</span> & Articles
-      </h2>
+    <section className="relative bg-[#0B1C3D] py-12 overflow-hidden">
+      {/* === Page Main Heading === */}
+      <div className="text-center max-w-3xl mx-auto px-6 mb-12">
+        <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-[#08e5c0] bg-[#08e5c0]/10 border border-[#08e5c0]/20 mb-4">
+          Knowledge Base &amp; Insights
+        </span>
+        <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+          Latest <span className="text-[#08e5c0]">Insights</span> &amp; Guides
+        </h1>
+        <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
+          Actionable architecture guides, Zoho CRM tutorials, integration walkthroughs, and field automation best practices by Insyrge engineers.
+        </p>
+      </div>
 
       {/* === Search Bar === */}
       <div className="flex justify-center mb-16">
         <div
           className={`
-            flex items-center w-[90%] sm:w-[450px]
+            flex items-center w-[90%] sm:w-[480px]
             bg-[#102a66]/80 backdrop-blur-md
             border rounded-full px-5 py-3
             transition-all duration-300
@@ -53,7 +60,7 @@ const BlogList = ({
               : "border-[#08e5c0]/40"}
           `}
         >
-          <FaSearch className="text-[#08e5c0] text-lg mr-3 opacity-80" />
+          <FaSearch className="text-[#08e5c0] text-lg mr-3 opacity-80" aria-hidden="true" />
 
           <input
             type="text"
@@ -61,9 +68,11 @@ const BlogList = ({
             onChange={(e) => handleQueryChange(e.target.value)}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            placeholder="Search insightful articles..."
+            placeholder="Search topics, Zoho modules, or workflows..."
+            aria-label="Search articles and guides"
             className="w-full bg-transparent outline-none text-white placeholder-gray-400 text-base tracking-wide"
           />
+
 
           {/* Simple dot (no animation) */}
           {query && (

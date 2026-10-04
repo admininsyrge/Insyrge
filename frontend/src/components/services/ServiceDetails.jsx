@@ -1,11 +1,14 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function ServiceDetails({ service }) {
+  const imageUrl = service.image?.url || "/logo.png";
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#071831] via-[#0A1F45] to-[#071831] text-white py-16 px-4 md:px-20 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#071831] via-[#0A1F45] to-[#071831] text-white py-16 px-4 md:px-20 relative overflow-hidden">
       {/* BG Glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="w-[50%] h-[50%] bg-[#08e5c025] blur-[180px] rounded-full absolute top-0 left-5" />
@@ -22,7 +25,7 @@ export default function ServiceDetails({ service }) {
         >
           <div className="relative w-full h-[230px] sm:h-[320px] md:h-[530px]">
             <Image
-              src={service.image.url}
+              src={imageUrl}
               alt={service.title}
               fill
               priority
@@ -75,16 +78,16 @@ export default function ServiceDetails({ service }) {
         {/* CTA BUTTON */}
         {service.button && (
           <div className="text-center mt-12">
-            <motion.a
-              href="/contact" // change if needed
-              whileHover={{ scale: 1.05 }}
-              className="px-12 py-4 text-lg font-semibold rounded-full bg-[#08e5c0] text-[#0B1C3D] shadow-[0_0_40px_#08e5c040]"
+            <Link
+              href="/contact"
+              className="inline-block px-12 py-4 text-lg font-semibold rounded-full bg-[#08e5c0] text-[#0B1C3D] shadow-[0_0_40px_#08e5c040] hover:scale-105 transition-transform"
             >
               {service.button}
-            </motion.a>
+            </Link>
           </div>
         )}
       </div>
-    </main>
+    </div>
   );
 }
+

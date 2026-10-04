@@ -54,7 +54,7 @@ export default function BlogHighlights({ blogs }) {
                 {/* Image */}
                 <div className="relative w-full h-[180px] sm:h-[200px] flex-shrink-0 overflow-hidden">
                   <Image
-                    src={blog.image?.url || "https://placehold.net/default.png"}
+                    src={blog.image?.url || "/logo.png"}
                     alt={blog.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"

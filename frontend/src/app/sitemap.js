@@ -1,5 +1,9 @@
 import { BASE_URL_USER, GET_EXTENSION } from "@/API";
 import { unstable_cache } from "next/cache";
+import { coreServices as fallbackServices } from "@/data/servicesData";
+import { fallbackBlogs } from "@/data/blogsFallback";
+import { fallbackExtensions } from "@/data/extensionsFallback";
+import { portfolioFallback } from "@/data/portfolioFallback";
 
 const getSitemapBlogs = unstable_cache(
   async () => {
@@ -7,14 +11,18 @@ const getSitemapBlogs = unstable_cache(
       const res = await fetch(`${BASE_URL_USER}/blogs-all`, { cache: "no-store" });
       const result = await res.json();
       const blogs = result?.data || [];
-      return blogs
+      const list = blogs.length > 0 ? blogs : fallbackBlogs;
+      return list
         .filter((b) => b?.slug)
         .map((b) => ({
           slug: b.slug,
           lastModified: b.updatedAt || b.createdAt || null,
         }));
     } catch {
-      return [];
+      return fallbackBlogs.map((b) => ({
+        slug: b.slug,
+        lastModified: b.updatedAt || b.createdAt || null,
+      }));
     }
   },
   ["sitemap-blogs"],
@@ -94,7 +102,7 @@ export default async function sitemap() {
       next: { revalidate: 3600 },
     });
     const result = await res.json();
-    const services = result?.data || [];
+    const services = result?.data?.length > 0 ? result.data : fallbackServices;
 
     dynamicServices = services
       .filter((s) => s?.slug)
@@ -105,7 +113,15 @@ export default async function sitemap() {
         priority: 0.9,
       }));
   } catch (error) {
-    console.error("📌 Services Sitemap Error:", error);
+    console.error("📌 Services Sitemap Error, using fallback:", error);
+    dynamicServices = fallbackServices
+      .filter((s) => s?.slug)
+      .map((service) => ({
+        url: `${baseUrl}/services/${service.slug}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.9,
+      }));
   }
 
   // ---------------------------------------------
@@ -125,7 +141,7 @@ export default async function sitemap() {
   }
 
   // ---------------------------------------------
-  // 4. DYNAMIC EXTENSIONS & SUB-PAGES
+  // 4. DYNAMIC EXTENSIONS & VALID SUB-PAGES
   // ---------------------------------------------
   let dynamicExtensions = [];
   try {
@@ -133,7 +149,7 @@ export default async function sitemap() {
       next: { revalidate: 3600 },
     });
     const result = await res.json();
-    const extensions = result?.data || [];
+    const extensions = result?.data?.length > 0 ? result.data : fallbackExtensions;
 
     dynamicExtensions = extensions
       .filter((ext) => ext?.slug)
@@ -148,27 +164,60 @@ export default async function sitemap() {
           priority: 0.9,
         };
 
-        const subpageKeys = [
-          "overview",
-          "user-guide",
-          "admin-guide",
-          "help",
-          "case-study",
-          "terms",
-          "privacy-policy",
+        // Only include subpages that actually exist on this extension record
+        const resourceMap = [
+          { key: "overView", path: "overview" },
+          { key: "userGuide", path: "user-guide" },
+          { key: "adminGuide", path: "admin-guide" },
+          { key: "helpPage", path: "help" },
+          { key: "caseStudy", path: "case-study" },
+          { key: "termsAndConditions", path: "terms" },
+          { key: "privacyPolicy", path: "privacy-policy" },
         ];
 
-        const subpageEntries = subpageKeys.map((sub) => ({
-          url: `${baseUrl}/extensions/${slug}/${sub}`,
-          lastModified: extModified,
-          changeFrequency: "monthly",
-          priority: 0.6,
-        }));
+        const validSubpages = resourceMap
+          .filter((resItem) => Boolean(ext[resItem.key]))
+          .map((resItem) => ({
+            url: `${baseUrl}/extensions/${slug}/${resItem.path}`,
+            lastModified: extModified,
+            changeFrequency: "monthly",
+            priority: 0.6,
+          }));
 
-        return [baseEntry, ...subpageEntries];
+        return [baseEntry, ...validSubpages];
       });
   } catch (error) {
-    console.error("📌 Extension Sitemap Error:", error);
+    console.error("📌 Extension Sitemap Error, using fallback:", error);
+    dynamicExtensions = fallbackExtensions
+      .filter((ext) => ext?.slug)
+      .flatMap((ext) => {
+        const slug = ext.slug;
+        const extModified = ext.updatedAt || ext.createdAt || now;
+        const baseEntry = {
+          url: `${baseUrl}/extensions/${slug}`,
+          lastModified: extModified,
+          changeFrequency: "weekly",
+          priority: 0.9,
+        };
+        const resourceMap = [
+          { key: "overView", path: "overview" },
+          { key: "userGuide", path: "user-guide" },
+          { key: "adminGuide", path: "admin-guide" },
+          { key: "helpPage", path: "help" },
+          { key: "caseStudy", path: "case-study" },
+          { key: "termsAndConditions", path: "terms" },
+          { key: "privacyPolicy", path: "privacy-policy" },
+        ];
+        const validSubpages = resourceMap
+          .filter((resItem) => Boolean(ext[resItem.key]))
+          .map((resItem) => ({
+            url: `${baseUrl}/extensions/${slug}/${resItem.path}`,
+            lastModified: extModified,
+            changeFrequency: "monthly",
+            priority: 0.6,
+          }));
+        return [baseEntry, ...validSubpages];
+      });
   }
 
   // ---------------------------------------------
@@ -180,7 +229,7 @@ export default async function sitemap() {
       next: { revalidate: 3600 },
     });
     const result = await res.json();
-    const projects = result?.data || [];
+    const projects = result?.data?.length > 0 ? result.data : portfolioFallback;
 
     dynamicProjects = projects
       .filter((p) => p?.slug)
@@ -191,7 +240,15 @@ export default async function sitemap() {
         priority: 0.7,
       }));
   } catch (error) {
-    console.error("📌 Portfolio Sitemap Error:", error);
+    console.error("📌 Portfolio Sitemap Error, using fallback:", error);
+    dynamicProjects = portfolioFallback
+      .filter((p) => p?.slug)
+      .map((project) => ({
+        url: `${baseUrl}/portfolio/${project.slug}`,
+        lastModified: project.updatedAt || project.createdAt || now,
+        changeFrequency: "monthly",
+        priority: 0.7,
+      }));
   }
 
   // ---------------------------------------------
@@ -205,3 +262,4 @@ export default async function sitemap() {
     ...dynamicProjects,
   ];
 }
+

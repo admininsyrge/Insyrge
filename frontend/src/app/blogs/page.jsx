@@ -5,7 +5,7 @@ import { BASE_URL_USER } from "@/API";
 import { fallbackBlogs } from "@/data/blogsFallback";
 
 export const metadata = {
-  title: "Zoho CRM & Automation Guides for Contractors | Insyrge",
+  title: "Zoho CRM & Automation Guides for Contractors",
   description:
     "Actionable guides on Zoho CRM setup, HOVER integrations, field workflow automation, and CRM best practices for construction and home service companies.",
   alternates: {
@@ -50,6 +50,26 @@ const blogListSchema = {
   },
 };
 
+const blogBreadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://insyrge.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Blogs",
+      item: "https://insyrge.com/blogs",
+    },
+  ],
+};
+
+
 import { unstable_cache } from "next/cache";
 
 const getBlogs = unstable_cache(
@@ -87,8 +107,9 @@ export default async function BlogsPage() {
 
   return (
     <>
-      <StructuredData data={blogListSchema} />
+      <StructuredData data={[blogListSchema, blogBreadcrumbSchema]} />
       <BlogPageClient initialBlogs={blogs} />
     </>
   );
 }
+

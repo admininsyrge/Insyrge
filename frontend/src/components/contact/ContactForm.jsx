@@ -17,12 +17,14 @@ const ContactForm = () => {
         className="rounded-xl overflow-hidden"
       >
         <iframe
+          title="Contact Us Form"
           aria-label="Contact Us"
-          frameBorder="0"
+          loading="lazy"
           style={{ height: "500px", width: "100%", border: "none" }}
           src="https://forms.zohopublic.com/insyrge/form/ContactUs/formperma/IrI485KNuG35FSmcP70DwXyfKLyerjLlpsqu6tLM6-k"
         ></iframe>
       </motion.div>
+
     </div>
   );
 };

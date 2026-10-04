@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { BASE_URL_USER, GET_EXTENSION } from "@/API";
 import ResourceTabs from "@/components/extensions/ResourceTabs";
+import { fallbackExtensions } from "@/data/extensionsFallback";
 
 async function getExtension(slug) {
   try {
@@ -8,10 +10,11 @@ async function getExtension(slug) {
       next: { revalidate: 3600 },
     });
     const result = await res.json();
-    return result.status ? result.data : null;
+    if (result.status && result.data) return result.data;
+    return fallbackExtensions.find((e) => e.slug === slug) || null;
   } catch (error) {
     console.error("Extension Fetch Error:", error);
-    return null;
+    return fallbackExtensions.find((e) => e.slug === slug) || null;
   }
 }
 
@@ -21,21 +24,22 @@ async function getExtensionsList() {
       next: { revalidate: 3600 },
     });
     const result = await res.json();
-    return result.data || [];
+    const list = result.data || [];
+    return list.length > 0 ? list : fallbackExtensions;
   } catch (error) {
     console.error("Extensions List Fetch Error:", error);
-    return [];
+    return fallbackExtensions;
   }
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const extension = await getExtension(slug);
-  if (!extension) return {};
+  if (!extension) return { robots: { index: false, follow: false } };
   return {
     title: {
-      template: `%s — ${extension.title} | Insyrge`,
-      default: `${extension.title} | Insyrge Zoho Extension`,
+      template: `%s — ${extension.title}`,
+      default: `${extension.title} — Zoho Extension`,
     },
     description:
       extension.description ||
@@ -52,24 +56,7 @@ export default async function ExtensionSubPageLayout({ children, params }) {
   ]);
 
   if (!extension) {
-    return (
-      <main className="min-h-screen flex items-center justify-center bg-[#0B1C3D] text-white">
-        <div className="text-center animate-fadeInUp">
-          <h1 className="text-4xl font-bold text-[#08e5c0] mb-4">
-            Extension Not Found
-          </h1>
-          <p className="text-gray-400 mb-8">
-            The extension you&apos;re looking for doesn&apos;t exist.
-          </p>
-          <Link
-            href="/extensions"
-            className="inline-block px-6 py-3 rounded-full bg-[#08e5c0] text-[#0B1C3D] font-semibold hover:shadow-[0_0_30px_#08e5c060] transition-all"
-          >
-            ← Back to Extensions
-          </Link>
-        </div>
-      </main>
-    );
+    notFound();
   }
 
   // Build resource navigation from available pages
@@ -96,7 +83,7 @@ export default async function ExtensionSubPageLayout({ children, params }) {
   });
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#071831] via-[#0B1C3D] to-[#071831] text-white relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#071831] via-[#0B1C3D] to-[#071831] text-white relative overflow-hidden">
       {/* Background Glow Effects */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="w-[50%] h-[40%] bg-[#08e5c020] blur-[200px] rounded-full absolute -top-20 -left-20" />
@@ -105,13 +92,14 @@ export default async function ExtensionSubPageLayout({ children, params }) {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-20">
         {/* Breadcrumbs */}
-        <nav className="breadcrumb mb-6 animate-fadeIn">
+        <nav className="breadcrumb mb-6 animate-fadeIn" aria-label="Breadcrumbs">
           <Link href="/">Home</Link>
           <span className="separator">›</span>
           <Link href="/extensions">Extensions</Link>
           <span className="separator">›</span>
           <Link href={`/extensions/${slug}`}>{extension.title}</Link>
         </nav>
+
 
         {/* Extension Title */}
         <div className="mb-8 animate-fadeInUp">
@@ -256,6 +244,7 @@ export default async function ExtensionSubPageLayout({ children, params }) {
           </div>
         )}
       </div>
-    </main>
+    </div>
   );
 }
+

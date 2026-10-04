@@ -3,7 +3,7 @@ import ContactClient from "./ContactClient";
 import StructuredData from "@/components/seo/StructuredData";
 
 export const metadata = {
-  title: "Contact Us & Book Consultation | Insyrge",
+  title: "Contact Us & Book Consultation",
   description:
     "Get in touch with Insyrge's certified Zoho specialists and automation consultants. Book a free consultation or inquire about custom development services.",
   alternates: {
@@ -39,6 +39,8 @@ const contactSchema = {
   "@type": "ContactPage",
   name: "Contact Insyrge",
   url: "https://insyrge.com/contact",
+  description:
+    "Get in touch with Insyrge's certified Zoho specialists and automation consultants. Book a free consultation or inquire about custom development services.",
   mainEntity: {
     "@type": "Organization",
     name: "Insyrge",
@@ -55,11 +57,31 @@ const contactSchema = {
   },
 };
 
+const contactBreadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://insyrge.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Contact Us",
+      item: "https://insyrge.com/contact",
+    },
+  ],
+};
+
 export default function ContactPage() {
   return (
     <>
-      <StructuredData data={contactSchema} />
+      <StructuredData data={[contactSchema, contactBreadcrumbSchema]} />
       <ContactClient />
     </>
   );
 }
+

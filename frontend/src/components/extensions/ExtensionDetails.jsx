@@ -156,9 +156,9 @@ export default function ExtensionDetails({ extension }) {
                 {/* Accent bar */}
                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#08e5c0] to-[#08e5c0]/20 rounded-full" />
                 <div className="pl-4">
-                  <h4 className="text-lg font-semibold text-white mb-1.5 group-hover:text-[#08e5c0] transition-colors">
+                  <h3 className="text-lg font-semibold text-white mb-1.5 group-hover:text-[#08e5c0] transition-colors">
                     {benefit.title}
-                  </h4>
+                  </h3>
                   <p className="text-gray-400 text-sm leading-relaxed">
                     {benefit.description}
                   </p>
@@ -188,6 +188,7 @@ export default function ExtensionDetails({ extension }) {
             }
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`Install ${extension.title} extension on Zoho Marketplace`}
             className="inline-block px-12 py-4 text-lg font-semibold rounded-full bg-[#08e5c0] text-[#0B1C3D] animate-ctaPulse hover:scale-105 transition-transform duration-300"
           >
             Install Now →

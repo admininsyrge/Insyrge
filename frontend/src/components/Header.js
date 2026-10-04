@@ -54,7 +54,7 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between relative">
         {/* 🔮 Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
+        <Link href="/" className="flex items-center gap-2 group" aria-label="Insyrge Home">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -62,7 +62,7 @@ export default function Header() {
           >
             <Image
               src="/logo.png"
-              alt="INSYRGE Logo"
+              alt="Insyrge - Enterprise IT Consulting & Zoho Solutions"
               width={140}
               height={50}
               className="object-contain w-auto h-auto drop-shadow-[0_0_10px_#08e5c050] group-hover:drop-shadow-[0_0_20px_#08e5c080] transition-all duration-300"
@@ -72,7 +72,7 @@ export default function Header() {
         </Link>
 
         {/* 🧭 Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8 text-white/90 font-medium">
+        <nav aria-label="Main Navigation" className="hidden md:flex items-center gap-8 text-white/90 font-medium">
           {navLinks.map((link, i) => {
             const isActive =
               pathname === link.path ||
@@ -134,7 +134,10 @@ export default function Header() {
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => setMenuOpen(!menuOpen)}
-          className="text-white md:hidden z-50"
+          className="text-white md:hidden z-50 p-2"
+          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-navigation"
         >
           {menuOpen ? <X size={28} /> : <Menu size={28} />}
         </motion.button>
@@ -144,17 +147,14 @@ export default function Header() {
       <AnimatePresence mode="wait">
         {menuOpen && (
           <motion.div
+            id="mobile-navigation"
             variants={mobileMenuVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
             className="md:hidden bg-[#081b33]/95 backdrop-blur-2xl border-t border-[#08e5c030] text-center py-8"
           >
-            <motion.div
-              className="flex flex-col space-y-6 text-white text-lg"
-              initial="hidden"
-              animate="visible"
-            >
+            <nav aria-label="Mobile Navigation" className="flex flex-col space-y-6 text-white text-lg">
               {navLinks.map((link, i) => {
                 const isActive =
                   pathname === link.path ||
@@ -187,12 +187,12 @@ export default function Header() {
                 <Link
                   href="/contact"
                   onClick={() => setMenuOpen(false)}
-                  className="bg-[#08e5c0] hover:bg-[#00e6ff] text-[#081b33] px-6 py-2 rounded-full font-semibold shadow-[0_0_20px_#08e5c040] transition-all"
+                  className="bg-[#08e5c0] hover:bg-[#00e6ff] text-[#081b33] px-6 py-2 rounded-full font-semibold shadow-[0_0_20px_#08e5c040] transition-all inline-block"
                 >
                   Book a Call
                 </Link>
               </motion.div>
-            </motion.div>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>

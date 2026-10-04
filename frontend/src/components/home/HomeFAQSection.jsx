@@ -55,20 +55,23 @@ export default function HomeFAQSection() {
         <div className="space-y-4 mb-10">
           <div className="relative max-w-xl mx-auto">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
             <input
+              id="faq-search-input"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search topics (e.g., Deluge, pricing, timelines, AI, migration)..."
+              aria-label="Search frequently asked questions"
               className="w-full pl-12 pr-4 py-3 rounded-full bg-[#0b2142] border border-[#08e5c0]/25 text-white placeholder-gray-400 text-sm focus:outline-none focus:border-[#08e5c0] focus:ring-1 focus:ring-[#08e5c0] transition-all"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
+                aria-label="Clear search query"
                 className="absolute inset-y-0 right-0 pr-4 flex items-center text-xs text-gray-400 hover:text-white"
               >
                 Clear
@@ -76,7 +79,7 @@ export default function HomeFAQSection() {
             )}
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-2" role="group" aria-label="FAQ categories">
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -102,6 +105,8 @@ export default function HomeFAQSection() {
           ) : (
             filteredFaqs.map((faq, index) => {
               const isOpen = openIndex === index;
+              const buttonId = `faq-btn-${index}`;
+              const panelId = `faq-panel-${index}`;
               return (
                 <div
                   key={index}
@@ -112,9 +117,11 @@ export default function HomeFAQSection() {
                   }`}
                 >
                   <button
+                    id={buttonId}
                     onClick={() => toggleAccordion(index)}
                     className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none"
                     aria-expanded={isOpen}
+                    aria-controls={panelId}
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-white/5 text-[#08e5c0]">
@@ -131,7 +138,7 @@ export default function HomeFAQSection() {
                           : "bg-white/10 text-gray-300"
                       }`}
                     >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
                       </svg>
                     </div>
@@ -140,6 +147,9 @@ export default function HomeFAQSection() {
                   <AnimatePresence>
                     {isOpen && (
                       <motion.div
+                        id={panelId}
+                        role="region"
+                        aria-labelledby={buttonId}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}

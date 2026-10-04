@@ -81,20 +81,6 @@ export const metadata = {
   },
   description:
     "Scale your business with full-spectrum IT consulting, custom software development, cloud infrastructure, AI automation, and enterprise CRM/ERP solutions by Insyrge. Book a free consultation.",
-  keywords: [
-    "IT Consulting Services",
-    "Enterprise IT Consultancy",
-    "Custom Software Development",
-    "Cloud Architecture",
-    "DevOps & Infrastructure",
-    "AI Automation Solutions",
-    "Business Process Automation",
-    "Zoho Consulting Partner",
-    "Data Analytics & BI",
-    "Digital Transformation Services",
-    "Australia IT Consultant",
-    "Global IT Partner",
-  ],
   authors: [{ name: "Insyrge", url: "https://insyrge.com" }],
   creator: "Insyrge",
   publisher: "Insyrge",
@@ -102,9 +88,6 @@ export const metadata = {
     email: false,
     address: false,
     telephone: false,
-  },
-  alternates: {
-    canonical: "https://insyrge.com",
   },
   openGraph: {
     title: "Insyrge | Enterprise IT Consultancy, Custom Software & Cloud Solutions",
@@ -160,11 +143,15 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="relative">
-          <Header />
-        </header>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#08e5c0] focus:text-[#081b33] focus:font-bold focus:rounded-md focus:shadow-xl"
+        >
+          Skip to main content
+        </a>
+        <Header />
         <UserProvider>
-          <main>{children}</main>
+          <main id="main-content">{children}</main>
         </UserProvider>
         <Footer />
         <ZohoChat />
@@ -190,3 +177,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+

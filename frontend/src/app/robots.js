@@ -4,18 +4,20 @@ export default function robots() {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/_next/"],
+        disallow: ["/api/"],
       },
       {
         userAgent: "Googlebot",
         allow: "/",
+        disallow: ["/api/"],
       },
       {
         userAgent: "Bingbot",
         allow: "/",
+        disallow: ["/api/"],
       },
     ],
     sitemap: "https://insyrge.com/sitemap.xml",
-    host: "https://insyrge.com",
   };
 }
+

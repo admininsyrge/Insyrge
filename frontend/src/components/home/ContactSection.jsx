@@ -160,8 +160,10 @@ export default function ContactSection() {
                 </div>
               )}
               <iframe
+                title="Contact Us Form"
                 aria-label="Contact Us"
                 frameBorder="0"
+                loading="lazy"
                 style={{ height: "540px", width: "100%", border: "none", display: "block" }}
                 src="https://forms.zohopublic.com/insyrge/form/ContactUs/formperma/IrI485KNuG35FSmcP70DwXyfKLyerjLlpsqu6tLM6-k"
                 onLoad={() => setFormLoaded(true)}

@@ -13,7 +13,7 @@ export default function ExtensionsClient({ initialExtensions = [] }) {
       : contextExtensions || [];
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#071831] via-[#0B1C3D] to-[#071831] text-white py-20 px-6 md:px-16 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#071831] via-[#0B1C3D] to-[#071831] text-white py-20 px-6 md:px-16 relative overflow-hidden">
       {/* Background Glow Effects */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="w-[50%] h-[50%] bg-[#08e5c020] blur-[200px] rounded-full absolute -top-20 left-[10%]" />
@@ -64,6 +64,7 @@ export default function ExtensionsClient({ initialExtensions = [] }) {
 
       {/* Bottom gradient line */}
       <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#08e5c0]/40 to-transparent" />
-    </main>
+    </div>
   );
 }
+

@@ -1,8 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { BASE_URL_USER } from "@/API";
 import StructuredData from "@/components/seo/StructuredData";
+import { fallbackBlogs } from "@/data/blogsFallback";
 
 async function getBlogPost(slug) {
   try {
@@ -10,10 +12,11 @@ async function getBlogPost(slug) {
       next: { revalidate: 3600 },
     });
     const result = await res.json();
-    return result.status ? result.data : null;
+    if (result.status && result.data) return result.data;
+    return fallbackBlogs.find((b) => b.slug === slug) || null;
   } catch (err) {
     console.error("Error fetching blog for SEO:", err);
-    return null;
+    return fallbackBlogs.find((b) => b.slug === slug) || null;
   }
 }
 
@@ -23,8 +26,9 @@ export async function generateMetadata({ params }) {
 
   if (!post) {
     return {
-      title: "Blog Not Found | Insyrge",
+      title: "Blog Not Found",
       description: "The requested blog post could not be found.",
+      robots: { index: false, follow: false },
     };
   }
 
@@ -36,7 +40,7 @@ export async function generateMetadata({ params }) {
       : "Read insightful guides on Zoho CRM, business automation, and enterprise technology by Insyrge.");
 
   return {
-    title: `${post.title} | Blog`,
+    title: post.title,
     description: cleanDescription,
     alternates: {
       canonical: `https://insyrge.com/blogs/${slug}`,
@@ -77,23 +81,9 @@ export default async function BlogDetailsPage({ params }) {
   const post = await getBlogPost(slug);
 
   if (!post) {
-    return (
-      <main className="min-h-screen flex flex-col items-center justify-center bg-[#0B1C3D] text-white px-6">
-        <h1 className="text-3xl font-bold text-[#08e5c0] mb-4">
-          Blog Post Not Found
-        </h1>
-        <p className="text-gray-400 mb-8 text-center max-w-md">
-          The blog post you are looking for does not exist or has been removed.
-        </p>
-        <Link
-          href="/blogs"
-          className="inline-block px-8 py-3 rounded-full bg-[#08e5c0] text-[#0B1C3D] font-semibold hover:shadow-[0_0_30px_#08e5c060] transition-all"
-        >
-          ← Back to Blogs
-        </Link>
-      </main>
-    );
+    notFound();
   }
+
 
   const blogSchema = {
     "@context": "https://schema.org",
@@ -158,7 +148,7 @@ export default async function BlogDetailsPage({ params }) {
     <>
       <StructuredData data={[blogSchema, breadcrumbSchema]} />
 
-      <main className="min-h-screen bg-[#0B1C3D] text-white px-5 md:px-20 py-16 md:py-24">
+      <div className="min-h-screen bg-[#0B1C3D] text-white px-5 md:px-20 py-16 md:py-24">
         {/* === Breadcrumbs / Back Navigation === */}
         <div className="max-w-4xl mx-auto mb-8 flex items-center justify-between">
           <Link
@@ -236,7 +226,8 @@ export default async function BlogDetailsPage({ params }) {
             </a>
           </section>
         </article>
-      </main>
+      </div>
     </>
   );
 }
+

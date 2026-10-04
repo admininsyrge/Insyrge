@@ -33,10 +33,10 @@ const Footer = () => {
       <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
         {/* === Brand & Info === */}
         <div className="space-y-5">
-          <Link href="/" className="inline-block">
+          <Link href="/" className="inline-block" aria-label="Insyrge Home">
             <Image
               src="/logo.png"
-              alt="Insyrge Logo"
+              alt="Insyrge - Enterprise IT Consulting & Zoho Solutions"
               width={140}
               height={40}
               className="w-auto h-10 object-contain hover:opacity-90 transition-opacity duration-300"
@@ -51,7 +51,7 @@ const Footer = () => {
 
           <div className="space-y-3 mt-5">
             <div className="flex items-start gap-3">
-              <FaPhoneAlt className="text-[#08e5c0] mt-1 shrink-0" />
+              <FaPhoneAlt className="text-[#08e5c0] mt-1 shrink-0" aria-hidden="true" />
               <a
                 href="tel:+917973837217"
                 className="hover:text-[#08e5c0] transition-colors duration-200"
@@ -61,7 +61,7 @@ const Footer = () => {
             </div>
 
             <div className="flex items-start gap-3">
-              <FaEnvelope className="text-[#08e5c0] mt-1 shrink-0" />
+              <FaEnvelope className="text-[#08e5c0] mt-1 shrink-0" aria-hidden="true" />
               <a
                 href="mailto:info@insyrge.com"
                 className="hover:text-[#08e5c0] transition-colors duration-200"
@@ -71,7 +71,7 @@ const Footer = () => {
             </div>
 
             <div className="flex items-start gap-3">
-              <FaMapMarkerAlt className="text-[#08e5c0] mt-1 shrink-0" />
+              <FaMapMarkerAlt className="text-[#08e5c0] mt-1 shrink-0" aria-hidden="true" />
               <address className="not-italic">
                 Unit 40, 8–10 Fourth Avenue, Blacktown,
                 <br />
@@ -83,18 +83,32 @@ const Footer = () => {
           <div className="flex items-center gap-5 mt-6">
             {[
               {
-                icon: <FaLinkedin />,
+                icon: <FaLinkedin aria-hidden="true" />,
+                label: "Follow Insyrge on LinkedIn",
                 href: "https://www.linkedin.com/company/insyrge/",
               },
-              { icon: <FaInstagram />, href: "https://instagram.com/insyrge" },
-              { icon: <FaTwitter />, href: "https://x.com/insyrge" },
-              { icon: <FaFacebook />, href: "https://facebook.com/insyrge" },
+              {
+                icon: <FaInstagram aria-hidden="true" />,
+                label: "Follow Insyrge on Instagram",
+                href: "https://instagram.com/insyrge",
+              },
+              {
+                icon: <FaTwitter aria-hidden="true" />,
+                label: "Follow Insyrge on X (formerly Twitter)",
+                href: "https://x.com/insyrge",
+              },
+              {
+                icon: <FaFacebook aria-hidden="true" />,
+                label: "Follow Insyrge on Facebook",
+                href: "https://facebook.com/insyrge",
+              },
             ].map((item, idx) => (
               <a
                 key={idx}
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={item.label}
                 className="text-gray-400 hover:text-[#08e5c0] transition-all duration-300 text-lg hover:drop-shadow-[0_0_8px_#08e5c0]"
               >
                 {item.icon}
@@ -113,6 +127,7 @@ const Footer = () => {
               { name: "Blogs", href: "/blogs" },
               { name: "Portfolio", href: "/portfolio" },
               { name: "Extensions", href: "/extensions" },
+              { name: "Contact Us", href: "/contact" },
             ].map((item) => (
               <li key={item.name}>
                 <Link

@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { BASE_URL_USER } from "@/API";
 
 const HOVER_CASE_STUDY_FALLBACK = {
@@ -51,8 +52,11 @@ async function getCaseStudy(slug) {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   return {
-    title: `Case Study — ${slug.replace(/-/g, " ")} | Insyrge`,
+    title: "Case Study",
     description: `Case study for ${slug.replace(/-/g, " ")} extension by Insyrge.`,
+    alternates: {
+      canonical: `https://insyrge.com/extensions/${slug}/case-study`,
+    },
   };
 }
 
@@ -61,17 +65,9 @@ export default async function CaseStudyPage({ params }) {
   const data = await getCaseStudy(slug);
 
   if (!data) {
-    return (
-      <div className="text-center py-16">
-        <h2 className="text-2xl font-semibold text-gray-400 mb-4">
-          Case Study Not Available
-        </h2>
-        <p className="text-gray-500">
-          The case study for this extension hasn&apos;t been published yet.
-        </p>
-      </div>
-    );
+    notFound();
   }
+
 
   return (
     <article>

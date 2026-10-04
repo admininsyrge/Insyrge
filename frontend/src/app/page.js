@@ -21,23 +21,9 @@ import BlogHighlights from "@/components/home/BlogHighlights";
 import { homeFaqs } from "@/data/homeFaqs";
 
 export const metadata = {
-  title: "Zoho CRM & Business Automation for Construction and Home Service Companies | Insyrge",
+  title: "Zoho CRM & Business Automation for Construction and Home Services",
   description:
     "Insyrge helps construction, roofing and home service businesses implement, customize and automate Zoho — connecting CRM, operations, estimating, documents and customer workflows into one scalable system.",
-  keywords: [
-    "Zoho CRM for Construction",
-    "Roofing CRM Consulting",
-    "Home Services Business Automation",
-    "HOVER Zoho CRM Integration",
-    "CompanyCam Zoho Integration",
-    "Zoho CRM Implementation",
-    "Zoho One Consultant",
-    "Deluge Script Developer",
-    "Zoho Marketplace Developer",
-    "Contractor CRM Automation",
-    "Estimating Workflow Integration",
-    "Field Service CRM",
-  ],
   alternates: {
     canonical: "https://insyrge.com",
   },
@@ -66,6 +52,7 @@ export const metadata = {
     images: ["/images/hero-automation-dashboard.jpg"],
   },
 };
+
 
 const homeFaqSchema = {
   "@context": "https://schema.org",

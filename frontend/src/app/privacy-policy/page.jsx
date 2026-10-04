@@ -67,7 +67,7 @@ async function fetchPrivacy() {
 }
 
 export const metadata = {
-  title: "Privacy Policy | Insyrge",
+  title: "Privacy Policy",
   description:
     "Read the Insyrge privacy policy to understand how your data is collected, used, and protected under strict enterprise standards.",
   alternates: {
@@ -83,42 +83,67 @@ export const metadata = {
   },
 };
 
+const privacyBreadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://insyrge.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Privacy Policy",
+      item: "https://insyrge.com/privacy-policy",
+    },
+  ],
+};
+
+import StructuredData from "@/components/seo/StructuredData";
+
 export default async function PrivacyPolicyPage() {
   const data = await fetchPrivacy();
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#071831] via-[#0B1C3D] to-[#071831] text-white py-24 px-6 md:px-20 relative overflow-hidden">
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#08e5c0]/10 blur-[180px] rounded-full -z-10" />
+    <>
+      <StructuredData data={privacyBreadcrumbSchema} />
+      <div className="min-h-screen bg-gradient-to-b from-[#071831] via-[#0B1C3D] to-[#071831] text-white py-24 px-6 md:px-20 relative overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#08e5c0]/10 blur-[180px] rounded-full -z-10" />
 
-      <div className="max-w-4xl mx-auto relative z-10">
-        <div className="mb-10 text-center">
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-[#08e5c0] bg-[#08e5c0]/10 border border-[#08e5c0]/20 mb-4">
-            Legal &amp; Compliance
-          </span>
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4">
-            {data.title || "Privacy Policy"}
-          </h1>
-          <p className="text-gray-400 text-sm">
-            Last Updated: September 2026 • Insyrge Consulting &amp; Software
-          </p>
-        </div>
+        <div className="max-w-4xl mx-auto relative z-10">
+          <div className="mb-10 text-center">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-[#08e5c0] bg-[#08e5c0]/10 border border-[#08e5c0]/20 mb-4">
+              Legal &amp; Compliance
+            </span>
+            <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4">
+              {data.title || "Privacy Policy"}
+            </h1>
+            <p className="text-gray-400 text-sm">
+              Last Updated: September 2026 • Insyrge Consulting &amp; Software
+            </p>
+          </div>
 
-        <div className="glass-card p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl bg-[#091e3b]/90 backdrop-blur-md">
-          <div
-            className="prose prose-invert max-w-none prose-headings:text-[#08e5c0] prose-a:text-[#08e5c0] leading-relaxed text-gray-300"
-            dangerouslySetInnerHTML={{ __html: data.content }}
-          />
-        </div>
+          <div className="glass-card p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl bg-[#091e3b]/90 backdrop-blur-md">
+            <div
+              className="prose prose-invert max-w-none prose-headings:text-[#08e5c0] prose-a:text-[#08e5c0] leading-relaxed text-gray-300"
+              dangerouslySetInnerHTML={{ __html: data.content }}
+            />
+          </div>
 
-        <div className="mt-12 text-center">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-sm transition-all"
-          >
-            ← Back to Home
-          </Link>
+          <div className="mt-12 text-center">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-sm transition-all"
+            >
+              ← Back to Home
+            </Link>
+          </div>
         </div>
       </div>
-    </main>
+    </>
   );
 }
+

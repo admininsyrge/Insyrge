@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { BASE_URL_USER } from "@/API";
 
 async function getTerms(slug) {
@@ -16,8 +17,11 @@ async function getTerms(slug) {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   return {
-    title: `Terms & Conditions — ${slug.replace(/-/g, " ")} | Insyrge`,
+    title: "Terms & Conditions",
     description: `Terms and conditions for ${slug.replace(/-/g, " ")} extension by Insyrge.`,
+    alternates: {
+      canonical: `https://insyrge.com/extensions/${slug}/terms`,
+    },
   };
 }
 
@@ -26,17 +30,9 @@ export default async function TermsPage({ params }) {
   const data = await getTerms(slug);
 
   if (!data) {
-    return (
-      <div className="text-center py-16">
-        <h2 className="text-2xl font-semibold text-gray-400 mb-4">
-          Terms &amp; Conditions Not Available
-        </h2>
-        <p className="text-gray-500">
-          The terms and conditions for this extension haven&apos;t been published yet.
-        </p>
-      </div>
-    );
+    notFound();
   }
+
 
   return (
     <article>

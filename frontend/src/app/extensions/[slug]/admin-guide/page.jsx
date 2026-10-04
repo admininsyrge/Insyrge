@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { BASE_URL_USER } from "@/API";
 
 async function getAdminGuide(slug) {
@@ -16,8 +17,11 @@ async function getAdminGuide(slug) {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   return {
-    title: `Admin Guide — ${slug.replace(/-/g, " ")} | Insyrge`,
+    title: "Admin Guide",
     description: `Admin guide for ${slug.replace(/-/g, " ")} extension by Insyrge.`,
+    alternates: {
+      canonical: `https://insyrge.com/extensions/${slug}/admin-guide`,
+    },
   };
 }
 
@@ -26,17 +30,9 @@ export default async function AdminGuidePage({ params }) {
   const data = await getAdminGuide(slug);
 
   if (!data) {
-    return (
-      <div className="text-center py-16">
-        <h2 className="text-2xl font-semibold text-gray-400 mb-4">
-          Admin Guide Not Available
-        </h2>
-        <p className="text-gray-500">
-          The admin guide for this extension hasn&apos;t been published yet.
-        </p>
-      </div>
-    );
+    notFound();
   }
+
 
   return (
     <article>

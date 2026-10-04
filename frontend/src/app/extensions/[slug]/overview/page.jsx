@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { BASE_URL_USER } from "@/API";
 
 async function getOverview(slug) {
@@ -16,8 +17,11 @@ async function getOverview(slug) {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   return {
-    title: `Overview — ${slug.replace(/-/g, " ")} | Insyrge`,
+    title: "Overview",
     description: `Read the overview for ${slug.replace(/-/g, " ")} extension by Insyrge.`,
+    alternates: {
+      canonical: `https://insyrge.com/extensions/${slug}/overview`,
+    },
   };
 }
 
@@ -26,17 +30,9 @@ export default async function OverviewPage({ params }) {
   const data = await getOverview(slug);
 
   if (!data) {
-    return (
-      <div className="text-center py-16">
-        <h2 className="text-2xl font-semibold text-gray-400 mb-4">
-          Overview Not Available
-        </h2>
-        <p className="text-gray-500">
-          The overview for this extension hasn&apos;t been published yet.
-        </p>
-      </div>
-    );
+    notFound();
   }
+
 
   return (
     <article>
