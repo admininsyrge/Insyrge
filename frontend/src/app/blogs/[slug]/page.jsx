@@ -9,13 +9,15 @@ import { fallbackBlogs } from "@/data/blogsFallback";
 async function getBlogPost(slug) {
   try {
     const res = await fetch(`${BASE_URL_USER}/blog/slug/${slug}`, {
+      signal: AbortSignal.timeout(4000),
       next: { revalidate: 3600 },
     });
+    if (!res.ok) return fallbackBlogs.find((b) => b.slug === slug) || null;
     const result = await res.json();
     if (result.status && result.data) return result.data;
     return fallbackBlogs.find((b) => b.slug === slug) || null;
   } catch (err) {
-    console.error("Error fetching blog for SEO:", err);
+    console.error("Error fetching blog, using fallback:", err);
     return fallbackBlogs.find((b) => b.slug === slug) || null;
   }
 }

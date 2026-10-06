@@ -93,7 +93,7 @@ export default function PortfolioDetails({ project }) {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {project.gallery.map((img, index) => {
-                const galleryImgUrl = img?.image?.url || img?.url || "/logo.png";
+                const galleryImgUrl = img?.image?.url || img?.url || (typeof img === "string" ? img : "/logo.png");
                 return (
                   <div
                     key={index}

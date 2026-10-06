@@ -35,6 +35,7 @@ const HOVER_CASE_STUDY_FALLBACK = {
 async function getCaseStudy(slug) {
   try {
     const res = await fetch(`${BASE_URL_USER}/${slug}/case-study`, {
+      signal: AbortSignal.timeout(4000),
       next: { revalidate: 3600 },
     });
     if (!res.ok) throw new Error("Failed fetch");

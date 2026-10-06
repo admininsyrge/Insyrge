@@ -5,16 +5,21 @@ import { BASE_URL_USER } from "@/API";
 import ServiceDetails from "@/components/services/ServiceDetails";
 import StructuredData from "@/components/seo/StructuredData";
 
+import { coreServices as fallbackServices } from "@/data/servicesData";
+
 async function getService(slug) {
   try {
     const res = await fetch(`${BASE_URL_USER}/service/slug/${slug}`, {
+      signal: AbortSignal.timeout(4000),
       next: { revalidate: 3600 },
     });
+    if (!res.ok) return fallbackServices.find((s) => s.slug === slug) || null;
     const result = await res.json();
-    return result.status ? result.data : null;
+    if (result.status && result.data) return result.data;
+    return fallbackServices.find((s) => s.slug === slug) || null;
   } catch (err) {
-    console.error("Error fetching service for SEO:", err);
-    return null;
+    console.error("Error fetching service, using fallback:", err);
+    return fallbackServices.find((s) => s.slug === slug) || null;
   }
 }
 

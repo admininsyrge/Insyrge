@@ -20,9 +20,10 @@ const RelatedArticles = ({ related }) => (
           >
             <div className="relative aspect-video">
               <Image
-                src={r.image.url}
-                alt={r.title}
+                src={r.image?.url || (typeof r.image === "string" ? r.image : "/logo.png")}
+                alt={r.title || "Related article"}
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="object-cover"
               />
             </div>

@@ -173,74 +173,91 @@ const servicesSchema = {
   ],
 };
 
+import { fallbackExtensions } from "@/data/extensionsFallback";
+import { fallbackBlogs } from "@/data/blogsFallback";
+
+const fallbackPartners = [
+  { image: { url: "https://res.cloudinary.com/dwkoijsad/image/upload/v1776269745/home/partners/dy19qbc6iourgdtwwvmm.png" } },
+  { image: { url: "https://res.cloudinary.com/dwkoijsad/image/upload/v1776269747/home/partners/bjypmglz8tclwlrxwweh.png" } },
+  { image: { url: "https://res.cloudinary.com/dwkoijsad/image/upload/v1776269749/home/partners/tcptqh47nkiz3jobo9fj.png" } },
+  { image: { url: "https://res.cloudinary.com/dwkoijsad/image/upload/v1776269751/home/partners/ex18vadh1hlib6uar74j.png" } },
+  { image: { url: "https://res.cloudinary.com/dwkoijsad/image/upload/v1776365280/home/partners/iye6gwyumo1ojwmlrrsf.png" } },
+];
+
 async function getHomeData() {
   try {
     const res = await fetch(`${BASE_URL_USER}/home`, {
+      signal: AbortSignal.timeout(4000),
       next: { revalidate: 3600 },
     });
-    if (!res.ok) return null;
+    if (!res.ok) return { hero: null, partners: fallbackPartners };
     const json = await res.json();
-    if (!json?.data) return null;
+    if (!json?.data) return { hero: null, partners: fallbackPartners };
     return {
       hero: json.data.hero || null,
-      partners: json.data.partners || [],
+      partners: json.data.partners?.length > 0 ? json.data.partners : fallbackPartners,
     };
   } catch (e) {
-    console.error("Failed to fetch home data:", e);
-    return null;
+    console.error("Failed to fetch home data, using fallback:", e);
+    return { hero: null, partners: fallbackPartners };
   }
 }
 
 async function getExtensions() {
   try {
     const res = await fetch(`${BASE_URL_USER}/extension-all`, {
+      signal: AbortSignal.timeout(4000),
       next: { revalidate: 3600 },
     });
-    if (!res.ok) return [];
-    const json = await res.json();
-    const list = json.data || [];
-    // Only return the top 4 extensions with lightweight fields needed by FeaturedExtensions
-    return list.slice(0, 4).map((ext) => ({
+    const list = res.ok ? (await res.json())?.data || [] : [];
+    const source = list.length > 0 ? list : fallbackExtensions;
+    return source.slice(0, 4).map((ext) => ({
       _id: ext._id,
       title: ext.title,
       slug: ext.slug,
       description: ext.description || "",
-      image: ext.image ? { url: ext.image.url } : null,
+      image: { url: ext.image?.url || "/logo.png" },
     }));
   } catch (e) {
-    console.error("Failed to fetch extensions:", e);
-    return [];
+    console.error("Failed to fetch extensions, using fallback:", e);
+    return fallbackExtensions.slice(0, 4).map((ext) => ({
+      _id: ext._id,
+      title: ext.title,
+      slug: ext.slug,
+      description: ext.description || "",
+      image: { url: ext.image?.url || "/logo.png" },
+    }));
   }
 }
 
-import { unstable_cache } from "next/cache";
-
-const getBlogs = unstable_cache(
-  async () => {
-    try {
-      const res = await fetch(`${BASE_URL_USER}/blogs-all`, {
-        cache: "no-store",
-      });
-      if (!res.ok) return [];
-      const json = await res.json();
-      const list = json.data || [];
-      // Only return the top 3 latest blogs with lightweight fields for the home page highlight
-      return list.slice(0, 3).map((blog) => ({
-        _id: blog._id,
-        title: blog.title,
-        slug: blog.slug,
-        shortDescription: blog.shortDescription || "",
-        category: blog.category || "",
-        image: blog.image ? { url: blog.image.url } : null,
-      }));
-    } catch (e) {
-      console.error("Failed to fetch blogs:", e);
-      return [];
-    }
-  },
-  ["home-blogs-preview"],
-  { revalidate: 3600 }
-);
+async function getBlogs() {
+  try {
+    const res = await fetch(`${BASE_URL_USER}/blogs-all`, {
+      signal: AbortSignal.timeout(4000),
+      next: { revalidate: 3600 },
+    });
+    const list = res.ok ? (await res.json())?.data || [] : [];
+    const source = list.length > 0 ? list : fallbackBlogs;
+    return source.slice(0, 3).map((blog) => ({
+      _id: blog._id,
+      title: blog.title,
+      slug: blog.slug,
+      shortDescription: blog.shortDescription || "",
+      category: blog.category || "",
+      image: { url: blog.image?.url || "/logo.png" },
+    }));
+  } catch (e) {
+    console.error("Failed to fetch blogs, using fallback:", e);
+    return fallbackBlogs.slice(0, 3).map((blog) => ({
+      _id: blog._id,
+      title: blog.title,
+      slug: blog.slug,
+      shortDescription: blog.shortDescription || "",
+      category: blog.category || "",
+      image: { url: blog.image?.url || "/logo.png" },
+    }));
+  }
+}
 
 export default async function Home() {
   const [homeData, extensions, blogs] = await Promise.all([

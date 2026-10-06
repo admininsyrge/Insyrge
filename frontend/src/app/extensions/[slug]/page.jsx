@@ -9,13 +9,15 @@ import { fallbackExtensions } from "@/data/extensionsFallback";
 async function getExtension(slug) {
   try {
     const res = await fetch(`${BASE_URL_USER}/extension/slug/${slug}`, {
+      signal: AbortSignal.timeout(4000),
       next: { revalidate: 3600 },
     });
+    if (!res.ok) return fallbackExtensions.find((e) => e.slug === slug) || null;
     const result = await res.json();
     if (result.status && result.data) return result.data;
     return fallbackExtensions.find((e) => e.slug === slug) || null;
   } catch (err) {
-    console.error("Error fetching extension for SEO:", err);
+    console.error("Error fetching extension, using fallback:", err);
     return fallbackExtensions.find((e) => e.slug === slug) || null;
   }
 }

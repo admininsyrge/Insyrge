@@ -179,6 +179,7 @@ export default function HeroHome({ data }) {
                   width={1200}
                   height={675}
                   priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                   className="w-full h-auto object-cover rounded-xl transition-transform duration-700 hover:scale-[1.02]"
                 />
 

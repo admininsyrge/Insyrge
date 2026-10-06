@@ -32,7 +32,7 @@ export default function ExtensionDetails({ extension }) {
       >
         <div className="relative w-full h-[200px] sm:h-[280px] md:h-[420px]">
           <Image
-            src={extension.image.url}
+            src={extension.image?.url || "/logo.png"}
             alt={extension.title}
             fill
             sizes="(max-width: 1024px) 100vw, 75vw"

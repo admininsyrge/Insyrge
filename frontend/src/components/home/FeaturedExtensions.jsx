@@ -54,7 +54,7 @@ export default function FeaturedExtensions({ extensions }) {
                 {/* Image */}
                 <div className="relative w-full h-[140px] sm:h-[160px] flex-shrink-0">
                   <Image
-                    src={ext.image.url}
+                    src={ext.image?.url || "/logo.png"}
                     alt={ext.title}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

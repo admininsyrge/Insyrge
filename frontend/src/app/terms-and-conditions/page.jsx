@@ -37,6 +37,7 @@ const fallbackTerms = {
 async function fetchTerms() {
   try {
     const res = await fetch(`${BASE_URL_USER}/terms-and-conditions`, {
+      signal: AbortSignal.timeout(4000),
       next: { revalidate: 3600 },
     });
     if (!res.ok) return fallbackTerms;

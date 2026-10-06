@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function ServiceDetails({ service }) {
-  const imageUrl = service.image?.url || "/logo.png";
+  const imageUrl = service.image?.url || (typeof service.image === "string" ? service.image : "/logo.png");
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#071831] via-[#0A1F45] to-[#071831] text-white py-16 px-4 md:px-20 relative overflow-hidden">
@@ -26,8 +26,9 @@ export default function ServiceDetails({ service }) {
           <div className="relative w-full h-[230px] sm:h-[320px] md:h-[530px]">
             <Image
               src={imageUrl}
-              alt={service.title}
+              alt={service.title || "Service"}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px"
               priority
               className="object-cover object-center"
             />

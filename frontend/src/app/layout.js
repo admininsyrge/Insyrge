@@ -73,6 +73,13 @@ const organizationSchema = {
   ],
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#081b33",
+};
+
 export const metadata = {
   metadataBase: new URL("https://insyrge.com"),
   title: {
@@ -141,7 +148,7 @@ export default function RootLayout({ children }) {
         <StructuredData data={organizationSchema} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full overflow-x-hidden min-h-screen flex flex-col`}
       >
         <a
           href="#main-content"
@@ -151,7 +158,7 @@ export default function RootLayout({ children }) {
         </a>
         <Header />
         <UserProvider>
-          <main id="main-content">{children}</main>
+          <main id="main-content" className="flex-1 w-full overflow-x-hidden">{children}</main>
         </UserProvider>
         <Footer />
         <ZohoChat />

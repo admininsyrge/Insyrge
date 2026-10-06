@@ -4,8 +4,10 @@ import { BASE_URL_USER } from "@/API";
 async function getAdminGuide(slug) {
   try {
     const res = await fetch(`${BASE_URL_USER}/${slug}/admin-guide`, {
+      signal: AbortSignal.timeout(4000),
       next: { revalidate: 3600 },
     });
+    if (!res.ok) return null;
     const result = await res.json();
     return result.data || null;
   } catch (error) {

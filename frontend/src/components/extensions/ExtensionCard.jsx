@@ -18,7 +18,7 @@ export default function ExtensionCard({ extension }) {
         {/* Image Section */}
         <div className="relative w-full flex-shrink-0 h-[160px] sm:h-[190px] md:h-[220px] lg:h-[250px]">
           <Image
-            src={extension.image.url}
+            src={extension.image?.url || "/logo.png"}
             alt={extension.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

@@ -9,13 +9,15 @@ import { portfolioFallback } from "@/data/portfolioFallback";
 async function getProject(slug) {
   try {
     const res = await fetch(`${BASE_URL_USER}/project/slug/${slug}`, {
+      signal: AbortSignal.timeout(4000),
       next: { revalidate: 3600 },
     });
+    if (!res.ok) return portfolioFallback.find((p) => p.slug === slug) || null;
     const result = await res.json();
     if ((result.status || result.success) && result.data) return result.data;
     return portfolioFallback.find((p) => p.slug === slug) || null;
   } catch (err) {
-    console.error("Error fetching project for SEO:", err);
+    console.error("Error fetching project, using fallback:", err);
     return portfolioFallback.find((p) => p.slug === slug) || null;
   }
 }

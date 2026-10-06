@@ -55,6 +55,7 @@ const fallbackPrivacyPolicy = {
 async function fetchPrivacy() {
   try {
     const res = await fetch(`${BASE_URL_USER}/privacy`, {
+      signal: AbortSignal.timeout(4000),
       next: { revalidate: 3600 },
     });
     if (!res.ok) return fallbackPrivacyPolicy;

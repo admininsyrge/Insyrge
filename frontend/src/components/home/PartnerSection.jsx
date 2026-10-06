@@ -6,7 +6,8 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
 export default function PartnerSection({ data }) {
-  if (!data || data.length === 0) return null;
+  const partnerList = (data || []).filter((item) => item?.image?.url);
+  if (partnerList.length === 0) return null;
 
   return (
     <section className="relative bg-[#081A39] text-white py-20 overflow-hidden">
@@ -48,15 +49,16 @@ export default function PartnerSection({ data }) {
           allowTouchMove={false}
           className="flex items-center"
         >
-          {data.concat(data).map((logo, index) => (
+          {partnerList.concat(partnerList).map((logo, index) => (
             <SwiperSlide
               key={index}
               className="flex justify-center items-center"
             >
               <div className="w-32 md:w-36 h-24 md:h-28 glass-card flex justify-center items-center">
                 <img
-                  src={logo.image.url}
+                  src={logo.image?.url || "/logo.png"}
                   alt={`Client Logo ${index + 1}`}
+                  loading="lazy"
                   className="max-h-[55%] max-w-[65%] object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>

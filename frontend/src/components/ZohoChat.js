@@ -4,7 +4,10 @@ import { useEffect } from "react";
 
 export default function ZohoChat() {
   useEffect(() => {
+    let loaded = false;
     const injectZohoScript = () => {
+      if (loaded) return;
+      loaded = true;
       const d = document;
       if (d.getElementById("zohosalesiq-script")) return;
       const s = d.createElement("script");
@@ -16,15 +19,28 @@ export default function ZohoChat() {
 
       window.$zoho = window.$zoho || {};
       window.$zoho.salesiq = window.$zoho.salesiq || { ready: function () {} };
+
+      window.removeEventListener("scroll", onUserInteraction);
+      window.removeEventListener("touchstart", onUserInteraction);
+      window.removeEventListener("click", onUserInteraction);
     };
 
-    if ("requestIdleCallback" in window) {
-      const handle = window.requestIdleCallback(injectZohoScript, { timeout: 3500 });
-      return () => window.cancelIdleCallback(handle);
-    } else {
-      const timer = setTimeout(injectZohoScript, 2500);
-      return () => clearTimeout(timer);
-    }
+    const onUserInteraction = () => {
+      injectZohoScript();
+    };
+
+    window.addEventListener("scroll", onUserInteraction, { passive: true, once: true });
+    window.addEventListener("touchstart", onUserInteraction, { passive: true, once: true });
+    window.addEventListener("click", onUserInteraction, { passive: true, once: true });
+
+    const timer = setTimeout(injectZohoScript, 5000);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", onUserInteraction);
+      window.removeEventListener("touchstart", onUserInteraction);
+      window.removeEventListener("click", onUserInteraction);
+    };
   }, []);
 
   return null;

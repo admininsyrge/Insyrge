@@ -68,8 +68,8 @@ const CoreServices = ({ data, loading, error }) => {
                   {/* Image */}
                   <div className="relative w-full flex-shrink-0 h-[180px] sm:h-[200px] md:h-[230px]">
                     <Image
-                      src={service.image.url}
-                      alt={service.title}
+                      src={service.image?.url || (typeof service.image === "string" ? service.image : "/logo.png")}
+                      alt={service.title || "Service"}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-contain object-center transition-transform duration-500 group-hover:scale-105"

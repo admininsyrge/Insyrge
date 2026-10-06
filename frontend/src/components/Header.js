@@ -34,6 +34,21 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About Us", path: "/about" },
@@ -152,7 +167,7 @@ export default function Header() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="md:hidden bg-[#081b33]/95 backdrop-blur-2xl border-t border-[#08e5c030] text-center py-8"
+            className="md:hidden bg-[#081b33]/98 backdrop-blur-2xl border-t border-[#08e5c030] text-center py-8 max-h-[calc(100dvh-5rem)] overflow-y-auto shadow-2xl"
           >
             <nav aria-label="Mobile Navigation" className="flex flex-col space-y-6 text-white text-lg">
               {navLinks.map((link, i) => {

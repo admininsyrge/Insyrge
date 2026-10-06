@@ -51,11 +51,12 @@ export const AboutHero = ({ data }) => {
         >
           <div className="absolute inset-0 blur-2xl  rounded-full" />
           <Image
-            src={data.image}
+            src={data.image || "/logo.png"}
             alt={data.title ? `${data.title} - Insyrge` : "Manav Sharma - Founder and Technology Consultant at Insyrge"}
             width={500}
             height={500}
-            className="relative rounded-2xl "
+            sizes="(max-width: 768px) 100vw, 500px"
+            className="relative rounded-2xl w-full max-w-[500px] h-auto object-cover"
           />
         </motion.div>
       </div>

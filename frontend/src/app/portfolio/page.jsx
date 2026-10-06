@@ -39,9 +39,10 @@ export const metadata = {
 async function getProjects() {
   try {
     const res = await fetch(`${BASE_URL_USER}/project-all`, {
+      signal: AbortSignal.timeout(4000),
       next: { revalidate: 3600 },
     });
-    if (!res.ok) throw new Error("Failed to fetch projects");
+    if (!res.ok) return portfolioFallback;
     const json = await res.json();
     return json?.data?.length > 0 ? json.data : portfolioFallback;
   } catch (err) {
