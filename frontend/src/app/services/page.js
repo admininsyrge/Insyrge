@@ -3,16 +3,16 @@ import ServicesClient from "./ServicesClient";
 import StructuredData from "@/components/seo/StructuredData";
 
 export const metadata = {
-  title: "IT Consulting, Custom Software & Enterprise Services",
+  title: "Zoho CRM Consulting, Implementation & Business Automation Services",
   description:
-    "Explore Insyrge's suite of enterprise IT services: strategic technology consulting, custom web/mobile app engineering, cloud architecture, AI automation, and CRM integrations.",
+    "Explore Insyrge's enterprise Zoho services: Zoho CRM implementation, Zoho One architecture, custom Deluge scripting, third-party API integrations, and AI workflow automation.",
   alternates: {
     canonical: "https://insyrge.com/services",
   },
   openGraph: {
-    title: "IT Consulting, Custom Software & Enterprise Services | Insyrge",
+    title: "Zoho CRM Consulting, Implementation & Business Automation Services | Insyrge",
     description:
-      "Explore Insyrge's suite of enterprise IT services: strategic technology consulting, custom web/mobile app engineering, cloud architecture, AI automation, and CRM integrations.",
+      "Explore Insyrge's enterprise Zoho services: Zoho CRM implementation, Zoho One architecture, custom Deluge scripting, third-party API integrations, and AI workflow automation.",
     url: "https://insyrge.com/services",
     siteName: "Insyrge",
     type: "website",
@@ -21,15 +21,15 @@ export const metadata = {
         url: "/logo.png",
         width: 800,
         height: 600,
-        alt: "Insyrge IT Services",
+        alt: "Insyrge Zoho Services & Business Automation",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "IT Consulting, Custom Software & Enterprise Services | Insyrge",
+    title: "Zoho CRM Consulting, Implementation & Business Automation | Insyrge",
     description:
-      "Discover Insyrge's comprehensive range of enterprise IT consultancy, custom software development, and cloud solutions.",
+      "Explore Insyrge's enterprise Zoho services: Zoho CRM implementation, Zoho One architecture, custom Deluge scripting, and AI workflow automation.",
     images: ["/logo.png"],
   },
 };
@@ -37,10 +37,10 @@ export const metadata = {
 const servicesListSchema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "Insyrge Enterprise IT Services",
+  name: "Insyrge Zoho Consulting & Automation Services",
   url: "https://insyrge.com/services",
   description:
-    "Comprehensive enterprise technology services including strategic IT consulting, custom software development, cloud engineering, and business automation.",
+    "Enterprise Zoho CRM consulting, Zoho One architecture, Deluge scripting, REST API integrations, and AI business automation.",
   publisher: {
     "@type": "Organization",
     name: "Insyrge",
@@ -95,4 +95,3 @@ export default async function ServicesPage() {
     </>
   );
 }
-

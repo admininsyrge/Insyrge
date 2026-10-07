@@ -3,16 +3,16 @@ import ContactClient from "./ContactClient";
 import StructuredData from "@/components/seo/StructuredData";
 
 export const metadata = {
-  title: "Contact Us & Book Consultation",
+  title: "Book a Zoho CRM & Automation Consultation",
   description:
-    "Get in touch with Insyrge's certified Zoho specialists and automation consultants. Book a free consultation or inquire about custom development services.",
+    "Schedule a free 45-minute architectural consultation with certified Zoho specialists. We review your workflows, CRM bottlenecks, and integration requirements within 2 business hours.",
   alternates: {
     canonical: "https://insyrge.com/contact",
   },
   openGraph: {
-    title: "Contact Us & Book Consultation | Insyrge",
+    title: "Book a Zoho CRM & Automation Consultation | Insyrge",
     description:
-      "Get in touch with Insyrge's certified Zoho specialists and automation consultants. Book a free consultation or inquire about custom development services.",
+      "Schedule a free 45-minute architectural consultation with certified Zoho specialists. We review your workflows, CRM bottlenecks, and integration requirements within 2 business hours.",
     url: "https://insyrge.com/contact",
     siteName: "Insyrge",
     type: "website",
@@ -21,15 +21,15 @@ export const metadata = {
         url: "/logo.png",
         width: 800,
         height: 600,
-        alt: "Contact Insyrge",
+        alt: "Contact Insyrge Solutions Architects",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact Us | Insyrge",
+    title: "Book a Zoho CRM & Automation Consultation | Insyrge",
     description:
-      "Get in touch with Insyrge for expert guidance in business automation and Zoho integration.",
+      "Schedule a free 45-minute architectural consultation with certified Zoho specialists. Fast 2-hour response time.",
     images: ["/logo.png"],
   },
 };
@@ -37,7 +37,7 @@ export const metadata = {
 const contactSchema = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
-  name: "Contact Insyrge",
+  name: "Contact Insyrge Solutions Architects",
   url: "https://insyrge.com/contact",
   description:
     "Get in touch with Insyrge's certified Zoho specialists and automation consultants. Book a free consultation or inquire about custom development services.",
@@ -84,4 +84,3 @@ export default function ContactPage() {
     </>
   );
 }
-

@@ -6,7 +6,6 @@ import HeroHome from "@/components/home/HeroHome";
 import StatsSection from "@/components/home/StatsSection";
 
 // 🚀 Performance Optimization: Below-the-fold sections are dynamically loaded
-// so mobile devices don't choke downloading and executing monolithic client bundles on initial render.
 // SSR: true ensures 100% SEO, metadata, and crawlability are preserved.
 const PainPointsSection = dynamic(() => import("@/components/home/PainPointsSection"), { ssr: true });
 const HomeServices = dynamic(() => import("@/components/home/HomeServices"), { ssr: true });
@@ -26,18 +25,32 @@ const ContactSection = dynamic(() => import("@/components/home/ContactSection"),
 
 import { homeFaqs } from "@/data/homeFaqs";
 
-
 export const metadata = {
-  title: "Zoho CRM & Business Automation for Construction and Home Services",
+  title: "Zoho CRM Consultant & Business Automation Services",
   description:
-    "Insyrge helps construction, roofing and home service businesses implement, customize and automate Zoho — connecting CRM, operations, estimating, documents and customer workflows into one scalable system.",
+    "Certified Zoho consulting partners and solutions architects. We implement, customize, and automate Zoho CRM, Zoho One, Deluge workflows, and AI systems to eliminate manual work and accelerate business growth.",
+  keywords: [
+    "Zoho CRM consultant",
+    "Zoho CRM implementation",
+    "Zoho CRM developer",
+    "Zoho CRM customization",
+    "Zoho CRM automation",
+    "Zoho CRM integration",
+    "Zoho CRM migration",
+    "Zoho One consultant",
+    "Zoho One implementation",
+    "CRM automation consultant",
+    "CRM solutions architect",
+    "CRM integration services",
+    "AI CRM automation",
+  ],
   alternates: {
     canonical: "https://insyrge.com",
   },
   openGraph: {
-    title: "Zoho CRM & Business Automation for Construction and Home Service Companies | Insyrge",
+    title: "Zoho CRM Consulting, Implementation & Business Automation | Insyrge",
     description:
-      "Insyrge helps construction, roofing and home service businesses implement, customize and automate Zoho — connecting CRM, operations, estimating, documents and customer workflows into one scalable system.",
+      "Certified Zoho consulting partners and solutions architects. We implement, customize, and automate Zoho CRM, Zoho One, Deluge workflows, and AI systems to eliminate manual work and scale operations.",
     url: "https://insyrge.com",
     siteName: "Insyrge",
     images: [
@@ -45,7 +58,7 @@ export const metadata = {
         url: "/images/hero-automation-dashboard.jpg",
         width: 1200,
         height: 675,
-        alt: "Insyrge - Zoho CRM & Business Automation for Construction & Home Services",
+        alt: "Insyrge - Zoho CRM & Business Automation Consulting",
       },
     ],
     locale: "en_US",
@@ -53,13 +66,12 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Zoho CRM & Business Automation for Construction and Home Service Companies | Insyrge",
+    title: "Zoho CRM Consulting, Implementation & Business Automation | Insyrge",
     description:
-      "Insyrge helps construction, roofing and home service businesses implement, customize and automate Zoho CRM, Zoho One, and contractor integrations.",
+      "Certified Zoho consulting partners and solutions architects. We implement, customize, and automate Zoho CRM, Zoho One, Deluge workflows, and AI systems.",
     images: ["/images/hero-automation-dashboard.jpg"],
   },
 };
-
 
 const homeFaqSchema = {
   "@context": "https://schema.org",
@@ -83,15 +95,15 @@ const professionalServiceSchema = {
   alternateName: [
     "Insyrge Zoho Consulting",
     "Insyrge Business Automation",
-    "Insyrge IT Solutions",
+    "Insyrge CRM Solutions",
   ],
   url: "https://insyrge.com",
   logo: "https://insyrge.com/logo.png",
   image: "https://insyrge.com/images/hero-automation-dashboard.jpg",
   description:
-    "Certified Zoho Consulting Partner delivering enterprise Zoho CRM and Zoho One implementations, Deluge scripting, third-party API integrations, and AI workflow automation.",
+    "Certified Zoho Consulting Partner delivering enterprise Zoho CRM and Zoho One implementations, custom Deluge scripting, third-party API integrations, and AI workflow automation.",
   telephone: "+91-7973837217",
-  email: "contact@insyrge.com",
+  email: "info@insyrge.com",
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",
@@ -113,15 +125,19 @@ const professionalServiceSchema = {
     closes: "18:00",
   },
   knowsAbout: [
+    "Zoho CRM Consulting",
     "Zoho CRM Implementation",
+    "Zoho CRM Customization",
+    "Zoho CRM Automation",
+    "Zoho CRM Migration",
     "Zoho One Architecture",
-    "Custom Deluge Development",
-    "REST API Integrations",
+    "Custom Deluge Scripting",
+    "REST API & Webhook Integrations",
+    "Business Process Automation",
+    "AI Workflow Automation & Intelligent Agents",
+    "Zoho Books & Accounting Sync",
     "Zoho Creator Applications",
-    "AI Workflow Automation",
-    "Zoho Books & Finance Sync",
-    "Zoho Marketplace Extensions",
-    "Intelligent Document Processing OCR",
+    "Solutions Architecture",
   ],
   sameAs: [
     "https://www.linkedin.com/company/insyrge",
@@ -135,16 +151,16 @@ const servicesSchema = {
     {
       "@type": "Service",
       position: 1,
-      name: "Zoho CRM Implementation & Optimization",
+      name: "Zoho CRM Consulting & Implementation",
       provider: { "@id": "https://insyrge.com/#organization" },
       description:
-        "Certified Zoho CRM consulting, pipeline customization, lead scoring, automated quoting, and executive dashboards.",
-      serviceType: "CRM Consulting",
+        "Full-cycle Zoho CRM consulting, pipeline customization, lead scoring, deal stage blueprints, automated quoting, and executive dashboards.",
+      serviceType: "CRM Consulting & Implementation",
     },
     {
       "@type": "Service",
       position: 2,
-      name: "Zoho One Enterprise Setup & Architecture",
+      name: "Zoho One Enterprise Architecture & Setup",
       provider: { "@id": "https://insyrge.com/#organization" },
       description:
         "Full-scale Zoho One deployment unifying 45+ enterprise applications without operational data silos.",
@@ -153,20 +169,20 @@ const servicesSchema = {
     {
       "@type": "Service",
       position: 3,
-      name: "Custom Zoho Development & Deluge Scripting",
+      name: "Business Process & Workflow Automation",
       provider: { "@id": "https://insyrge.com/#organization" },
       description:
-        "Advanced Deluge algorithms, custom CRM widgets, Client Scripts, and serverless workflow triggers.",
-      serviceType: "Software Engineering",
+        "Replacing manual bottlenecks, spreadsheet chaos, and repetitive handoffs with automated Zoho workflows.",
+      serviceType: "Business Process Automation",
     },
     {
       "@type": "Service",
       position: 4,
-      name: "Zoho API & Third-Party Integrations",
+      name: "Custom Deluge Development & API Integrations",
       provider: { "@id": "https://insyrge.com/#organization" },
       description:
-        "Bi-directional REST API and webhook integrations connecting Zoho with Stripe, QuickBooks, Shopify, and legacy ERPs.",
-      serviceType: "API Integration",
+        "Advanced Deluge algorithms, custom CRM widgets, and bi-directional REST API connections with Stripe, QuickBooks, and ERPs.",
+      serviceType: "API & Software Engineering",
     },
     {
       "@type": "Service",
@@ -176,6 +192,15 @@ const servicesSchema = {
       description:
         "Autonomous AI lead qualification agents, Zia OCR document processing, and predictive CRM analytics.",
       serviceType: "AI Automation",
+    },
+    {
+      "@type": "Service",
+      position: 6,
+      name: "Solutions Architecture & CRM Migration",
+      provider: { "@id": "https://insyrge.com/#organization" },
+      description:
+        "Zero-downtime data migration from Salesforce, HubSpot, or legacy systems to Zoho with resilient architecture.",
+      serviceType: "Solutions Architecture",
     },
   ],
 };
@@ -275,15 +300,15 @@ export default async function Home() {
 
   return (
     <>
-      {/* ⚡ High-Authority Technical SEO Schemas for AI & Search Crawlers */}
+      {/* ⚡ High-Authority Technical SEO Schemas for Search Crawlers */}
       <StructuredData
         data={[homeFaqSchema, professionalServiceSchema, servicesSchema]}
       />
 
-      {/* 1. 🚀 HERO SECTION: High-impact 2-column value proposition, dual CTAs & 3D custom dashboard */}
+      {/* 1. 🚀 HERO SECTION: Outcome-focused commercial headline, dual CTAs & assessment modal */}
       <HeroHome data={homeData?.hero} />
 
-      {/* 2. 🏆 TRUSTED BY BUSINESSES & STATS TICKER: Proof metrics & Zoho ecosystem integrations */}
+      {/* 2. 🏆 TRUSTED BY BUSINESSES & STATS TICKER: Proof metrics & Zoho ecosystem badges */}
       <StatsSection />
 
       {/* 3. ⚠️ BUSINESS PROBLEMS WE SOLVE: Pain points comparison with Insyrge solutions */}
@@ -292,22 +317,22 @@ export default async function Home() {
       {/* 4. ⚙️ SERVICES SECTION: Dedicated SEO-rich cards for Zoho CRM, Zoho One, Deluge, APIs, AI */}
       <HomeServices />
 
-      {/* 5. 🔌 CONTRACTOR INTEGRATIONS SHOWCASE: HOVER, CompanyCam, DocuSign, SummaQuote, Accounting */}
+      {/* 5. 🔌 INTEGRATIONS SHOWCASE: HOVER, Accounting, Stripe, DocuSign, CompanyCam, Custom APIs */}
       <IntegrationsShowcase />
 
-      {/* 6. 🏢 INDUSTRY SOLUTIONS: Interactive workflows for Roofing, Construction, Home Services, etc. */}
+      {/* 6. 🏢 INDUSTRY SOLUTIONS & USE CASES: Workflow automations across key B2B sectors */}
       <IndustrySolutionsSection />
 
-      {/* 7. 💎 WHY CHOOSE INSYRGE: 6 enterprise value pillars, SLAs, and security standards */}
+      {/* 7. 💎 WHY CHOOSE INSYRGE: Evidence-based differentiation, SLAs, code ownership */}
       <WhyChooseSection />
 
       {/* 8. 🤖 AI-POWERED BUSINESS TRANSFORMATION: AI agents, OCR document intelligence, predictive workflows */}
       <AITransformationSection />
 
-      {/* 9. 🗺️ PROCESS ROADMAP: The proven delivery engine from discovery to continuous support */}
+      {/* 9. 🗺️ PROCESS ROADMAP: The proven 8-step delivery engine from discovery to continuous support */}
       <ProcessTimelineSection />
 
-      {/* 10. 📈 CASE STUDIES: Authentic Insyrge portfolio case studies & HOVER contractor case study */}
+      {/* 10. 📈 CASE STUDIES: Authentic Insyrge portfolio case studies under mutual NDA */}
       <CaseStudies />
 
       {/* 11. ⭐ VERIFIED PROOF: Live Zoho Marketplace extensions and direct marketplace links */}
@@ -322,7 +347,7 @@ export default async function Home() {
       {/* 14. 🤝 PARTNER SECTION: Official partner networks & technology alliances */}
       {homeData?.partners && <PartnerSection data={homeData.partners} />}
 
-      {/* 15. ❓ FAQ SECTION: 16 Schema-ready FAQs with instant search & category filtering */}
+      {/* 15. ❓ FAQ SECTION: Schema-ready FAQs with instant search & category filtering */}
       <HomeFAQSection />
 
       {/* 16. ✍️ RECENT INSIGHTS: High-authority technical articles & guides */}

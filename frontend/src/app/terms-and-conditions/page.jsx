@@ -28,7 +28,7 @@ const fallbackTerms = {
     <h2>8. Contact Us</h2>
     <p>If you have any questions regarding these Terms and Conditions, please contact us at:</p>
     <p><strong>Insyrge</strong><br />
-    Email: <a href="mailto:contact@insyrge.com">contact@insyrge.com</a><br />
+    Email: <a href="mailto:info@insyrge.com">info@insyrge.com</a><br />
     Phone: +91-7973837217<br />
     Address: Unit 40, 8–10 Fourth Avenue, Blacktown, NSW 2148, Australia</p>
   `,

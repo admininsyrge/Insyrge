@@ -106,8 +106,8 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <div className="text-[11px] text-gray-400 font-mono uppercase">Direct Email</div>
-                  <a href="mailto:contact@insyrge.com" className="text-xs font-semibold text-white hover:text-[#08e5c0]">
-                    contact@insyrge.com
+                  <a href="mailto:info@insyrge.com" className="text-xs font-semibold text-white hover:text-[#08e5c0]">
+                    info@insyrge.com
                   </a>
                 </div>
               </div>

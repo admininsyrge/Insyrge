@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown, Layers, Users, Cpu, Unlink, Sparkles, Compass } from "lucide-react";
 import Image from "next/image";
 
 // ✨ Motion Variants
@@ -23,9 +23,51 @@ const mobileMenuVariants = {
   exit: { opacity: 0, y: -20, transition: { duration: 0.25 } },
 };
 
+const serviceSublinks = [
+  {
+    name: "Zoho CRM Consulting & Setup",
+    path: "/services/zoho-crm-implementation",
+    desc: "Pipelines, Blueprints, custom modules & analytics",
+    icon: <Users className="w-4 h-4 text-[#08e5c0]" />,
+  },
+  {
+    name: "Zoho One Enterprise Setup",
+    path: "/services/zoho-one-consulting",
+    desc: "45+ applications unified into one operating system",
+    icon: <Layers className="w-4 h-4 text-[#00e0ff]" />,
+  },
+  {
+    name: "Workflow & Process Automation",
+    path: "/services/zoho-crm-automation",
+    desc: "Deluge scripts, automated follow-ups & approvals",
+    icon: <Cpu className="w-4 h-4 text-emerald-400" />,
+  },
+  {
+    name: "API & 3rd-Party Integrations",
+    path: "/services/crm-api-integration",
+    desc: "Bi-directional sync with QuickBooks, Stripe & ERPs",
+    icon: <Unlink className="w-4 h-4 text-purple-400" />,
+  },
+  {
+    name: "AI + CRM Intelligent Agents",
+    path: "/services/ai-automation-solutions",
+    desc: "Autonomous 24/7 lead intake & Zia document OCR",
+    icon: <Sparkles className="w-4 h-4 text-amber-400" />,
+  },
+  {
+    name: "Solutions Architecture & Migration",
+    path: "/services/solutions-architecture",
+    desc: "Zero-downtime migration from Salesforce / HubSpot",
+    icon: <Compass className="w-4 h-4 text-cyan-400" />,
+  },
+];
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -36,6 +78,8 @@ export default function Header() {
 
   useEffect(() => {
     setMenuOpen(false);
+    setServicesDropdownOpen(false);
+    setMobileServicesOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -51,19 +95,19 @@ export default function Header() {
 
   const navLinks = [
     { name: "Home", path: "/" },
-    { name: "About Us", path: "/about" },
-    { name: "Our Services", path: "/services" },
-    { name: "Blogs", path: "/blogs" },
-    { name: "Portfolio", path: "/portfolio" },
+    { name: "Services", path: "/services", hasDropdown: true },
     { name: "Extensions", path: "/extensions" },
-    { name: "Contact Us", path: "/contact" },
+    { name: "Portfolio", path: "/portfolio" },
+    { name: "Blogs", path: "/blogs" },
+    { name: "About Us", path: "/about" },
+    { name: "Contact", path: "/contact" },
   ];
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-[#081b33]/90 backdrop-blur-xl shadow-[0_0_20px_#08e5c040] border-b border-[#08e5c040]"
+          ? "bg-[#081b33]/95 backdrop-blur-xl shadow-[0_0_20px_#08e5c040] border-b border-[#08e5c040]"
           : "bg-transparent"
       }`}
     >
@@ -76,21 +120,101 @@ export default function Header() {
         >
           <Image
             src="/logo.png"
-            alt="Insyrge - Enterprise IT Consulting & Zoho Solutions"
+            alt="Insyrge - Zoho CRM & Business Automation Consulting"
             width={195}
             height={36}
             priority
+            loading="eager"
             unoptimized
             className="h-8 sm:h-9 md:h-10 w-auto object-contain drop-shadow-[0_0_10px_#08e5c050] group-hover:drop-shadow-[0_0_20px_#08e5c080] transition-all duration-300"
           />
         </Link>
 
         {/* 🧭 Desktop Navigation */}
-        <nav aria-label="Main Navigation" className="hidden md:flex items-center gap-8 text-white/90 font-medium">
+        <nav aria-label="Main Navigation" className="hidden lg:flex items-center gap-7 text-white/90 font-medium">
           {navLinks.map((link, i) => {
             const isActive =
               pathname === link.path ||
               (link.path !== "/" && pathname.startsWith(link.path));
+
+            if (link.hasDropdown) {
+              return (
+                <div
+                  key={link.path}
+                  ref={dropdownRef}
+                  className="relative group py-2"
+                  onMouseEnter={() => setServicesDropdownOpen(true)}
+                  onMouseLeave={() => setServicesDropdownOpen(false)}
+                >
+                  <Link
+                    href={link.path}
+                    className={`inline-flex items-center gap-1 relative tracking-wide transition-all ${
+                      isActive
+                        ? "text-[#08e5c0]"
+                        : "text-white/80 hover:text-[#08e5c0]"
+                    }`}
+                  >
+                    <span>{link.name}</span>
+                    <ChevronDown className="w-3.5 h-3.5 transition-transform group-hover:rotate-180" />
+                    {isActive && (
+                      <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-gradient-to-r from-[#08e5c0] to-[#00e6ff]"></span>
+                    )}
+                  </Link>
+
+                  {/* Dropdown Menu */}
+                  <AnimatePresence>
+                    {servicesDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute -left-12 top-full pt-2 w-[420px] pointer-events-auto z-50"
+                      >
+                        <div className="bg-[#081d38] border border-[#08e5c0]/30 rounded-2xl p-4 shadow-[0_15px_40px_rgba(0,0,0,0.6)] backdrop-blur-2xl">
+                          <div className="text-[11px] font-mono uppercase tracking-wider text-gray-400 font-semibold px-2 mb-2">
+                            Core Capabilities
+                          </div>
+                          <div className="space-y-1">
+                            {serviceSublinks.map((sub, sIdx) => (
+                              <Link
+                                key={sIdx}
+                                href={sub.path}
+                                className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/[0.06] transition-colors group/item"
+                              >
+                                <span className="p-2 rounded-lg bg-white/5 border border-white/10 shrink-0 mt-0.5 group-hover/item:border-[#08e5c0]/40">
+                                  {sub.icon}
+                                </span>
+                                <div>
+                                  <div className="text-xs font-bold text-white group-hover/item:text-[#08e5c0] transition-colors">
+                                    {sub.name}
+                                  </div>
+                                  <div className="text-[11px] text-gray-400 leading-snug">
+                                    {sub.desc}
+                                  </div>
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+
+                          <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between px-2 text-xs">
+                            <Link
+                              href="/services"
+                              className="text-[#08e5c0] font-semibold hover:underline"
+                            >
+                              Explore All Services →
+                            </Link>
+                            <span className="text-[11px] text-gray-400">
+                              Zoho Partner
+                            </span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            }
 
             return (
               <motion.div
@@ -109,18 +233,11 @@ export default function Header() {
                   }`}
                 >
                   {link.name}
-
-                  {/* Neon underline (visible if active) */}
                   <span
-                    className={`absolute left-0 -bottom-1 h-0.5 bg-linear-to-r from-[#08e5c0] to-[#00e6ff] transition-all duration-300 ${
+                    className={`absolute left-0 -bottom-1 h-0.5 bg-gradient-to-r from-[#08e5c0] to-[#00e6ff] transition-all duration-300 ${
                       isActive ? "w-full" : "w-0 group-hover:w-full"
                     }`}
                   ></span>
-
-                  {/* Glow effect */}
-                  {isActive && (
-                    <div className="absolute -inset-x-2 -inset-y-2 bg-[#08e5c040] blur-lg rounded-lg opacity-30 transition-all duration-500"></div>
-                  )}
                 </Link>
               </motion.div>
             );
@@ -129,7 +246,7 @@ export default function Header() {
 
         {/* 🚀 CTA Button */}
         <motion.div
-          whileHover={{ scale: 1.06 }}
+          whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
           className="hidden md:block"
         >
@@ -137,10 +254,9 @@ export default function Header() {
             href="https://insyrge.zohobookings.com/#/4623360000000149002"
             target="_blank"
             rel="noopener noreferrer"
-            className="relative inline-flex items-center justify-center px-6 py-2 rounded-full font-semibold text-[#081b33] bg-[#08e5c0] overflow-hidden transition-all duration-300 group"
+            className="relative inline-flex items-center justify-center px-6 py-2.5 rounded-full font-bold text-xs sm:text-sm text-[#081b33] bg-[#08e5c0] shadow-[0_0_20px_#08e5c050] hover:shadow-[0_0_25px_#08e5c080] transition-all duration-300 group"
           >
-            <span className="relative z-10">Book a Consultancy Call</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-[#08e5c0] to-[#00e6ff] opacity-0 group-hover:opacity-100 blur-md transition-all duration-500"></div>
+            <span className="relative z-10">Book a CRM Consultation</span>
           </a>
         </motion.div>
 
@@ -148,12 +264,12 @@ export default function Header() {
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => setMenuOpen(!menuOpen)}
-          className="text-white md:hidden z-50 p-2"
+          className="text-white lg:hidden z-50 p-2"
           aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={menuOpen}
           aria-controls="mobile-navigation"
         >
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+          {menuOpen ? <X size={26} /> : <Menu size={26} />}
         </motion.button>
       </div>
 
@@ -166,46 +282,84 @@ export default function Header() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="md:hidden bg-[#081b33]/98 backdrop-blur-2xl border-t border-[#08e5c030] text-center py-8 max-h-[calc(100dvh-5rem)] overflow-y-auto shadow-2xl"
+            className="lg:hidden bg-[#081b33]/98 backdrop-blur-2xl border-t border-[#08e5c030] py-6 px-6 max-h-[calc(100dvh-5rem)] overflow-y-auto shadow-2xl"
           >
-            <nav aria-label="Mobile Navigation" className="flex flex-col space-y-6 text-white text-lg">
-              {navLinks.map((link, i) => {
+            <nav aria-label="Mobile Navigation" className="flex flex-col space-y-4 text-white text-base">
+              {navLinks.map((link) => {
                 const isActive =
                   pathname === link.path ||
                   (link.path !== "/" && pathname.startsWith(link.path));
 
+                if (link.hasDropdown) {
+                  return (
+                    <div key={link.path} className="border-b border-white/5 pb-2">
+                      <div className="flex items-center justify-between">
+                        <Link
+                          href={link.path}
+                          onClick={() => setMenuOpen(false)}
+                          className={`font-semibold ${
+                            isActive ? "text-[#08e5c0]" : "text-white"
+                          }`}
+                        >
+                          {link.name}
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                          className="p-1 text-gray-400"
+                        >
+                          <ChevronDown
+                            className={`w-4 h-4 transition-transform ${
+                              mobileServicesOpen ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+                      </div>
+
+                      {mobileServicesOpen && (
+                        <div className="pl-4 mt-2 space-y-2 border-l border-white/10">
+                          {serviceSublinks.map((sub, sIdx) => (
+                            <Link
+                              key={sIdx}
+                              href={sub.path}
+                              onClick={() => setMenuOpen(false)}
+                              className="block text-xs text-gray-300 hover:text-[#08e5c0] py-1"
+                            >
+                              {sub.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
                 return (
-                  <motion.div
-                    key={link.path}
-                    custom={i}
-                    variants={navItemVariants}
-                    onClick={() => setMenuOpen(false)}
-                  >
+                  <div key={link.path} className="border-b border-white/5 pb-2">
                     <Link
                       href={link.path}
-                      className={`transition-all ${
+                      onClick={() => setMenuOpen(false)}
+                      className={`block font-semibold transition-all ${
                         isActive ? "text-[#08e5c0]" : "hover:text-[#08e5c0]"
                       }`}
                     >
                       {link.name}
                     </Link>
-                  </motion.div>
+                  </div>
                 );
               })}
 
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 }}
-              >
-                <Link
-                  href="/contact"
+              <div className="pt-4">
+                <a
+                  href="https://insyrge.zohobookings.com/#/4623360000000149002"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setMenuOpen(false)}
-                  className="bg-[#08e5c0] hover:bg-[#00e6ff] text-[#081b33] px-6 py-2 rounded-full font-semibold shadow-[0_0_20px_#08e5c040] transition-all inline-block"
+                  className="w-full text-center bg-[#08e5c0] text-[#081b33] py-3 rounded-full font-bold text-sm shadow-[0_0_20px_#08e5c040] transition-all block"
                 >
-                  Book a Call
-                </Link>
-              </motion.div>
+                  Book a CRM Consultation
+                </a>
+              </div>
             </nav>
           </motion.div>
         )}

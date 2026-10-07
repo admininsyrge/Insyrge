@@ -1,29 +1,57 @@
 "use client";
 import React from "react";
-import { CheckCircle } from "lucide-react";
+import { ShieldCheck, Lock, Code2, Zap, Award } from "lucide-react";
 
-const WhyChooseUs = () => {
-  const points = [
-    "Full Transparency",
-    "Experienced Developers",
-    "Fast Turnaround",
-    "Premium Support",
+export default function WhyChooseUs() {
+  const differentiators = [
+    {
+      icon: <Lock className="w-4 h-4 text-[#08e5c0]" />,
+      title: "100% IP & Code Ownership",
+      desc: "You retain full ownership of all Deluge functions, database schemas, and custom widgets.",
+    },
+    {
+      icon: <ShieldCheck className="w-4 h-4 text-[#08e5c0]" />,
+      title: "Mutual NDA Protected",
+      desc: "Strict confidentiality for your client database, pricing models, and trade secrets.",
+    },
+    {
+      icon: <Award className="w-4 h-4 text-[#08e5c0]" />,
+      title: "Senior Architect Led",
+      desc: "Direct communication with experienced technical practitioners, not junior account reps.",
+    },
+    {
+      icon: <Zap className="w-4 h-4 text-[#08e5c0]" />,
+      title: "2–4 Week Agile Sprints",
+      desc: "Milestone-based delivery with working automation tested and deployed in weeks, not quarters.",
+    },
   ];
 
   return (
-    <div className="bg-[#101F44]/80 border border-[#1A2C55] rounded-3xl p-8 shadow-[0_0_20px_#08e5c030]">
-      <h3 className="text-xl font-semibold mb-4 text-[#08e5c0]">
-        Why Choose Us
+    <div className="bg-[#101F44]/90 border border-[#1A2C55] rounded-3xl p-7 shadow-xl backdrop-blur-md">
+      <span className="text-xs font-mono uppercase tracking-wider text-[#08e5c0] font-bold block mb-1">
+        Client Protections
+      </span>
+      <h3 className="text-xl font-bold mb-4 text-white">
+        Why Consult Insyrge
       </h3>
-      <ul className="space-y-3 text-gray-300">
-        {points.map((point, i) => (
-          <li key={i} className="flex items-center gap-2">
-            <CheckCircle size={18} className="text-[#08e5c0]" /> {point}
-          </li>
+
+      <div className="space-y-4">
+        {differentiators.map((item, i) => (
+          <div key={i} className="flex items-start gap-3">
+            <div className="p-1.5 rounded-lg bg-white/5 border border-white/10 shrink-0 mt-0.5">
+              {item.icon}
+            </div>
+            <div>
+              <div className="text-xs font-bold text-white mb-0.5">
+                {item.title}
+              </div>
+              <div className="text-[11px] text-gray-400 leading-snug">
+                {item.desc}
+              </div>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
-};
-
-export default WhyChooseUs;
+}

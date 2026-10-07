@@ -28,6 +28,7 @@ const organizationSchema = {
       "@type": "Organization",
       "@id": "https://insyrge.com/#organization",
       name: "Insyrge",
+      legalName: "Insyrge Pty Ltd",
       url: "https://insyrge.com",
       logo: {
         "@type": "ImageObject",
@@ -36,7 +37,7 @@ const organizationSchema = {
         caption: "Insyrge Logo",
       },
       description:
-        "Insyrge is an enterprise-grade IT consultancy and digital engineering firm specializing in strategic IT advisory, custom software engineering, cloud architecture, AI automation, and enterprise systems integration.",
+        "Insyrge is a certified Zoho consulting partner and solutions architecture firm delivering enterprise Zoho CRM and Zoho One implementations, custom Deluge scripting, third-party API integrations, and AI workflow automation.",
       telephone: "+91-7973837217",
       email: "info@insyrge.com",
       address: {
@@ -54,14 +55,18 @@ const organizationSchema = {
         "https://facebook.com/insyrge",
       ],
       knowsAbout: [
-        "Enterprise IT Consulting",
-        "Custom Software Development",
-        "Cloud Architecture & DevOps",
-        "AI & Workflow Automation",
-        "Data Analytics & BI",
-        "Zoho CRM & Ecosystem",
-        "System Integration",
-        "Cybersecurity & Infrastructure",
+        "Zoho CRM Consulting",
+        "Zoho CRM Implementation",
+        "Zoho CRM Customization",
+        "Zoho CRM Automation",
+        "Zoho One Architecture",
+        "Business Process Automation",
+        "Deluge Scripting",
+        "REST API & Webhook Integrations",
+        "AI Workflow Automation & Intelligent Agents",
+        "CRM Migration (Salesforce, HubSpot)",
+        "Solutions Architecture",
+        "Zoho Creator Applications",
       ],
     },
     {
@@ -86,11 +91,11 @@ export const viewport = {
 export const metadata = {
   metadataBase: new URL("https://insyrge.com"),
   title: {
-    default: "Insyrge | Enterprise IT Consultancy, Custom Software & Cloud Solutions",
+    default: "Insyrge | Zoho CRM Consulting, Implementation & Business Automation",
     template: "%s | Insyrge",
   },
   description:
-    "Scale your business with full-spectrum IT consulting, custom software development, cloud infrastructure, AI automation, and enterprise CRM/ERP solutions by Insyrge. Book a free consultation.",
+    "Scale your business with certified Zoho CRM consulting, Zoho One architecture, Deluge automation, API integrations, and practical AI solutions by Insyrge. Book a free consultation.",
   authors: [{ name: "Insyrge", url: "https://insyrge.com" }],
   creator: "Insyrge",
   publisher: "Insyrge",
@@ -100,17 +105,17 @@ export const metadata = {
     telephone: false,
   },
   openGraph: {
-    title: "Insyrge | Enterprise IT Consultancy, Custom Software & Cloud Solutions",
+    title: "Insyrge | Zoho CRM Consulting, Implementation & Business Automation",
     description:
-      "Scale your business with full-spectrum IT consulting, custom software development, cloud infrastructure, AI automation, and enterprise CRM/ERP solutions by Insyrge.",
+      "Scale your business with certified Zoho CRM consulting, Zoho One architecture, Deluge automation, API integrations, and practical AI solutions by Insyrge.",
     url: "https://insyrge.com",
     siteName: "Insyrge",
     images: [
       {
-        url: "/logo.png",
-        width: 800,
-        height: 600,
-        alt: "Insyrge - Enterprise IT Consulting & Solutions",
+        url: "/images/hero-automation-dashboard.jpg",
+        width: 1200,
+        height: 675,
+        alt: "Insyrge - Zoho CRM & Business Automation Consulting",
       },
     ],
     locale: "en_US",
@@ -118,10 +123,10 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Insyrge | Enterprise IT Consultancy, Custom Software & Cloud Solutions",
+    title: "Insyrge | Zoho CRM Consulting, Implementation & Business Automation",
     description:
-      "Scale your business with full-spectrum IT consulting, custom software development, cloud infrastructure, AI automation, and enterprise CRM/ERP solutions by Insyrge.",
-    images: ["/logo.png"],
+      "Scale your business with certified Zoho CRM consulting, Zoho One architecture, Deluge automation, API integrations, and practical AI solutions by Insyrge.",
+    images: ["/images/hero-automation-dashboard.jpg"],
     creator: "@insyrge",
   },
   robots: {

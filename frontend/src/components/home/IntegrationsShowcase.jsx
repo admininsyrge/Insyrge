@@ -13,18 +13,19 @@ import {
   Cpu,
   ArrowRight,
   ShieldCheck,
+  CreditCard,
 } from "lucide-react";
 
 const integrations = [
   {
     id: "hover",
     name: "HOVER + Zoho CRM",
-    badge: "Official HOVER Partner Integration",
+    badge: "Official Integration Partner",
     badgeColor: "bg-cyan-500/10 text-[#08e5c0] border-cyan-500/30",
     icon: <Layers className="w-6 h-6 text-[#08e5c0]" />,
     headline: "Automate Property Measurements & 3D Models in Deals",
     description:
-      "Featured in HOVER's official Help Center, this integration enables roofing and exterior contractors to create HOVER jobs, dispatch measurement requests, and sync complete 3D measurement PDFs and photos directly into Zoho CRM Deal attachments.",
+      "Featured in HOVER's official Help Center, this integration enables exterior contractors and enterprise teams to dispatch measurement requests and sync complete 3D CAD measurement PDFs and photos directly into Zoho CRM Deal attachments.",
     proofUrl: "https://help.hover.to/en/articles/12651040-zoho-crm-integration",
     proofLabel: "View on HOVER Help Center",
     internalLink: "/extensions/hover-integration-for-zoho-crm",
@@ -37,30 +38,46 @@ const integrations = [
     ],
   },
   {
-    id: "companycam",
-    name: "CompanyCam + Zoho CRM",
-    badge: "Job-Site Photo Sync",
-    badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
-    icon: <Camera className="w-6 h-6 text-blue-400" />,
-    headline: "Live Field Documentation Linked to Deals & Accounts",
+    id: "accounting",
+    name: "QuickBooks & Xero Sync",
+    badge: "Financial Reconciliation",
+    badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+    icon: <Receipt className="w-6 h-6 text-amber-400" />,
+    headline: "Bi-Directional Invoicing, Deposits & Revenue Sync",
     description:
-      "Automatically create CompanyCam projects when a CRM deal reaches inspection or won stages. Keep all job photos, crew annotations, and before/after galleries synchronized inside Zoho WorkDrive and CRM records.",
+      "Connect Zoho CRM with QuickBooks Online or Xero. Push customer records, create progressive invoices from Deal milestones, and record customer payments automatically without duplicate data entry.",
     features: [
-      "Auto-generate project folders from CRM stage triggers",
-      "Embed live photo stream inside Zoho CRM record widgets",
-      "Two-way sync of job notes and progress timestamps",
-      "Eliminate manual photo downloads and emailing",
+      "Auto-create customers and jobs in accounting on deal won",
+      "Generate deposit and final invoices with 1 click in CRM",
+      "Sync invoice payment statuses back to CRM records in real time",
+      "Real-time gross margin and job costing visibility",
+    ],
+  },
+  {
+    id: "stripe",
+    name: "Stripe & Payment Gateways",
+    badge: "Payment Automation",
+    badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+    icon: <CreditCard className="w-6 h-6 text-emerald-400" />,
+    headline: "Automated Checkout Links, Recurring Billing & Receipts",
+    description:
+      "Trigger custom Stripe checkout sessions, track transaction settlements, and update deal stages the moment a client payment succeeds. Automate subscription lifecycles directly within Zoho CRM.",
+    features: [
+      "Instant Stripe checkout link generation inside CRM deals",
+      "Webhook-driven payment status updates (Paid, Pending, Failed)",
+      "Automated receipt dispatch and accounting ledger entries",
+      "Subscription renewal tracking and failed charge alerts",
     ],
   },
   {
     id: "docusign",
     name: "DocuSign & Zoho Sign",
     badge: "Contract Automation",
-    badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-    icon: <FileSignature className="w-6 h-6 text-emerald-400" />,
-    headline: "One-Click E-Signatures & Deposit Workflows",
+    badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
+    icon: <FileSignature className="w-6 h-6 text-blue-400" />,
+    headline: "One-Click E-Signatures & Document Generation",
     description:
-      "Generate legally binding contractor agreements, change orders, and subcontracts directly from Zoho CRM deal data. Progress deal stages and trigger dispatch notifications the instant the client signs.",
+      "Generate legally binding client agreements, Statements of Work (SOW), and change orders directly from Zoho CRM deal data. Progress deal stages and trigger dispatch notifications the instant the client signs.",
     features: [
       "Pre-filled templates populated with CRM deal & quote fields",
       "Real-time signature status tracking on CRM timeline",
@@ -69,51 +86,35 @@ const integrations = [
     ],
   },
   {
-    id: "summaquote",
-    name: "SummaQuote + Zoho CRM",
-    badge: "Estimating & Quoting",
+    id: "companycam",
+    name: "CompanyCam + Zoho CRM",
+    badge: "Field Documentation",
     badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/30",
-    icon: <FileSpreadsheet className="w-6 h-6 text-purple-400" />,
-    headline: "Multi-Option Proposal Presentation & Pipeline Sync",
+    icon: <Camera className="w-6 h-6 text-purple-400" />,
+    headline: "Live Field Photos Linked to Deals & Accounts",
     description:
-      "Bridge modern roofing and contractor estimating proposals with your sales pipeline. When a homeowner selects Good/Better/Best options, the approved total and scopes sync directly into Zoho CRM Deals.",
+      "Automatically create CompanyCam projects when a CRM deal reaches active stages. Keep all inspection photos, crew annotations, and before/after galleries synchronized inside Zoho WorkDrive and CRM records.",
     features: [
-      "Sync customer quote selections back to CRM Deal values",
-      "Automate follow-up sequences when proposals are viewed",
-      "Track proposal open times and customer engagement",
-      "Handoff approved line items straight to operations",
-    ],
-  },
-  {
-    id: "accounting",
-    name: "QuickBooks & Xero Sync",
-    badge: "Financial Reconciliation",
-    badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
-    icon: <Receipt className="w-6 h-6 text-amber-400" />,
-    headline: "Bi-Directional Invoicing, Deposits & Job Costing",
-    description:
-      "Connect Zoho CRM with QuickBooks Online or Xero. Push customer records, create progressive invoices from Deal milestones, and record customer payments automatically without duplicate data entry.",
-    features: [
-      "Auto-create customers and jobs in accounting on deal won",
-      "Generate deposit and final invoices with 1 click in CRM",
-      "Sync invoice payment statuses back to CRM records",
-      "Real-time gross margin and job costing visibility",
+      "Auto-generate project folders from CRM stage triggers",
+      "Embed live photo stream inside Zoho CRM record widgets",
+      "Two-way sync of job notes and progress timestamps",
+      "Eliminate manual photo downloads and emailing",
     ],
   },
   {
     id: "custom-api",
-    name: "Custom REST APIs & Webhooks",
-    badge: "Any Proprietary System",
+    name: "Custom REST APIs & Legacy ERPs",
+    badge: "Any Database or ERP",
     badgeColor: "bg-rose-500/10 text-rose-400 border-rose-500/30",
     icon: <Cpu className="w-6 h-6 text-rose-400" />,
-    headline: "Connect Legacy Portals, Supplier Feeds & Lead Sources",
+    headline: "Connect SAP, NetSuite, Databases & Custom Portals",
     description:
-      "Have a custom portal, Angi/Thumbtack lead webhook, or supplier pricing catalog? We build secure, rate-limit compliant Deluge scripts, serverless functions, and REST middleware to connect any system.",
+      "Have a custom client portal, legacy ERP, or third-party lead source? We build secure, rate-limit compliant Deluge scripts, serverless functions, and REST middleware to connect any system.",
     features: [
       "Bi-directional REST API endpoints and Deluge webhooks",
       "Instant lead ingestion from custom web forms and marketing ads",
-      "Supplier material catalog & live price sheet integrations",
-      "Full API key security, OAuth 2.0, and error fallback logging",
+      "Live inventory, ERP catalog & price sheet integrations",
+      "Full OAuth 2.0 security, retry logic, and error fallback logging",
     ],
   },
 ];
@@ -130,20 +131,18 @@ export default function IntegrationsShowcase() {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-[#08e5c0] bg-[#08e5c0]/10 border border-[#08e5c0]/20 mb-4">
+          <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-[#08e5c0] bg-[#08e5c0]/10 border border-[#08e5c0]/20 mb-4 font-mono">
             <Layers className="w-3.5 h-3.5" />
-            Specialist Contractor &amp; Business Integrations
+            Ecosystem Connectivity
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-5 leading-tight">
             Connect Zoho to the Tools{" "}
             <span className="bg-gradient-to-r from-[#08e5c0] via-[#33ffd0] to-[#00e0ff] bg-clip-text text-transparent">
-              Your Team Already Relies On
+              Your Business Already Uses
             </span>
           </h2>
           <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
-            Stop forcing your field crews, estimators, and office admins to re-enter
-            the same data across 5 different apps. We engineer robust, bi-directional
-            Zoho integrations that turn your software stack into one cohesive engine.
+            Stop forcing your sales reps, project managers, and finance team to re-enter data across multiple software tools. We engineer fault-tolerant, bi-directional integrations that turn your software stack into one unified operating system.
           </p>
         </div>
 
@@ -176,11 +175,7 @@ export default function IntegrationsShowcase() {
                 </h3>
 
                 <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-6">
-                  HOVER&apos;s official documentation specifically identifies Insyrge as
-                  the development partner behind its Zoho CRM integration. Roofing and
-                  remodeling teams can trigger measurement requests directly from Deal
-                  records, automatically receive accurate 3D CAD measurements and
-                  photos, and eliminate hours of manual estimating data entry.
+                  HOVER&apos;s official documentation specifically identifies Insyrge as the development partner behind its Zoho CRM integration. Construction, roofing, and remodeling teams trigger measurement orders directly from Deal records and automatically receive accurate 3D CAD measurements and photos—saving hours of double-entry per job.
                 </p>
 
                 <div className="grid sm:grid-cols-2 gap-3 mb-6">
@@ -209,12 +204,6 @@ export default function IntegrationsShowcase() {
                     Read HOVER Documentation
                     <ExternalLink className="w-4 h-4" />
                   </a>
-                  <Link
-                    href="/extensions/hover-integration-for-zoho-crm/case-study"
-                    className="text-xs text-gray-400 hover:text-[#08e5c0] underline underline-offset-4"
-                  >
-                    Read Contractor Case Study →
-                  </Link>
                 </div>
               </div>
 
@@ -232,7 +221,7 @@ export default function IntegrationsShowcase() {
                   <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-between">
                     <div>
                       <p className="font-semibold text-white">Deal Record Created</p>
-                      <p className="text-gray-400 text-[11px]">Roofing Lead Qualified ($28,500)</p>
+                      <p className="text-gray-400 text-[11px]">Lead Qualified ($32,500)</p>
                     </div>
                     <span className="text-[10px] bg-cyan-500/20 text-[#08e5c0] px-2 py-0.5 rounded">Trigger</span>
                   </div>
@@ -248,7 +237,7 @@ export default function IntegrationsShowcase() {
                   <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-between">
                     <div>
                       <p className="font-semibold text-white">Measurements &amp; PDFs Synced</p>
-                      <p className="text-gray-400 text-[11px]">3D Model + 24 Inspection Photos attached</p>
+                      <p className="text-gray-400 text-[11px]">3D Model + 24 Photos attached</p>
                     </div>
                     <span className="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">Completed</span>
                   </div>
@@ -256,7 +245,7 @@ export default function IntegrationsShowcase() {
 
                 <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-gray-400">
                   <span>Double data entry: <strong className="text-rose-400">0 hrs</strong></span>
-                  <span>Weekly time saved: <strong className="text-[#08e5c0]">3–4 hrs / PM</strong></span>
+                  <span>Weekly time saved: <strong className="text-[#08e5c0]">3–4 hrs / rep</strong></span>
                 </div>
               </div>
             </div>
@@ -312,20 +301,20 @@ export default function IntegrationsShowcase() {
                   Consult on this integration
                   <ArrowRight className="w-3 h-3" />
                 </Link>
-                <span className="text-[11px] text-gray-400">Custom Scoped</span>
+                <span className="text-[11px] text-gray-400 font-mono">Custom Scoped</span>
               </div>
             </motion.div>
           ))}
         </div>
 
         {/* Bottom Banner */}
-        <div className="mt-14 p-6 rounded-2xl bg-[#0B1C3D]/60 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <div className="mt-14 p-6 sm:p-8 rounded-2xl bg-[#0B1C3D]/60 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
-            <h4 className="text-base font-bold text-white mb-1">
-              Need a custom integration with a specialized contractor app or ERP?
+            <h4 className="text-base sm:text-lg font-bold text-white mb-1">
+              Need a custom integration with a proprietary software or legacy database?
             </h4>
-            <p className="text-gray-400 text-xs">
-              We design secure custom Deluge webhooks, REST APIs, and middle-tier sync engines for unique business requirements.
+            <p className="text-gray-300 text-xs sm:text-sm">
+              We design secure custom Deluge webhooks, serverless REST microservices, and OAuth 2.0 middleware tailored to your architecture.
             </p>
           </div>
           <Link

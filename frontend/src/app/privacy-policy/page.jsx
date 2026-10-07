@@ -40,12 +40,12 @@ const fallbackPrivacyPolicy = {
     <p>We maintain appropriate physical, technical, and administrative safeguards designed to protect personal and business data against unauthorized access, destruction, loss, or alteration. We retain information only for as long as necessary to fulfill the purposes outlined in this policy or required by contractual agreement.</p>
 
     <h2>7. Your Privacy Rights</h2>
-    <p>Depending on your jurisdiction (including Australia, the European Union, the United Kingdom, and various US states), you may have rights to access, correct, delete, or restrict the processing of your personal information. To exercise these rights, please contact us at <a href="mailto:contact@insyrge.com">contact@insyrge.com</a>.</p>
+    <p>Depending on your jurisdiction (including Australia, the European Union, the United Kingdom, and various US states), you may have rights to access, correct, delete, or restrict the processing of your personal information. To exercise these rights, please contact us at <a href="mailto:info@insyrge.com">info@insyrge.com</a>.</p>
 
     <h2>8. Contact Information</h2>
     <p>For inquiries, privacy questions, or data protection matters, please contact:</p>
     <p><strong>Insyrge</strong><br />
-    Email: <a href="mailto:contact@insyrge.com">contact@insyrge.com</a><br />
+    Email: <a href="mailto:info@insyrge.com">info@insyrge.com</a><br />
     Phone: +91-7973837217<br />
     Address: Unit 40, 8–10 Fourth Avenue, Blacktown, NSW 2148, Australia<br />
     Website: <a href="https://insyrge.com">https://insyrge.com</a></p>

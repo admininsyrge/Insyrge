@@ -9,7 +9,6 @@ import {
   Calendar,
   Award,
   ExternalLink,
-  CheckCircle,
   Briefcase,
   Users,
 } from "lucide-react";
@@ -33,7 +32,7 @@ export default function FounderTrustSection() {
             transition={{ duration: 0.6 }}
             className="lg:col-span-6"
           >
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-[#08e5c0] bg-[#08e5c0]/10 border border-[#08e5c0]/20 mb-4">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-[#08e5c0] bg-[#08e5c0]/10 border border-[#08e5c0]/20 mb-4 font-mono">
               <Users className="w-3.5 h-3.5" />
               Direct Engineering Leadership
             </span>
@@ -53,7 +52,7 @@ export default function FounderTrustSection() {
                 <div>
                   <h3 className="text-xl font-bold text-white">Manav Sharma</h3>
                   <p className="text-xs text-[#08e5c0] font-semibold">
-                    Founder &amp; Principal Technology Architect
+                    Founder &amp; Principal Solutions Architect
                   </p>
                   <a
                     href="https://in.linkedin.com/company/insyrge"
@@ -68,10 +67,10 @@ export default function FounderTrustSection() {
               </div>
 
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                &ldquo;Too many contracting and home service companies get burned by generic agencies that sell high-level advice, only to hand the work off to junior developers who don&apos;t understand construction sales cycles, field handoffs, or Deluge limitations.
+                &ldquo;Too many growing businesses get burned by generic agencies that pitch high-level strategy, only to outsource the actual execution to junior developers who don&apos;t understand sales pipelines, ERP constraints, or Deluge limitations.
               </p>
               <p className="text-gray-300 text-sm leading-relaxed">
-                At Insyrge, I personally design the CRM architecture, supervise the data pipelines, and verify every Deluge script. We focus obsessively on construction and field workflows because connecting sales, measurements, and job completion is where real profit is won or lost.&rdquo;
+                At Insyrge, I personally architect the CRM data structures, supervise the integration pipelines, and review every custom function. We focus obsessively on eliminating manual friction, connecting disparate tools, and engineering systems that your team will actually adopt and enjoy using.&rdquo;
               </p>
             </div>
 
@@ -90,10 +89,10 @@ export default function FounderTrustSection() {
               <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/5">
                 <p className="text-xs font-bold text-white flex items-center gap-1.5 mb-1">
                   <Briefcase className="w-3.5 h-3.5 text-[#08e5c0]" />
-                  HOVER Verified
+                  Verified Integration Partner
                 </p>
                 <p className="text-[11px] text-gray-400 leading-snug">
-                  Documented integration partner in HOVER&apos;s Help Center.
+                  Documented integration developer in HOVER&apos;s Help Center.
                 </p>
               </div>
             </div>
@@ -117,7 +116,7 @@ export default function FounderTrustSection() {
                 </h4>
               </div>
               <p className="text-gray-300 text-xs sm:text-sm leading-relaxed pl-11">
-                Your customer databases, subcontractor rates, supplier pricing, and operational workflows represent your company&apos;s competitive advantage. We execute a mutual NDA prior to discovery or accessing your Zoho environment.
+                Your customer databases, pricing algorithms, financial records, and operational workflows represent your company&apos;s competitive advantage. We execute a mutual NDA prior to discovery or accessing your Zoho environment.
               </p>
             </div>
 
