@@ -37,9 +37,10 @@ const Footer = () => {
             <Image
               src="/logo.png"
               alt="Insyrge - Enterprise IT Consulting & Zoho Solutions"
-              width={140}
-              height={40}
-              className="w-auto h-10 object-contain hover:opacity-90 transition-opacity duration-300"
+              width={195}
+              height={36}
+              unoptimized
+              className="h-9 w-auto object-contain hover:opacity-90 transition-opacity duration-300"
             />
           </Link>
 

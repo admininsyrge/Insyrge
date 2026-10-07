@@ -67,23 +67,22 @@ export default function Header() {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 py-3 sm:py-4 flex items-center justify-between relative">
         {/* 🔮 Logo */}
-        <Link href="/" className="flex items-center gap-2 group" aria-label="Insyrge Home">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-          >
-            <Image
-              src="/logo.png"
-              alt="Insyrge - Enterprise IT Consulting & Zoho Solutions"
-              width={140}
-              height={50}
-              className="object-contain w-auto h-auto drop-shadow-[0_0_10px_#08e5c050] group-hover:drop-shadow-[0_0_20px_#08e5c080] transition-all duration-300"
-              priority
-            />
-          </motion.div>
+        <Link
+          href="/"
+          className="flex items-center shrink-0 group focus:outline-none"
+          aria-label="Insyrge Home"
+        >
+          <Image
+            src="/logo.png"
+            alt="Insyrge - Enterprise IT Consulting & Zoho Solutions"
+            width={195}
+            height={36}
+            priority
+            unoptimized
+            className="h-8 sm:h-9 md:h-10 w-auto object-contain drop-shadow-[0_0_10px_#08e5c050] group-hover:drop-shadow-[0_0_20px_#08e5c080] transition-all duration-300"
+          />
         </Link>
 
         {/* 🧭 Desktop Navigation */}

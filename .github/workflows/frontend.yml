@@ -33,7 +33,7 @@ jobs:
           cd frontend
           rm -rf deploy
           mkdir deploy
-          cp -r .next public package.json package-lock.json deploy/
+          cp -r .next public package.json package-lock.json next.config.mjs deploy/
 
       # 5️⃣ Upload build to server
       - name: Upload frontend build
