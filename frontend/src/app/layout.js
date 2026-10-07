@@ -11,12 +11,15 @@ import StructuredData from "@/components/seo/StructuredData";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
+
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -145,6 +148,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://api.insyrge.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://api.insyrge.com" />
+        <link rel="preconnect" href="https://cdn.pagesense.io" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdn.pagesense.io" />
+        <link rel="dns-prefetch" href="https://salesiq.zohopublic.com" />
         <StructuredData data={organizationSchema} />
       </head>
       <body

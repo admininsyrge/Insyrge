@@ -121,10 +121,10 @@ const integrations = [
 export default function IntegrationsShowcase() {
   return (
     <section className="relative bg-[#071831] text-white py-24 px-4 sm:px-6 lg:px-8 overflow-hidden border-t border-white/5">
-      {/* Background glow */}
+      {/* Background glow - mobile GPU-friendly */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="w-[600px] h-[600px] bg-[#08e5c0]/5 blur-[240px] rounded-full absolute -top-40 right-1/4" />
-        <div className="w-[500px] h-[500px] bg-blue-600/5 blur-[220px] rounded-full absolute -bottom-20 left-10" />
+        <div className="w-[600px] h-[600px] bg-[#08e5c0]/5 blur-[60px] sm:blur-[200px] rounded-full absolute -top-40 right-1/4 transform-gpu" />
+        <div className="w-[500px] h-[500px] bg-blue-600/5 blur-[60px] sm:blur-[180px] rounded-full absolute -bottom-20 left-10 transform-gpu" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">

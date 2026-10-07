@@ -1,24 +1,31 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import { BASE_URL_USER } from "@/API";
 import StructuredData from "@/components/seo/StructuredData";
 import HeroHome from "@/components/home/HeroHome";
 import StatsSection from "@/components/home/StatsSection";
-import PainPointsSection from "@/components/home/PainPointsSection";
-import HomeServices from "@/components/home/HomeServices";
-import IntegrationsShowcase from "@/components/home/IntegrationsShowcase";
-import IndustrySolutionsSection from "@/components/home/IndustrySolutionsSection";
-import WhyChooseSection from "@/components/home/WhyChooseSection";
-import AITransformationSection from "@/components/home/AITransformationSection";
-import ProcessTimelineSection from "@/components/home/ProcessTimelineSection";
-import CaseStudies from "@/components/home/CaseStudies";
-import TestimonialsSection from "@/components/home/TestimonialsSection";
-import FounderTrustSection from "@/components/home/FounderTrustSection";
-import FeaturedExtensions from "@/components/home/FeaturedExtensions";
-import HomeFAQSection from "@/components/home/HomeFAQSection";
-import ContactSection from "@/components/home/ContactSection";
-import PartnerSection from "@/components/home/PartnerSection";
-import BlogHighlights from "@/components/home/BlogHighlights";
+
+// 🚀 Performance Optimization: Below-the-fold sections are dynamically loaded
+// so mobile devices don't choke downloading and executing monolithic client bundles on initial render.
+// SSR: true ensures 100% SEO, metadata, and crawlability are preserved.
+const PainPointsSection = dynamic(() => import("@/components/home/PainPointsSection"), { ssr: true });
+const HomeServices = dynamic(() => import("@/components/home/HomeServices"), { ssr: true });
+const IntegrationsShowcase = dynamic(() => import("@/components/home/IntegrationsShowcase"), { ssr: true });
+const IndustrySolutionsSection = dynamic(() => import("@/components/home/IndustrySolutionsSection"), { ssr: true });
+const WhyChooseSection = dynamic(() => import("@/components/home/WhyChooseSection"), { ssr: true });
+const AITransformationSection = dynamic(() => import("@/components/home/AITransformationSection"), { ssr: true });
+const ProcessTimelineSection = dynamic(() => import("@/components/home/ProcessTimelineSection"), { ssr: true });
+const CaseStudies = dynamic(() => import("@/components/home/CaseStudies"), { ssr: true });
+const TestimonialsSection = dynamic(() => import("@/components/home/TestimonialsSection"), { ssr: true });
+const FounderTrustSection = dynamic(() => import("@/components/home/FounderTrustSection"), { ssr: true });
+const FeaturedExtensions = dynamic(() => import("@/components/home/FeaturedExtensions"), { ssr: true });
+const PartnerSection = dynamic(() => import("@/components/home/PartnerSection"), { ssr: true });
+const HomeFAQSection = dynamic(() => import("@/components/home/HomeFAQSection"), { ssr: true });
+const BlogHighlights = dynamic(() => import("@/components/home/BlogHighlights"), { ssr: true });
+const ContactSection = dynamic(() => import("@/components/home/ContactSection"), { ssr: true });
+
 import { homeFaqs } from "@/data/homeFaqs";
+
 
 export const metadata = {
   title: "Zoho CRM & Business Automation for Construction and Home Services",

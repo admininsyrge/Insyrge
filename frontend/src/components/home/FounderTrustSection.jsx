@@ -17,10 +17,10 @@ import {
 export default function FounderTrustSection() {
   return (
     <section className="relative bg-[#071831] text-white py-24 px-4 sm:px-6 lg:px-8 overflow-hidden border-t border-white/5">
-      {/* Background glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="w-[500px] h-[500px] bg-[#08e5c0]/5 blur-[220px] rounded-full absolute -top-20 left-10" />
-        <div className="w-[500px] h-[500px] bg-blue-500/5 blur-[220px] rounded-full absolute -bottom-20 right-10" />
+      {/* Background glow - mobile GPU-friendly */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="w-[500px] h-[500px] bg-[#08e5c0]/5 blur-[60px] sm:blur-[200px] rounded-full absolute -top-20 left-10 transform-gpu" />
+        <div className="w-[500px] h-[500px] bg-blue-500/5 blur-[60px] sm:blur-[200px] rounded-full absolute -bottom-20 right-10 transform-gpu" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">

@@ -91,10 +91,10 @@ function AnimatedCounter({ value, suffix, duration = 2 }) {
 export default function StatsSection() {
   return (
     <section className="relative bg-[#06162d] text-white py-16 border-y border-[#08e5c0]/15 overflow-hidden">
-      {/* Background radial glow */}
+      {/* Background radial glow - mobile GPU-friendly */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="w-[50%] h-[100%] bg-[#08e5c0]/5 blur-[220px] rounded-full absolute -left-[10%] top-0" />
-        <div className="w-[40%] h-[100%] bg-[#00e0ff]/5 blur-[220px] rounded-full absolute -right-[10%] top-0" />
+        <div className="w-[50%] h-[100%] bg-[#08e5c0]/5 blur-[60px] sm:blur-[180px] rounded-full absolute -left-[10%] top-0 transform-gpu" />
+        <div className="w-[40%] h-[100%] bg-[#00e0ff]/5 blur-[60px] sm:blur-[180px] rounded-full absolute -right-[10%] top-0 transform-gpu" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">

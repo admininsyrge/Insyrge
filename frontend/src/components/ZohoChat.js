@@ -20,26 +20,42 @@ export default function ZohoChat() {
       window.$zoho = window.$zoho || {};
       window.$zoho.salesiq = window.$zoho.salesiq || { ready: function () {} };
 
-      window.removeEventListener("scroll", onUserInteraction);
-      window.removeEventListener("touchstart", onUserInteraction);
-      window.removeEventListener("click", onUserInteraction);
+      cleanup();
     };
 
-    const onUserInteraction = () => {
-      injectZohoScript();
+    const cleanup = () => {
+      window.removeEventListener("scroll", triggerOnIdle);
+      window.removeEventListener("touchstart", triggerOnIdle);
+      window.removeEventListener("click", triggerOnIdle);
     };
 
-    window.addEventListener("scroll", onUserInteraction, { passive: true, once: true });
-    window.addEventListener("touchstart", onUserInteraction, { passive: true, once: true });
-    window.addEventListener("click", onUserInteraction, { passive: true, once: true });
+    // Defer loading on mobile to ensure critical hydration and initial paint complete first
+    const triggerOnIdle = () => {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(() => {
+          setTimeout(injectZohoScript, 1200);
+        });
+      } else {
+        setTimeout(injectZohoScript, 1500);
+      }
+    };
 
-    const timer = setTimeout(injectZohoScript, 5000);
+    window.addEventListener("scroll", triggerOnIdle, { passive: true, once: true });
+    window.addEventListener("touchstart", triggerOnIdle, { passive: true, once: true });
+    window.addEventListener("click", triggerOnIdle, { passive: true, once: true });
+
+    // Fallback timer if user doesn't interact (only loads when idle)
+    const timer = setTimeout(() => {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(injectZohoScript);
+      } else {
+        injectZohoScript();
+      }
+    }, 8000);
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener("scroll", onUserInteraction);
-      window.removeEventListener("touchstart", onUserInteraction);
-      window.removeEventListener("click", onUserInteraction);
+      cleanup();
     };
   }, []);
 

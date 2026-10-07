@@ -15,7 +15,7 @@ import {
 
 export default function HeroHome({ data }) {
   return (
-    <section className="relative min-h-[92vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 bg-[#071831] text-white overflow-hidden">
+    <section className="relative min-h-[92vh] flex flex-col justify-start lg:justify-center items-center pt-24 sm:pt-28 pb-16 px-4 sm:px-6 lg:px-8 bg-[#071831] text-white overflow-hidden">
       {/* === Atmospheric Lighting & Grid === */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Subtle grid */}
@@ -27,10 +27,10 @@ export default function HeroHome({ data }) {
             backgroundSize: "36px 36px",
           }}
         />
-        {/* Glowing Orbs */}
-        <div className="w-[500px] h-[500px] bg-[#08e5c0]/15 blur-[220px] rounded-full absolute -top-40 -left-20" />
-        <div className="w-[450px] h-[450px] bg-[#00e0ff]/10 blur-[200px] rounded-full absolute top-1/3 -right-20" />
-        <div className="w-[350px] h-[350px] bg-[#08e5c0]/10 blur-[180px] rounded-full absolute -bottom-20 left-1/3" />
+        {/* Glowing Orbs - GPU-accelerated and radius-adapted for mobile performance */}
+        <div className="w-64 h-64 sm:w-[500px] sm:h-[500px] bg-[#08e5c0]/15 blur-[60px] sm:blur-[180px] rounded-full absolute -top-20 -left-10 sm:-top-40 sm:-left-20 transform-gpu pointer-events-none" />
+        <div className="w-56 h-56 sm:w-[450px] sm:h-[450px] bg-[#00e0ff]/10 blur-[50px] sm:blur-[160px] rounded-full absolute top-1/3 -right-10 sm:-right-20 transform-gpu pointer-events-none" />
+        <div className="hidden sm:block w-[350px] h-[350px] bg-[#08e5c0]/10 blur-[150px] rounded-full absolute -bottom-20 left-1/3 transform-gpu pointer-events-none" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto w-full">
@@ -42,22 +42,22 @@ export default function HeroHome({ data }) {
               initial={{ opacity: 0, y: -16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-6"
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-6 max-w-full"
             >
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#08e5c0]/10 text-[#08e5c0] border border-[#08e5c0]/30 backdrop-blur-md shadow-[0_0_15px_#08e5c020]">
-                <Award className="w-3.5 h-3.5" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#08e5c0]/10 text-[#08e5c0] border border-[#08e5c0]/30 backdrop-blur-md shadow-[0_0_15px_#08e5c020]">
+                <Award className="w-3.5 h-3.5 shrink-0" />
                 Zoho Marketplace Developer (9+ Extensions)
               </span>
               <a
                 href="https://help.hover.to/en/articles/12651040-zoho-crm-integration"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/5 text-gray-200 border border-white/15 hover:border-[#08e5c0]/40 transition-colors backdrop-blur-md"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white/5 text-gray-200 border border-white/15 hover:border-[#08e5c0]/40 transition-colors backdrop-blur-md"
               >
-                <ShieldCheck className="w-3.5 h-3.5 text-[#08e5c0]" />
+                <ShieldCheck className="w-3.5 h-3.5 text-[#08e5c0] shrink-0" />
                 Featured in HOVER&apos;s Zoho CRM Docs
               </a>
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/5 text-gray-300 border border-white/10 backdrop-blur-md">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white/5 text-gray-300 border border-white/10 backdrop-blur-md">
                 Bilateral NDA Protected
               </span>
             </motion.div>
@@ -67,7 +67,7 @@ export default function HeroHome({ data }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight leading-[1.12] mb-6"
+              className="text-2xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight leading-[1.18] sm:leading-[1.12] mb-6 break-words"
             >
               Zoho CRM &amp; Business Automation for{" "}
               <span className="bg-gradient-to-r from-[#08e5c0] via-[#33ffd0] to-[#00e0ff] bg-clip-text text-transparent">
@@ -128,10 +128,10 @@ export default function HeroHome({ data }) {
                 href="https://insyrge.zohobookings.com/#/4623360000000149002"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full font-bold text-base bg-[#08e5c0] text-[#081b33] shadow-[0_0_25px_#08e5c060] hover:shadow-[0_0_35px_#08e5c090] hover:scale-105 transition-all duration-300"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-3.5 sm:py-4 rounded-full font-bold text-sm sm:text-base text-center bg-[#08e5c0] text-[#081b33] shadow-[0_0_25px_#08e5c060] hover:shadow-[0_0_35px_#08e5c090] hover:scale-105 transition-all duration-300"
               >
-                <Calendar className="w-5 h-5" />
-                Book a Free 45-Minute Consultation
+                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+                <span>Book a Free 45-Minute Consultation</span>
               </a>
             </motion.div>
 
@@ -170,16 +170,18 @@ export default function HeroHome({ data }) {
           >
             {/* Glowing Backdrop Frame */}
             <div className="relative mx-auto max-w-lg lg:max-w-none">
-              <div className="absolute -inset-1.5 bg-gradient-to-r from-[#08e5c0] via-[#00e0ff] to-[#08e5c0] rounded-3xl blur-xl opacity-30 animate-pulseGlow" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#08e5c0] via-[#00e0ff] to-[#08e5c0] rounded-3xl blur-lg sm:blur-xl opacity-20 sm:opacity-30 animate-pulseGlow transform-gpu" />
 
-              <div className="relative rounded-2xl overflow-hidden border border-[#08e5c0]/30 bg-[#0B1C3D]/90 backdrop-blur-xl shadow-2xl">
+              <div className="relative rounded-2xl overflow-hidden border border-[#08e5c0]/30 bg-[#0B1C3D]/90 shadow-2xl">
                 <Image
                   src="/images/hero-automation-dashboard.jpg"
                   alt="Insyrge Enterprise Business Automation Cockpit and Real-Time CRM Dashboard"
                   width={1200}
                   height={675}
-                  priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                  priority={false}
+                  loading="eager"
+                  fetchPriority="high"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 85vw, (max-width: 1280px) 45vw, 550px"
                   className="w-full h-auto object-cover rounded-xl transition-transform duration-700 hover:scale-[1.02]"
                 />
 

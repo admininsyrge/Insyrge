@@ -29,9 +29,9 @@ export default function HomeFAQSection() {
 
   return (
     <section className="relative bg-[#071831] py-24 text-white overflow-hidden border-t border-[#08e5c0]/15">
-      {/* Background ambient glow */}
+      {/* Background ambient glow - mobile GPU-friendly */}
       <div className="absolute inset-0 pointer-events-none opacity-20">
-        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-[#08e5c0]/15 rounded-full blur-[140px]" />
+        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-[#08e5c0]/15 rounded-full blur-[50px] sm:blur-[140px] transform-gpu" />
       </div>
 
       <div className="max-w-5xl mx-auto px-6 relative z-10">

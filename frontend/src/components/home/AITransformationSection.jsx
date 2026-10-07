@@ -38,10 +38,10 @@ const aiCapabilities = [
 export default function AITransformationSection() {
   return (
     <section className="relative bg-[#06162d] text-white py-24 px-4 sm:px-6 lg:px-8 border-t border-white/10 overflow-hidden">
-      {/* Background radial glow */}
+      {/* Background radial glow - mobile GPU-friendly */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="w-[600px] h-[600px] bg-[#08e5c0]/10 blur-[260px] rounded-full absolute -top-40 -right-40" />
-        <div className="w-[500px] h-[500px] bg-[#00e0ff]/5 blur-[220px] rounded-full absolute -bottom-40 -left-40" />
+        <div className="w-[600px] h-[600px] bg-[#08e5c0]/10 blur-[60px] sm:blur-[200px] rounded-full absolute -top-40 -right-40 transform-gpu" />
+        <div className="w-[500px] h-[500px] bg-[#00e0ff]/5 blur-[60px] sm:blur-[180px] rounded-full absolute -bottom-40 -left-40 transform-gpu" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">

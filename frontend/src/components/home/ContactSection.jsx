@@ -11,10 +11,10 @@ export default function ContactSection() {
       id="contact-form-section"
       className="relative bg-gradient-to-b from-[#071831] via-[#091e3d] to-[#040e1f] text-white py-24 overflow-hidden border-t border-[#08e5c0]/20"
     >
-      {/* Background glow highlights */}
+      {/* Background glow highlights - mobile GPU-friendly */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="w-[50%] h-[50%] bg-[#08e5c0]/15 blur-[220px] rounded-full absolute -top-24 left-[10%]" />
-        <div className="w-[40%] h-[40%] bg-[#4dffe4]/10 blur-[200px] rounded-full absolute bottom-0 right-[5%]" />
+        <div className="w-[50%] h-[50%] bg-[#08e5c0]/15 blur-[60px] sm:blur-[180px] rounded-full absolute -top-24 left-[10%] transform-gpu" />
+        <div className="w-[40%] h-[40%] bg-[#4dffe4]/10 blur-[60px] sm:blur-[160px] rounded-full absolute bottom-0 right-[5%] transform-gpu" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">

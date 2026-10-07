@@ -13,7 +13,7 @@ export default function FeaturedExtensions({ extensions }) {
   return (
     <section className="relative bg-[#071831] text-white py-24 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="w-[40%] h-[40%] bg-[#08e5c015] blur-[200px] rounded-full absolute bottom-0 left-[20%]" />
+        <div className="w-[40%] h-[40%] bg-[#08e5c015] blur-[60px] sm:blur-[180px] rounded-full absolute bottom-0 left-[20%] transform-gpu" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
