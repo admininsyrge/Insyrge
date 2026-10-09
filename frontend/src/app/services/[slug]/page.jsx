@@ -10,7 +10,7 @@ import { coreServices as fallbackServices } from "@/data/servicesData";
 async function getService(slug) {
   try {
     const res = await fetch(`${BASE_URL_USER}/service/slug/${slug}`, {
-      signal: AbortSignal.timeout(4000),
+      signal: AbortSignal.timeout(1800),
       next: { revalidate: 3600 },
     });
     if (!res.ok) return fallbackServices.find((s) => s.slug === slug) || null;

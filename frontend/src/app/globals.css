@@ -551,6 +551,11 @@ body {
   perspective: 1000px;
 }
 
+/* Touch responsiveness optimization */
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
 @media (max-width: 768px) {
   /* Reduce heavy backdrop filters and blur calculations on mobile GPUs */
   .glass-card {
@@ -558,14 +563,39 @@ body {
     -webkit-backdrop-filter: blur(8px) !important;
   }
 
-  /* Improve mobile scrolling performance */
+  /* Improve mobile scrolling performance and prevent bounce jank */
   body, html {
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
   }
 
   /* Prevent text rendering delay on mobile web fonts */
   * {
     text-rendering: optimizeSpeed;
   }
+
+  /* ⚡ Content-visibility optimization: below-the-fold sections render only when near viewport */
+  main > section:not(:first-child):not(:nth-child(2)) {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 650px;
+  }
+
+  /* Tone down heavy continuous keyframe animations on mobile to prevent CPU/battery throttling */
+  .animate-bgShift {
+    animation-duration: 36s !important;
+  }
+  .animate-gradientFlow {
+    animation-duration: 24s !important;
+  }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 

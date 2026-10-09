@@ -72,7 +72,7 @@ const extensionsBreadcrumbSchema = {
 async function getExtensions() {
   try {
     const res = await fetch(`${BASE_URL_USER}${GET_EXTENSION}`, {
-      signal: AbortSignal.timeout(4000),
+      signal: AbortSignal.timeout(1800),
       next: { revalidate: 3600 },
     });
     if (!res.ok) return fallbackExtensions;

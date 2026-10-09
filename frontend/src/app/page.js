@@ -219,7 +219,7 @@ const fallbackPartners = [
 async function getHomeData() {
   try {
     const res = await fetch(`${BASE_URL_USER}/home`, {
-      signal: AbortSignal.timeout(4000),
+      signal: AbortSignal.timeout(1800),
       next: { revalidate: 3600 },
     });
     if (!res.ok) return { hero: null, partners: fallbackPartners };
@@ -238,7 +238,7 @@ async function getHomeData() {
 async function getExtensions() {
   try {
     const res = await fetch(`${BASE_URL_USER}/extension-all`, {
-      signal: AbortSignal.timeout(4000),
+      signal: AbortSignal.timeout(1800),
       next: { revalidate: 3600 },
     });
     const list = res.ok ? (await res.json())?.data || [] : [];
@@ -265,7 +265,7 @@ async function getExtensions() {
 async function getBlogs() {
   try {
     const res = await fetch(`${BASE_URL_USER}/blogs-all`, {
-      signal: AbortSignal.timeout(4000),
+      signal: AbortSignal.timeout(1800),
       next: { revalidate: 3600 },
     });
     const list = res.ok ? (await res.json())?.data || [] : [];
